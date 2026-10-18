@@ -1,0 +1,1384 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MMS 200 — Manuscript Structure and Guidelines</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ==========================================================================
+   IS 201 — Shared Course Page Theme
+   ==========================================================================
+   One stylesheet for every IS 201 page (course guide, topic readings, etc.)
+   so they all look and feel the same.
+
+   HOW TO USE ON A NEW PAGE
+   --------------------------------------------------------------------------
+   1. Link this file in <head>:
+        <link rel="stylesheet" href="theme.css">
+   2. (Optional) For pixel-perfect type, load the two fonts referenced in
+      the font stacks below — IBM Plex Sans and Source Serif 4. Without
+      them the page falls back to system fonts and still looks correct:
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+   3. Copy the page skeleton below and fill in your own sidebar links and
+      <section class="chapter"> blocks.
+   4. Reuse the component classes documented in each section of this file
+      (blockquote.def, table.compare, .req-card, .scholar-card, .keyidea,
+      .callout, .quotes, .commandments, .refbox, .flow) instead of writing
+      new CSS — that's what keeps every page consistent.
+   ========================================================================== */
+
+/* ---- Design tokens ------------------------------------------------------- */
+:root{
+    --bg:#EEF2F8;
+    --paper:#FFFFFF;
+    --ink:#1B2333;
+    --ink-soft:#4A5568;
+    --sidebar:#16243E;
+    --sidebar-hover:#22385F;
+    --sidebar-text:#C6D2E8;
+    --sidebar-text-dim:#7E93B8;
+    --accent:#2F5D9C;
+    --accent-deep:#1E3F6E;
+    --gold:#A9822F;
+    --border:#DAE1EC;
+    --correct:#1E7B57;
+    --correct-bg:#E5F4EC;
+    --incorrect:#B03B33;
+    --incorrect-bg:#FBEAE8;
+    --neutral:#8A6D1E;
+    --neutral-bg:#FBF3E1;
+  }
+  /* ---- Base & typography ---------------------------------------------- */
+*{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:"IBM Plex Sans", -apple-system, Segoe UI, Roboto, sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.6;
+  }
+  h1,h2,h3,h4{
+    font-family:"Source Serif 4", Georgia, "Times New Roman", serif;
+    color:var(--ink);
+    line-height:1.25;
+    font-weight:600;
+  }
+  a{color:var(--accent-deep);}
+  a:hover{color:var(--accent);}
+
+  /* ---- Page layout: sidebar + main ------------------------------------ */
+  .layout{
+    min-height:100vh;
+    width:100%;
+  }
+  nav.sidebar{
+    width:280px;
+    flex-shrink:0;
+    background:var(--sidebar);
+    color:var(--sidebar-text);
+    padding:28px 22px 40px;
+    position:fixed;
+    top:0;
+    left:0;
+    height:100vh;
+    overflow-y:auto;
+    z-index:10;
+  }
+  nav.sidebar::-webkit-scrollbar{width:8px;}
+  nav.sidebar::-webkit-scrollbar-thumb{background:var(--sidebar-hover); border-radius:4px;}
+
+  .sidebar .kicker{
+    text-transform:uppercase;
+    font-size:11px;
+    letter-spacing:0.14em;
+    color:var(--sidebar-text-dim);
+    margin-bottom:6px;
+  }
+  .sidebar .course-title{
+    font-family:"Source Serif 4", Georgia, serif;
+    font-size:21px;
+    color:#fff;
+    margin:0 0 4px;
+  }
+  .sidebar .course-topic{
+    font-size:13.5px;
+    color:var(--sidebar-text);
+    padding-bottom:18px;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+    margin:0 0 18px;
+  }
+  .sidebar .nav-heading{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:var(--sidebar-text-dim);
+    margin:18px 0 6px;
+  }
+  .sidebar .nav-heading:first-of-type{ margin-top:0; }
+  .sidebar ol{
+    list-style:none;
+    margin:0;
+    padding:0;
+    counter-reset:section;
+  }
+  .sidebar > ol > li{
+    counter-increment:section;
+    margin-bottom:2px;
+  }
+  .sidebar a.toc-link{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    text-decoration:none;
+    color:var(--sidebar-text);
+    padding:8px 10px;
+    border-radius:6px;
+    font-size:14px;
+    transition:background 0.15s ease, color 0.15s ease;
+  }
+  .sidebar a.toc-link::before{
+    content:counter(section, decimal-leading-zero);
+    font-family:"IBM Plex Sans", sans-serif;
+    font-size:11px;
+    color:var(--sidebar-text-dim);
+    padding-top:2px;
+  }
+  .sidebar a.toc-link:hover, .sidebar a.toc-link.active{
+    background:var(--sidebar-hover);
+    color:#fff;
+  }
+  .sidebar ul.sub{
+    list-style:none;
+    margin:2px 0 8px 26px;
+    padding:0;
+    border-left:1px solid rgba(255,255,255,0.12);
+  }
+  .sidebar ul.sub li a{
+    display:block;
+    text-decoration:none;
+    color:var(--sidebar-text-dim);
+    font-size:12.5px;
+    padding:5px 0 5px 14px;
+    transition:color 0.15s ease;
+  }
+  .sidebar ul.sub li a:hover{color:#fff;}
+
+  main{
+    display:block;
+    margin-left:280px;
+    padding:0 0 100px;
+  }
+  /* ---- Hero banner ---------------------------------------------------- */
+  .hero{
+    background:linear-gradient(155deg, var(--accent-deep) 0%, var(--sidebar) 65%);
+    color:#fff;
+    padding:64px 56px 46px;
+  }
+  .hero .kicker{
+    text-transform:uppercase;
+    letter-spacing:0.16em;
+    font-size:12px;
+    color:#AFC3E4;
+    margin-bottom:14px;
+  }
+  .hero h1{
+    color:#fff;
+    font-size:38px;
+    margin:0 0 10px;
+    max-width:900px;
+  }
+  .hero p.dek{
+    max-width:820px;
+    color:#D6E0F1;
+    font-size:16px;
+    margin:0 0 22px;
+  }
+  .hero .byline{
+    font-size:14px;
+    color:#AFC3E4;
+    border-top:1px solid rgba(255,255,255,0.18);
+    padding-top:14px;
+    display:inline-block;
+  }
+  .hero .byline strong{color:#fff; font-weight:600;}
+
+  /* ---- Content column -------------------------------------------------- */
+  .content-inner{
+    padding:0 56px;
+    max-width:960px;
+  }
+
+  section.chapter{
+    padding-top:52px;
+    scroll-margin-top:24px;
+  }
+  section.chapter:first-of-type{padding-top:40px;}
+
+  .chapter .eyebrow{
+    font-size:13px;
+    color:var(--accent);
+    font-weight:600;
+    margin-bottom:6px;
+  }
+  .chapter h2{
+    font-size:27px;
+    margin:0 0 16px;
+    padding-bottom:14px;
+    border-bottom:2px solid var(--border);
+  }
+  .chapter h3{
+    font-size:19px;
+    margin:30px 0 10px;
+    color:var(--accent-deep);
+  }
+  .chapter h4{
+    font-size:15.5px;
+    margin:20px 0 8px;
+    color:var(--accent-deep);
+  }
+  .chapter p{
+    font-size:15.5px;
+    color:var(--ink);
+    margin:0 0 14px;
+  }
+  .chapter ul, .chapter ol.plain{
+    padding-left:22px;
+    margin:0 0 16px;
+  }
+  .chapter li{
+    font-size:15.5px;
+    margin-bottom:6px;
+  }
+  .lede{
+    font-size:17px;
+    color:var(--ink-soft);
+    border-left:3px solid var(--gold);
+    padding-left:16px;
+    margin:0 0 22px;
+  }
+
+  /* ---- Definition / emphasis callout ------------------------------------ */
+  blockquote.def{
+    background:var(--paper);
+    border:1px solid var(--border);
+    border-left:4px solid var(--accent);
+    border-radius:6px;
+    padding:16px 20px;
+    margin:0 0 20px;
+    font-size:15px;
+    color:var(--ink-soft);
+  }
+  blockquote.def strong{color:var(--ink); font-family:"Source Serif 4", serif;}
+
+  /* ---- Data table -------------------------------------------------------- */
+  table.compare{
+    width:100%;
+    border-collapse:collapse;
+    margin:8px 0 20px;
+    font-size:14.5px;
+    background:var(--paper);
+    border:1px solid var(--border);
+    border-radius:8px;
+    overflow:hidden;
+  }
+  table.compare th{
+    background:var(--sidebar);
+    color:#fff;
+    text-align:left;
+    padding:10px 14px;
+    font-weight:600;
+    font-size:13px;
+  }
+  table.compare td{
+    padding:10px 14px;
+    border-top:1px solid var(--border);
+    vertical-align:top;
+  }
+  table.compare tr:nth-child(even) td{background:#F6F8FC;}
+  table.compare td.num{ font-weight:600; color:var(--accent-deep); white-space:nowrap; }
+  table.compare tr.deadline td{ background:var(--neutral-bg); color:var(--neutral); font-style:italic; }
+  table.compare tr.lowgrade td{ background:var(--incorrect-bg); color:var(--incorrect); font-weight:600; }
+
+  /* ---- Bio / reference card ------------------------------------------ */
+  .scholar-card{
+    background:var(--paper);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:20px 22px;
+    margin-bottom:18px;
+    scroll-margin-top:24px;
+  }
+  .scholar-card h4{
+    margin:0 0 4px;
+    font-size:16.5px;
+    color:var(--ink);
+  }
+  .scholar-card .tag{
+    display:inline-block;
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--accent);
+    background:#EAF0FA;
+    padding:2px 8px;
+    border-radius:4px;
+    margin-bottom:10px;
+  }
+  .scholar-card p{margin:0 0 6px; font-size:14.5px;}
+  .scholar-card .fic-links{ margin:10px 0 0; padding-left:18px; font-size:14px; }
+  .scholar-card .fic-links li{ margin-bottom:3px; }
+
+  /* ---- Numbered list ---------------------------------------------------- */
+  .commandments{
+    counter-reset:cmd;
+    padding:0;
+    list-style:none;
+    margin:0 0 20px;
+    display:grid;
+    gap:8px;
+  }
+  .commandments li{
+    counter-increment:cmd;
+    background:var(--paper);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:12px 14px 12px 44px;
+    position:relative;
+    font-size:14.5px;
+  }
+  .commandments li::before{
+    content:counter(cmd);
+    position:absolute;
+    left:12px;
+    top:10px;
+    font-family:"Source Serif 4", serif;
+    font-weight:700;
+    font-size:16px;
+    color:var(--gold);
+  }
+
+  /* ---- Process/flow chips ----------------------------------------------- */
+  .flow{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    align-items:center;
+    margin:6px 0 22px;
+  }
+  .flow .step{
+    background:var(--accent-deep);
+    color:#fff;
+    padding:8px 13px;
+    border-radius:20px;
+    font-size:13.5px;
+    white-space:nowrap;
+  }
+  .flow .arrow{color:var(--ink-soft); font-size:15px;}
+
+  /* ---- Reference / notes box --------------------------------------------- */
+  .refbox{
+    background:#F4F7FC;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:16px 18px;
+    margin:0 0 22px;
+  }
+  .refbox .refbox-label{
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--accent-deep);
+    font-weight:600;
+    margin-bottom:8px;
+  }
+  .refbox ul{
+    margin:0;
+    padding-left:18px;
+  }
+  .refbox li{
+    font-size:14px;
+    margin-bottom:4px;
+  }
+  .refbox a{
+    text-decoration:none;
+    border-bottom:1px dotted var(--accent);
+  }
+  .refbox a:hover{border-bottom-style:solid;}
+
+  /* ---- Weighted requirement row ------------------------------------------ */
+  .req-card{
+    display:flex;
+    gap:18px;
+    align-items:center;
+    background:var(--paper);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:16px 20px;
+    margin-bottom:12px;
+  }
+  .req-card .pct{
+    font-family:"Source Serif 4", serif;
+    font-size:28px;
+    font-weight:700;
+    color:var(--accent-deep);
+    flex:0 0 62px;
+    text-align:center;
+  }
+  .req-card .pct sub{ font-size:13px; font-weight:400; color:var(--ink-soft); }
+  .req-card h4{ margin:0 0 4px; font-size:15.5px; }
+  .req-card p{ margin:0; font-size:14px; color:var(--ink-soft); }
+
+  /* ---- Highlighted key-idea panel ---------------------------------------- */
+  .keyidea{
+    background:linear-gradient(155deg, var(--accent-deep), var(--sidebar));
+    color:#fff;
+    border-radius:12px;
+    padding:28px 30px;
+    margin:8px 0 10px;
+  }
+  .keyidea h3{color:#fff; margin-top:0;}
+  .keyidea p{ color:#E3EAF6; }
+  .keyidea .qgrid{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 24px;
+    margin-top:14px;
+  }
+  .keyidea .qgrid .col{ flex:1 1 220px; }
+  .keyidea .qgrid .col-label{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:#AFC3E4;
+    margin-bottom:6px;
+  }
+  .keyidea .qgrid ul{margin:0; padding-left:18px;}
+  .keyidea .qgrid li{font-size:14px; margin-bottom:5px; color:#E3EAF6;}
+
+  /* ---- Warning / important-notice callout (red) ----------------------- */
+  .callout{
+    background:var(--incorrect-bg);
+    border:1px solid #F0C6C1;
+    border-radius:8px;
+    padding:16px 18px;
+    margin:0 0 20px;
+    font-size:14.5px;
+    color:var(--incorrect);
+  }
+  .callout strong{ color:var(--incorrect); }
+
+  /* ---- Pull-quote list --------------------------------------------------- */
+  .quotes{
+    list-style:none;
+    padding:0;
+    margin:10px 0 0;
+    display:grid;
+    gap:12px;
+  }
+  .quotes li{
+    border-left:3px solid var(--gold);
+    padding:2px 0 2px 16px;
+    font-style:italic;
+    font-size:15px;
+    color:var(--ink);
+  }
+  .quotes li span{
+    display:block;
+    font-style:normal;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-top:3px;
+  }
+
+  /* ---- Page-level footnote & footer -------------------------------------- */
+  .ai-note{
+    margin-top:26px;
+    padding-top:16px;
+    border-top:1px solid var(--border);
+    font-size:13px;
+    color:var(--ink-soft);
+    font-style:italic;
+  }
+  .ai-note.page-note{
+    max-width:820px;
+    margin:36px auto 0;
+    padding:16px 56px 0;
+    text-align:center;
+    border-top:1px solid var(--border);
+  }
+
+  footer{
+    text-align:center;
+    padding:30px 20px 10px;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin-left:280px;
+  }
+
+  @media (max-width: 880px){
+    nav.sidebar{
+      position:relative;
+      width:100%;
+      height:auto;
+      max-height:none;
+    }
+    main{ margin-left:0; }
+    footer{ margin-left:0; }
+    .hero{padding:40px 24px 32px;}
+    .content-inner{padding:0 22px;}
+    .req-card{ flex-wrap:wrap; }
+  }
+
+  /* ---- Page-specific additions ---- */
+  .hero-inner{
+    max-width:904px;
+  }
+  .chapter h3[id]{ scroll-margin-top:24px; }
+  .sidebar a.home-link{
+    display:block; text-decoration:none;
+    background:var(--sidebar-hover); color:#fff;
+    border:1px solid rgba(255,255,255,0.18); border-radius:6px;
+    padding:9px 12px; font-size:13.5px; font-weight:500;
+    margin:0 0 20px;
+    transition:background 0.15s ease, border-color 0.15s ease;
+  }
+  .sidebar a.home-link:hover{
+    background:var(--accent); border-color:var(--accent); color:#fff;
+  }
+  .sidebar a.download-link{
+    background:#C8665A; border-color:#D4786C; color:#fff; font-weight:600;
+  }
+  .sidebar a.download-link:hover{
+    background:#D4786C; border-color:#D4786C; color:#fff;
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <nav class="sidebar" aria-label="Table of contents">
+    <!-- Hidden for now; remove the comment markers to restore.
+    <a class="home-link" href="https://reinald-dp.github.io/mms200/">&larr; Back to MMS 200 Home</a>
+    -->
+    <a class="home-link download-link" href="https://reinald-dp.github.io/mms200/mms200-manuscript-template.docx" target="_blank" rel="noopener">&darr; Download Word Template</a>    <div class="course-title">MMS 200 Manuscript</div>
+    <p class="course-topic">Structure and Guidelines</p>
+
+    <div class="nav-heading">Overview</div>
+    <ol>
+      <li><a class="toc-link" href="#overview" data-target="overview">Purpose of the Manuscript</a></li>
+      <li><a class="toc-link" href="#stages" data-target="stages">MMS 200a and MMS 200b</a></li>
+    </ol>
+
+    <div class="nav-heading">The Six Chapters</div>
+    <ol style="counter-reset:section 2">
+      <li><a class="toc-link" href="#ch1" data-target="ch1">Chapter I · Introduction</a>
+        <ul class="sub">
+          <li><a href="#ch1-a">A. Background of the Study</a></li>
+          <li><a href="#ch1-b">B. Statement of the Problem</a></li>
+          <li><a href="#ch1-c">C. Objectives of the Study</a></li>
+          <li><a href="#ch1-d">D. Significance of the Study</a></li>
+          <li><a href="#ch1-e">E. Scope and Limitations</a></li>
+        </ul>
+      </li>
+      <li><a class="toc-link" href="#ch2" data-target="ch2">Chapter II · Review of Related Literature</a>
+        <ul class="sub">
+          <li><a href="#ch2-a">A. Scholarly Foundations &amp; Previous Research</a></li>
+          <li><a href="#ch2-b">B. Synthesis, Gap &amp; Positioning</a></li>
+        </ul>
+      </li>
+      <li><a class="toc-link" href="#ch3" data-target="ch3">Chapter III · Theoretical and Conceptual Framework</a>
+        <ul class="sub">
+          <li><a href="#ch3-a">A. Theoretical Framework</a></li>
+          <li><a href="#ch3-b">B. Conceptual Framework &amp; Application</a></li>
+        </ul>
+      </li>
+      <li><a class="toc-link" href="#ch4" data-target="ch4">Chapter IV · Research Methodology</a>
+        <ul class="sub">
+          <li><a href="#ch4-a">A. Research Design &amp; Approach</a></li>
+          <li><a href="#ch4-b">B. Setting, Participants &amp; Data Sources</a></li>
+          <li><a href="#ch4-c">C. Instruments &amp; Materials</a></li>
+          <li><a href="#ch4-d">D. Research Procedures</a></li>
+          <li><a href="#ch4-e">E. Data Analysis &amp; Interpretation</a></li>
+        </ul>
+      </li>
+      <li><a class="toc-link" href="#ch5" data-target="ch5">Chapter V · Results and Discussion</a>
+        <ul class="sub">
+          <li><a href="#ch5-a">A. Presentation of Findings</a></li>
+          <li><a href="#ch5-b">B. Analysis &amp; Discussion</a></li>
+        </ul>
+      </li>
+      <li><a class="toc-link" href="#ch6" data-target="ch6">Chapter VI · Conclusion and Recommendations</a>
+        <ul class="sub">
+          <li><a href="#ch6-a">A. Conclusion</a></li>
+          <li><a href="#ch6-b">B. Recommendations</a></li>
+        </ul>
+      </li>
+    </ol>
+
+    <div class="nav-heading">Back Matter</div>
+    <ol style="counter-reset:section 8">
+      <li><a class="toc-link" href="#references" data-target="references">References</a></li>
+      <li><a class="toc-link" href="#ai-declaration" data-target="ai-declaration">Declaration of AI Use</a></li>
+      <li><a class="toc-link" href="#appendices" data-target="appendices">Appendices</a></li>
+    </ol>
+
+    <div class="nav-heading">Putting It Together</div>
+    <ol style="counter-reset:section 11">
+      <li><a class="toc-link" href="#coherence" data-target="coherence">Manuscript Coherence</a></li>
+    </ol>
+
+    <div class="nav-heading">Wrap-up</div>
+    <ol style="counter-reset:section 12">
+      <li><a class="toc-link" href="#summary" data-target="summary">Summary of Coverage</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <div class="hero">
+      <div class="hero-inner">
+        <div class="kicker">From Research Blueprint to Completed Study</div>
+        <h1>MMS 200 Manuscript Structure and Guidelines</h1>
+        <p class="dek">A chapter-by-chapter guide to documenting a systematic research study in Multimedia Studies — from the research problem and its scholarly and theoretical foundations, through the research methodology, to findings, conclusions, and recommendations.</p>
+        <span class="byline">Prepared by: <strong>Dr. Reinald Adrian Pugoy</strong> — First Semester, AY 2026–2027</span>
+      </div>
+    </div>
+
+    <div class="content-inner">
+
+      <!-- 1. Purpose -->
+      <section class="chapter" id="overview">
+        <div class="eyebrow">01 · Overview</div>
+        <h2>Purpose of the Manuscript</h2>
+        <p class="lede">The MMS 200 manuscript documents a systematic research study in the field of Multimedia Studies.</p>
+        <p>The manuscript should demonstrate the student's ability to:</p>
+        <ol class="commandments">
+          <li>Identify and investigate a relevant research problem.</li>
+          <li>Establish its theoretical and scholarly foundations.</li>
+          <li>Employ an appropriate research methodology.</li>
+          <li>Systematically collect and analyze evidence.</li>
+          <li>Develop meaningful conclusions and contributions.</li>
+        </ol>
+
+        <h3>A Broad Range of Research</h3>
+        <p>MMS 200 encompasses a broad range of research topics, approaches, and methodologies within Multimedia Studies. These may include qualitative, quantitative, mixed-methods, experimental, descriptive, exploratory, comparative, critical, design-oriented, and development-oriented research, among others.</p>
+        <p>Research topics may examine multimedia technologies, digital communication, media production and consumption, human-computer interaction, digital cultures, emerging technologies, user experiences, and the social, cultural, educational, and technological dimensions of multimedia.</p>
+        <p>Depending on the research problem and objectives, a study may involve empirical investigation, theoretical or conceptual analysis, evaluation of existing practices or technologies, design and development of multimedia systems or artifacts, or other forms of scholarly inquiry.</p>
+        <div class="keyidea">
+          <h3>Whatever the approach, the standard is the same.</h3>
+          <p style="margin-bottom:0;">Regardless of the research approach, the manuscript should demonstrate <strong>academic rigor, methodological appropriateness, coherence, and a clear contribution</strong> to knowledge or practice.</p>
+        </div>
+      </section>
+
+      <!-- 2. Stages -->
+      <section class="chapter" id="stages">
+        <div class="eyebrow">02 · Overview</div>
+        <h2>Manuscript Coverage for MMS 200a and MMS 200b</h2>
+        <p class="lede">MMS 200a establishes the research blueprint. MMS 200b implements that blueprint and completes the research.</p>
+
+        <table class="compare">
+          <thead>
+            <tr><th>Chapter</th><th>Title</th><th>MMS 200a</th><th>MMS 200b</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="num">Chapter I</td><td>Introduction</td><td>✓ Proposal</td><td>✓ Updated tense, same plan</td></tr>
+            <tr><td class="num">Chapter II</td><td>Review of Related Literature</td><td>✓ Proposal</td><td>✓ Updated tense, same plan</td></tr>
+            <tr><td class="num">Chapter III</td><td>Theoretical and Conceptual Framework</td><td>✓ Proposal</td><td>✓ Approved plan, carried out</td></tr>
+            <tr><td class="num">Chapter IV</td><td>Research Methodology</td><td>✓ Planned</td><td>✓ Approved plan, carried out</td></tr>
+            <tr><td class="num">Chapter V</td><td>Results and Discussion</td><td>—</td><td>✓</td></tr>
+            <tr><td class="num">Chapter VI</td><td>Conclusion and Recommendations</td><td>—</td><td>✓</td></tr>
+            <tr><td class="num">Back matter</td><td>References</td><td>✓ Required</td><td>✓ Required</td></tr>
+            <tr><td class="num">Back matter</td><td>Declaration of AI Use</td><td>✓ Required</td><td>✓ Required</td></tr>
+            <tr><td class="num">Back matter</td><td>Appendices</td><td>As needed</td><td>As needed</td></tr>
+          </tbody>
+        </table>
+
+        <h3>MMS 200a: Research Proposal and Blueprint Stage</h3>
+        <p>MMS 200a covers <strong>Chapters I to IV</strong> of the manuscript. At this stage, the manuscript establishes the research problem, reviews and synthesizes relevant literature, develops the theoretical and conceptual foundations of the study, and presents a detailed methodology for conducting the research.</p>
+        <p><strong>MMS 200a serves as the approved research blueprint for implementation in MMS 200b.</strong> The proposal should therefore demonstrate that:</p>
+        <ul>
+          <li>the research problem is clearly defined, significant, and appropriate for Multimedia Studies;</li>
+          <li>the research questions and objectives are sufficiently focused and achievable;</li>
+          <li>the study is grounded in relevant literature, theories, and concepts;</li>
+          <li>the research design and methodology are appropriate for addressing the research questions;</li>
+          <li>the data sources, participants, materials, or research contexts have been identified, where applicable;</li>
+          <li>the procedures for data collection, analysis, and interpretation are sufficiently developed;</li>
+          <li>ethical considerations and potential limitations have been addressed; and</li>
+          <li>the proposed study is feasible within the available time and resources.</li>
+        </ul>
+        <p>Because MMS 200a represents the proposal stage, future-oriented language may be used when describing activities that have not yet been undertaken. However, the manuscript should already present a <strong>complete, coherent, and defensible research plan</strong>, rather than a preliminary research idea.</p>
+        <p>Approval of MMS 200a signifies that the student has established a sufficiently developed research blueprint for implementation in MMS 200b.</p>
+
+        <h3>MMS 200b: Research Implementation and Completion Stage</h3>
+        <p>MMS 200b covers the <strong>complete manuscript, Chapters I to VI</strong>, including the implementation of the approved research methodology, presentation and analysis of findings, discussion, conclusions, and recommendations.</p>
+        <p>MMS 200b is primarily concerned with <strong>implementing the research blueprint established in MMS 200a and completing the study</strong>. Students are expected to carry out the approved research activities, which may include data collection, experimentation, fieldwork, interviews, surveys, content analysis, artifact development, evaluation, or other procedures appropriate to their research design.</p>
+        <p>The MMS 200b manuscript should read as a <strong>completed research study rather than a proposal</strong>. Accordingly, Chapters I to IV should be reviewed and revised to reflect the research as actually conducted. Future-oriented statements should be replaced with descriptions of the actual research procedures, participants, data sources, instruments, analytical methods, and other relevant activities.</p>
+
+        <table class="compare">
+          <thead>
+            <tr><th>MMS 200a (Proposal)</th><th>MMS 200b (Completed Study)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>"The study will examine..."</td><td>"The study examined..."</td></tr>
+            <tr><td>"The researchers will conduct interviews..."</td><td>"Interviews were conducted..."</td></tr>
+            <tr><td>"The study will employ thematic analysis..."</td><td>"The data were analyzed using thematic analysis..."</td></tr>
+            <tr><td>"The proposed framework will guide..."</td><td>"The framework guided..."</td></tr>
+            <tr><td>"The researchers will evaluate..."</td><td>"The researchers evaluated..."</td></tr>
+          </tbody>
+        </table>
+
+        <p>The final manuscript should also account for any justified modifications made during research implementation. It should not simply reproduce the MMS 200a proposal and append the findings. Instead, the entire document should present a coherent academic account of the <strong>research as actually conducted, the evidence obtained, and the conclusions drawn</strong>.</p>
+
+        <div class="keyidea">
+          <h3>The approved MMS 200a proposal is your blueprint.</h3>
+          <p>MMS 200b is not intended as an opportunity to begin an entirely new study or fundamentally redesign the approved research project.</p>
+          <p style="margin-bottom:0;"><strong>Substantial changes to the research problem, objectives, scope, or methodology should be discussed with and approved by your adviser before implementation.</strong></p>
+        </div>
+      </section>
+
+      <!-- 3. Chapter I -->
+      <section class="chapter" id="ch1">
+        <div class="eyebrow">03 · The Six Chapters</div>
+        <h2>Chapter I. Introduction</h2>
+        <p class="lede">This chapter establishes the foundation of the study by presenting the research context, problem, objectives, significance, and boundaries.</p>
+
+        <h3 id="ch1-a">A. Background of the Study</h3>
+        <p>Provides the context and justification for undertaking the research. This section should explain:</p>
+        <ul>
+          <li>the broader academic, technological, social, cultural, or practical context of the study;</li>
+          <li>the phenomenon, issue, problem, or area of inquiry being investigated;</li>
+          <li>relevant developments, trends, practices, or conditions surrounding the research topic;</li>
+          <li>what is currently known about the problem or phenomenon;</li>
+          <li>unresolved questions, limitations, tensions, or gaps that warrant investigation;</li>
+          <li>the relevance of the problem to Multimedia Studies; and</li>
+          <li>why conducting the research is important.</li>
+        </ul>
+        <p>The discussion should progressively move from the broader context toward the specific research problem.</p>
+        <div class="flow">
+          <span class="step">Broader context</span><span class="arrow">→</span>
+          <span class="step">What is known</span><span class="arrow">→</span>
+          <span class="step">Gaps &amp; tensions</span><span class="arrow">→</span>
+          <span class="step">Specific research problem</span>
+        </div>
+        <div class="callout"><strong>Build a rationale, not a fact sheet.</strong> Students should avoid presenting the background as a collection of loosely related facts or general descriptions of technologies. The background should establish a clear rationale for why the study is necessary.</div>
+        <blockquote class="def"><strong>Guiding question</strong> — What is the context of the research problem, and why does it warrant investigation?</blockquote>
+
+        <h3 id="ch1-b">B. Statement of the Problem</h3>
+        <p>Clearly defines the central research problem or issue that the study seeks to investigate. This section should:</p>
+        <ul>
+          <li>translate the broader background into a focused research problem;</li>
+          <li>identify the specific phenomenon, relationship, experience, practice, issue, or gap being investigated;</li>
+          <li>clarify what remains insufficiently understood, explained, evaluated, or addressed;</li>
+          <li>establish the significance of investigating the problem; and</li>
+          <li>formulate research questions appropriate to the nature of the study.</li>
+        </ul>
+        <p>The statement of the problem may be presented as a general problem statement followed by specific research questions. Research questions may be exploratory, descriptive, explanatory, comparative, evaluative, or interpretive, depending on the research approach. They should be sufficiently focused to guide the research design and analysis.</p>
+        <blockquote class="def"><strong>Guiding question</strong> — What exactly does the study seek to investigate, understand, explain, or evaluate?</blockquote>
+
+        <h3 id="ch1-c">C. Objectives of the Study</h3>
+        <p>States what the research aims to accomplish.</p>
+        <div class="keyidea">
+          <h3>Two levels of objectives</h3>
+          <div class="qgrid">
+            <div class="col">
+              <div class="col-label">General Objective</div>
+              <ul><li>States the overall purpose of the research and directly corresponds to the central research problem.</li></ul>
+            </div>
+            <div class="col">
+              <div class="col-label">Specific Objectives</div>
+              <ul><li>Break down the general objective into concrete, focused, and assessable objectives.</li></ul>
+            </div>
+          </div>
+        </div>
+        <p style="margin-top:18px;">Depending on the nature of the study, objectives may involve:</p>
+        <ul>
+          <li>identifying or describing patterns, characteristics, or practices;</li>
+          <li>examining experiences, perceptions, attitudes, or behaviors;</li>
+          <li>analyzing relationships among variables or constructs;</li>
+          <li>exploring meanings, interpretations, or social processes;</li>
+          <li>comparing groups, contexts, platforms, or approaches;</li>
+          <li>evaluating the effectiveness, usability, accessibility, or implications of multimedia technologies or interventions;</li>
+          <li>developing and evaluating a conceptual framework, model, or multimedia artifact; or</li>
+          <li>generating insights or recommendations based on empirical findings.</li>
+        </ul>
+        <p>The objectives should <strong>align with the research questions, methodology, analysis, and conclusions</strong>.</p>
+        <div class="callout"><strong>Objectives are not procedures.</strong> Students should distinguish between research objectives and procedural activities. Activities such as conducting interviews, distributing questionnaires, or reviewing literature are generally methodological steps rather than research objectives in themselves.</div>
+        <blockquote class="def"><strong>Guiding question</strong> — What does the study intend to accomplish through the investigation?</blockquote>
+
+        <h3 id="ch1-d">D. Significance of the Study</h3>
+        <p>Explains the academic, practical, technological, social, cultural, or methodological value of the research. Depending on the study, its contributions may include:</p>
+        <ul>
+          <li>advancing understanding of a multimedia-related phenomenon;</li>
+          <li>contributing empirical evidence to an existing body of knowledge;</li>
+          <li>extending, examining, or refining relevant theories or conceptual frameworks;</li>
+          <li>informing multimedia design, development, communication, or production practices;</li>
+          <li>providing insights for educators, practitioners, policymakers, organizations, or communities;</li>
+          <li>identifying implications for users, audiences, or other stakeholders; and</li>
+          <li>establishing directions for future research.</li>
+        </ul>
+        <blockquote class="def"><strong>Remember</strong> — Explain the specific contribution of the study rather than merely listing potential beneficiaries. Claims of significance should be realistic and proportionate to the scope of the research.</blockquote>
+        <blockquote class="def"><strong>Guiding question</strong> — Why is this research important, and what meaningful contribution can it make?</blockquote>
+
+        <h3 id="ch1-e">E. Scope and Limitations</h3>
+        <p>Defines the boundaries and constraints of the research. This section should explain:</p>
+        <ul>
+          <li>what the study covers, including its focus, participants or data sources, and research context;</li>
+          <li>what falls outside the scope of the investigation; and</li>
+          <li>relevant methodological, practical, or contextual limitations that may affect the findings.</li>
+        </ul>
+        <table class="compare">
+          <thead>
+            <tr><th>Scope</th><th>Limitations</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>What the study deliberately includes or excludes</td><td>Constraints that may affect the research or the interpretation of findings</td></tr>
+          </tbody>
+        </table>
+        <blockquote class="def"><strong>Guiding question</strong> — What does the study cover, and what are its boundaries and limitations?</blockquote>
+      </section>
+
+      <!-- 4. Chapter II -->
+      <section class="chapter" id="ch2">
+        <div class="eyebrow">04 · The Six Chapters</div>
+        <h2>Chapter II. Review of Related Literature</h2>
+        <p class="lede">This chapter situates the research within existing scholarly knowledge, relevant theories, empirical studies, and established approaches.</p>
+        <p>It should demonstrate the student's understanding of the research domain, identify relevant gaps, and establish how the present study contributes to ongoing scholarly discussions.</p>
+        <div class="callout"><strong>Analyze, critique, and synthesize — don't just summarize.</strong> The chapter should be analytical, critical, and synthetic rather than merely descriptive. Students should avoid simply summarizing one article or study after another.</div>
+
+        <h3 id="ch2-a">A. Scholarly Foundations and Previous Research</h3>
+        <p>Presents a critical and synthesized discussion of existing scholarly literature, theoretical perspectives, empirical studies, and other relevant works related to the research problem. Depending on the study, this may include:</p>
+        <ul>
+          <li>foundational concepts and definitions;</li>
+          <li>relevant theories, models, and conceptual perspectives;</li>
+          <li>previous empirical studies and their findings;</li>
+          <li>established methodologies and analytical approaches;</li>
+          <li>relevant technological, social, cultural, or institutional developments;</li>
+          <li>existing multimedia technologies, platforms, practices, or interventions;</li>
+          <li>scholarly debates and competing interpretations; and</li>
+          <li>strengths and limitations of previous research.</li>
+        </ul>
+        <p>The review should be organized <strong>thematically or conceptually</strong>, integrating relevant theories, concepts, methodologies, and empirical findings. Students should examine:</p>
+        <div class="flow">
+          <span class="step">Relationships</span><span class="arrow">·</span>
+          <span class="step">Agreements</span><span class="arrow">·</span>
+          <span class="step">Contradictions</span><span class="arrow">·</span>
+          <span class="step">Patterns</span><span class="arrow">·</span>
+          <span class="step">Limitations</span>
+        </div>
+        <p>across existing works rather than merely summarizing individual publications. The discussion should establish how existing scholarship informs the present research.</p>
+
+        <h3 id="ch2-b">B. Synthesis, Research Gap, and Positioning of the Study</h3>
+        <p>Integrates the reviewed literature and studies to establish the scholarly basis for the research, and explains how the present study is positioned within the existing body of knowledge. This section should explain:</p>
+        <ol class="commandments">
+          <li>What existing literature and research collectively establish.</li>
+          <li>Areas of agreement or disagreement.</li>
+          <li>Important patterns and emerging insights.</li>
+          <li>Limitations of previous studies.</li>
+          <li>Unresolved theoretical, empirical, contextual, or methodological issues.</li>
+          <li>The specific gap or opportunity addressed by the present study.</li>
+        </ol>
+        <blockquote class="def"><strong>Remember</strong> — The research gap should emerge logically from the preceding review. A gap does not necessarily require demonstrating that no previous study exists on the topic. It may involve an underexplored context, insufficient evidence, unresolved contradiction, methodological limitation, or need for further theoretical understanding.</blockquote>
+        <p>Having established the gap, this section should then clarify:</p>
+        <ul>
+          <li>how the study responds to the identified research gap;</li>
+          <li>how it builds upon, extends, challenges, or complements previous research;</li>
+          <li>the distinctive perspective, context, methodology, or evidence it introduces; and</li>
+          <li>the contribution it intends to make to Multimedia Studies.</li>
+        </ul>
+        <div class="flow">
+          <span class="step">What is established</span><span class="arrow">→</span>
+          <span class="step">What remains unresolved</span><span class="arrow">→</span>
+          <span class="step">The research gap</span><span class="arrow">→</span>
+          <span class="step">How this study responds</span>
+        </div>
+        <p>The discussion should establish the study's scholarly justification <strong>without overstating its originality or significance</strong>.</p>
+        <blockquote class="def"><strong>Anticipated vs. demonstrated contribution</strong> — This section presents the <em>anticipated</em> contribution of the study. In MMS 200b, update its tense only; the contribution actually demonstrated by the completed study is discussed in Chapter V.</blockquote>
+      </section>
+
+      <!-- 5. Chapter III -->
+      <section class="chapter" id="ch3">
+        <div class="eyebrow">05 · The Six Chapters</div>
+        <h2>Chapter III. Theoretical and Conceptual Framework</h2>
+        <p class="lede">This chapter establishes the theoretical and conceptual foundations guiding the research.</p>
+        <p>It explains the perspectives, concepts, constructs, assumptions, or relationships that inform how the research problem is understood and investigated. The framework should be appropriate to the research questions and methodology.</p>
+        <div class="callout"><strong>Writing guidance.</strong> Frameworks should be meaningfully integrated into the study rather than included merely to satisfy a manuscript requirement. The level of theoretical elaboration should be proportionate to the nature and objectives of the research.</div>
+
+        <h3 id="ch3-a">A. Theoretical Framework</h3>
+        <p>Presents the theory or theories that inform the research. Depending on the study, this section may include:</p>
+        <ul>
+          <li>relevant established theories;</li>
+          <li>key theoretical concepts and assumptions;</li>
+          <li>important constructs or dimensions;</li>
+          <li>relationships or propositions suggested by the theory;</li>
+          <li>rationale for selecting the theoretical perspective; and</li>
+          <li>explanation of how the theory informs the research questions, methodology, or interpretation.</li>
+        </ul>
+        <blockquote class="def"><strong>Apply, don't just describe</strong> — Explain the applicability of the selected theory to the specific research problem. Merely describing a theory without demonstrating its relevance to the study is insufficient.</blockquote>
+        <p>For research approaches that do not begin with a fixed theoretical framework, students should explain the guiding scholarly perspective or justify the approach adopted.</p>
+
+        <h3 id="ch3-b">B. Conceptual Framework and Its Application to the Study</h3>
+        <p>Presents the key concepts, constructs, dimensions, or relationships underlying the investigation and explains how they guide the research. Depending on the research approach, this section should:</p>
+        <ul>
+          <li>identify and explain the central concepts or constructs;</li>
+          <li>describe their relationships or conceptual organization;</li>
+          <li>present a conceptual diagram, where appropriate;</li>
+          <li>explain how the framework informs the research questions and objectives;</li>
+          <li>establish its connection to the research design, instruments, or analytical approach; and</li>
+          <li>clarify how the framework guides the interpretation of findings.</li>
+        </ul>
+        <div class="flow">
+          <span class="step">Concepts &amp; constructs</span><span class="arrow">→</span>
+          <span class="step">Research questions</span><span class="arrow">→</span>
+          <span class="step">Design &amp; instruments</span><span class="arrow">→</span>
+          <span class="step">Analysis</span><span class="arrow">→</span>
+          <span class="step">Interpretation</span>
+        </div>
+        <p>The conceptual framework should be grounded in relevant literature and demonstrate a clear connection to the research problem. Where applicable, important concepts or constructs should be sufficiently defined to clarify how they are understood, examined, or measured in the study.</p>
+        <blockquote class="def"><strong>Explain every diagram</strong> — A conceptual diagram may be provided where appropriate, but it should be accompanied by an explanation of its components and relationships.</blockquote>
+        <blockquote class="def"><strong>Note</strong> — Depending on the research approach, the theoretical and conceptual frameworks may be integrated or adapted into an appropriate analytical framework. Discuss the appropriate structure with your adviser.</blockquote>
+      </section>
+
+      <!-- 6. Chapter IV -->
+      <section class="chapter" id="ch4">
+        <div class="eyebrow">06 · The Six Chapters</div>
+        <h2>Chapter IV. Research Methodology</h2>
+        <p class="lede">This chapter explains how the research is designed and conducted to address the research questions and achieve the study objectives.</p>
+        <p>For MMS 200a, this chapter presents the <strong>planned</strong> research methodology and serves as the methodological blueprint for implementation. For MMS 200b, it should document the methodology and procedures <strong>actually implemented</strong>, including any justified modifications to the approved research plan.</p>
+        <div class="callout"><strong>Writing guidance.</strong> The methodology should provide sufficient detail for readers to understand how the research was conducted and assess its methodological rigor. The specific content may vary depending on the research approach.</div>
+
+        <h3 id="ch4-a">A. Research Design and Approach</h3>
+        <p>Describes the overall research approach and specific research design adopted in the study. This section should explain:</p>
+        <ul>
+          <li>the research approach, whether qualitative, quantitative, mixed-methods, or another appropriate approach;</li>
+          <li>the specific research design or strategy;</li>
+          <li>the rationale for selecting the approach and design; and</li>
+          <li>how the design addresses the research questions and objectives.</li>
+        </ul>
+        <p>Depending on the research problem, possible research designs may include:</p>
+        <div class="flow">
+          <span class="step">Descriptive</span><span class="arrow">·</span>
+          <span class="step">Exploratory</span><span class="arrow">·</span>
+          <span class="step">Correlational</span><span class="arrow">·</span>
+          <span class="step">Experimental</span><span class="arrow">·</span>
+          <span class="step">Case study</span><span class="arrow">·</span>
+          <span class="step">Phenomenological</span><span class="arrow">·</span>
+          <span class="step">Ethnographic</span><span class="arrow">·</span>
+          <span class="step">Comparative</span><span class="arrow">·</span>
+          <span class="step">Action research</span><span class="arrow">·</span>
+          <span class="step">Design-based</span><span class="arrow">·</span>
+          <span class="step">Developmental</span>
+        </div>
+        <blockquote class="def"><strong>Justify, don't define</strong> — Explain why the selected research design is appropriate, rather than merely providing its textbook definition.</blockquote>
+
+        <h3 id="ch4-b">B. Research Setting, Participants, and Data Sources</h3>
+        <p>Describes the research context and identifies the participants, materials, or sources of evidence involved. Depending on the study, this section may include:</p>
+        <ul>
+          <li>the research setting or environment;</li>
+          <li>the target population or participants;</li>
+          <li>sampling strategy and sample size;</li>
+          <li>participant selection or recruitment criteria;</li>
+          <li>datasets, documents, multimedia materials, or other sources of evidence; and</li>
+          <li>units of analysis.</li>
+        </ul>
+        <p>The selection of participants or data sources should be appropriate to the research questions and methodology. Students should provide sufficient justification for their sampling or selection decisions.</p>
+        <blockquote class="def"><strong>Note</strong> — Not all studies involve human participants. This section should be adapted to the nature of the research.</blockquote>
+
+        <h3 id="ch4-c">C. Research Instruments and Materials</h3>
+        <p>Describes the instruments, tools, materials, or resources used in conducting the study. Depending on the research approach, these may include:</p>
+        <ul>
+          <li>questionnaires or survey instruments;</li>
+          <li>interview or focus group discussion guides;</li>
+          <li>observation protocols;</li>
+          <li>experimental materials or stimuli;</li>
+          <li>coding schemes or analytical frameworks;</li>
+          <li>multimedia artifacts or digital platforms;</li>
+          <li>software applications or computational tools; and</li>
+          <li>other research-specific instruments or materials.</li>
+        </ul>
+        <p>Students should explain the purpose, development, selection, and appropriateness of the instruments or materials. Where applicable, procedures for establishing validity, reliability, or other relevant quality criteria should also be discussed.</p>
+        <p>Detailed instruments and supporting documentation may be placed in the Appendices.</p>
+
+        <h3 id="ch4-d">D. Research Procedures</h3>
+        <p>Explains the systematic procedures followed in conducting the research. Depending on the study, this section may describe:</p>
+        <ul>
+          <li>preliminary preparations and coordination;</li>
+          <li>participant recruitment and informed consent;</li>
+          <li>instrument development and validation;</li>
+          <li>data collection procedures;</li>
+          <li>interviews, surveys, observations, or fieldwork;</li>
+          <li>experiments or interventions;</li>
+          <li>collection or extraction of digital content;</li>
+          <li>design, development, or implementation activities;</li>
+          <li>evaluation procedures; and</li>
+          <li>other relevant research activities.</li>
+        </ul>
+        <div class="keyidea">
+          <h3>For every procedure, explain three things</h3>
+          <div class="qgrid">
+            <div class="col">
+              <div class="col-label">What</div>
+              <ul><li>What was done</li></ul>
+            </div>
+            <div class="col">
+              <div class="col-label">How</div>
+              <ul><li>How it was done</li></ul>
+            </div>
+            <div class="col">
+              <div class="col-label">Why</div>
+              <ul><li>Why the procedures were appropriate</li></ul>
+            </div>
+          </div>
+        </div>
+        <p style="margin-top:18px;">The procedures should be presented in a logical sequence. Relevant ethical considerations, including informed consent, privacy, confidentiality, data protection, and necessary research approvals, should be discussed within the applicable procedures. For studies involving multiple phases, a research procedure diagram or table may be included.</p>
+
+        <h3 id="ch4-e">E. Data Analysis and Interpretation</h3>
+        <p>Explains how the collected or generated evidence is processed, analyzed, and interpreted to address the research questions. Depending on the research approach, analytical methods may include:</p>
+        <ul>
+          <li>descriptive or inferential statistics;</li>
+          <li>thematic analysis;</li>
+          <li>content or discourse analysis;</li>
+          <li>comparative analysis;</li>
+          <li>computational or multimedia analysis;</li>
+          <li>experimental data analysis;</li>
+          <li>evaluation of research outputs or artifacts;</li>
+          <li>integration of quantitative and qualitative findings; and</li>
+          <li>other appropriate analytical techniques.</li>
+        </ul>
+        <p>This section should explain:</p>
+        <ol class="commandments">
+          <li>How the data are prepared or processed.</li>
+          <li>The analytical techniques employed.</li>
+          <li>How these techniques address the research questions.</li>
+          <li>How findings are interpreted.</li>
+          <li>Relevant measures for ensuring the credibility, trustworthiness, or rigor of the analysis.</li>
+        </ol>
+        <blockquote class="def"><strong>Purpose over complexity</strong> — Select analytical methods appropriate to the research objectives and data characteristics. Analytical complexity should be justified by the research problem. Advanced statistical or computational techniques should not be employed merely to make the study appear more sophisticated.</blockquote>
+        <div class="callout"><strong>Quality and ethics run throughout.</strong> Research quality and ethical considerations should be integrated into the relevant methodological subsections rather than treated as isolated requirements. Demonstrate appropriate attention to validity, reliability, trustworthiness, transparency, and research ethics throughout the research process, as applicable to your chosen methodology.</div>
+      </section>
+
+      <!-- 7. Chapter V -->
+      <section class="chapter" id="ch5">
+        <div class="eyebrow">07 · The Six Chapters</div>
+        <h2>Chapter V. Results and Discussion</h2>
+        <p class="lede">This chapter presents the findings of the completed research and interprets their meaning in relation to the research questions, objectives, theoretical or conceptual framework, and relevant literature.</p>
+        <p>Chapter V forms part of <strong>MMS 200b</strong> and is not required as a completed-results chapter during the MMS 200a proposal stage. The chapter should provide a systematic account of the evidence generated through the research and demonstrate how the findings contribute to answering the research questions.</p>
+        <div class="callout"><strong>Writing guidance.</strong> Present organized and synthesized findings rather than raw data dumps. The emphasis should be on meaningful analysis and interpretation, supported by appropriate evidence. Avoid excessive repetition of tables, figures, screenshots, interview transcripts, statistical outputs, or other materials better suited for the Appendices.</div>
+
+        <h3 id="ch5-a">A. Presentation of Research Findings</h3>
+        <p>Presents the results obtained from the research. Depending on the study, findings may include:</p>
+        <ul>
+          <li>descriptive characteristics of participants, datasets, or research materials;</li>
+          <li>statistical results;</li>
+          <li>identified patterns, trends, or relationships;</li>
+          <li>qualitative themes and categories;</li>
+          <li>participant experiences or perspectives;</li>
+          <li>findings from content, discourse, or multimedia analysis;</li>
+          <li>experimental or comparative results;</li>
+          <li>evaluation findings;</li>
+          <li>developed models, frameworks, or artifacts;</li>
+          <li>outcomes of design or development activities; and</li>
+          <li>other relevant research outputs.</li>
+        </ul>
+        <p>The findings should be organized according to the research questions, specific objectives, themes, analytical dimensions, or another logical structure appropriate to the study.</p>
+        <p>Tables, figures, graphs, diagrams, excerpts, and other visual representations should be used where they improve clarity. Each table or figure should be accompanied by sufficient explanation.</p>
+        <blockquote class="def"><strong>Explain relevance</strong> — Avoid simply presenting numerical results, quotations, or visual materials without explaining their relevance.</blockquote>
+
+        <h3 id="ch5-b">B. Analysis and Discussion of Findings</h3>
+        <p>Analyzes and interprets the findings in relation to the research questions, objectives, relevant literature, and theoretical or conceptual frameworks. This section should:</p>
+        <ol class="commandments">
+          <li>Explain the meaning and significance of the findings.</li>
+          <li>Identify important patterns, relationships, themes, or contradictions.</li>
+          <li>Examine how the findings support, extend, challenge, or differ from previous studies.</li>
+          <li>Interpret the findings using relevant theoretical or conceptual perspectives.</li>
+          <li>Discuss unexpected or emerging findings.</li>
+          <li>Consider relevant contextual factors.</li>
+          <li>Explain the implications of the results.</li>
+          <li>Explain the extent to which the research questions were answered and the objectives achieved.</li>
+          <li>Identify the theoretical, empirical, methodological, or practical contributions demonstrated by the study.</li>
+          <li>Acknowledge important qualifications or limitations affecting the interpretation of findings.</li>
+        </ol>
+        <div class="keyidea">
+          <h3>Reporting vs. interpreting</h3>
+          <div class="qgrid">
+            <div class="col">
+              <div class="col-label">Reporting</div>
+              <ul><li>Describes what the evidence shows.</li></ul>
+            </div>
+            <div class="col">
+              <div class="col-label">Interpretation</div>
+              <ul><li>Explains the meaning, significance, or implications of that evidence.</li></ul>
+            </div>
+          </div>
+        </div>
+        <p style="margin-top:18px;">The discussion should engage critically with relevant scholarship rather than merely repeat the literature review. Claims should be supported by the actual findings and should remain within the boundaries of the research design.</p>
+        <p>The discussion should also move beyond individual findings to explain <strong>what the study establishes as a whole</strong>, setting up the conclusions in Chapter VI.</p>
+        <blockquote class="def"><strong>Note</strong> — The organization of Chapter V may vary depending on the research approach. Sections A and B may be integrated where appropriate, particularly for qualitative studies in which presenting findings and interpreting them together produces a more coherent discussion. Findings and discussion may be organized thematically or according to the research questions, subject to adviser approval.</blockquote>
+      </section>
+
+      <!-- 8. Chapter VI -->
+      <section class="chapter" id="ch6">
+        <div class="eyebrow">08 · The Six Chapters</div>
+        <h2>Chapter VI. Conclusion and Recommendations</h2>
+        <p class="lede">This chapter synthesizes the overall contribution of the completed research and identifies appropriate implications and directions arising from its findings.</p>
+        <p>It should provide a clear and evidence-based conclusion to the study without introducing new data or unsupported claims.</p>
+
+        <h3 id="ch6-a">A. Conclusion</h3>
+        <p>Presents the conclusions that can reasonably be drawn from the research. The conclusion should:</p>
+        <ul>
+          <li>synthesize the major findings;</li>
+          <li>directly address the central research problem;</li>
+          <li>indicate the extent to which the research questions were answered;</li>
+          <li>explain how the objectives were achieved;</li>
+          <li>highlight the principal insights and contributions of the study;</li>
+          <li>identify relevant theoretical, practical, or methodological implications; and</li>
+          <li>acknowledge important limitations where appropriate.</li>
+        </ul>
+        <p>The conclusion should not simply repeat the results presented in Chapter V. Instead, it should articulate <strong>what the research ultimately establishes and why those findings matter</strong>.</p>
+        <div class="callout"><strong>Stay within the evidence.</strong> Conclusions should be proportionate to the evidence and scope of the study. Avoid making broad claims that exceed what your research design and findings can support.</div>
+
+        <h3 id="ch6-b">B. Recommendations</h3>
+        <p>Presents recommendations arising from the findings, conclusions, and limitations of the study. Depending on the research, recommendations may include:</p>
+        <ul>
+          <li>directions for future research;</li>
+          <li>further investigation of emerging questions;</li>
+          <li>methodological improvements or alternative research approaches;</li>
+          <li>practical applications of the findings;</li>
+          <li>recommendations for multimedia design, development, or production;</li>
+          <li>improvements to existing practices, technologies, or interventions;</li>
+          <li>organizational, educational, or policy recommendations;</li>
+          <li>further development or evaluation of research outputs; and</li>
+          <li>opportunities for extending the study to other populations, settings, or contexts.</li>
+        </ul>
+        <blockquote class="def"><strong>Remember</strong> — Recommendations should follow logically from the research findings and identified limitations. They should be sufficiently specific and realistic, not a generic wish list of possible activities that are not supported by the study.</blockquote>
+      </section>
+
+      <!-- 9. References -->
+      <section class="chapter" id="references">
+        <div class="eyebrow">09 · Back Matter</div>
+        <h2>References</h2>
+        <p class="lede">The References section is a required part of the manuscript. It is placed after the last chapter: Chapter IV for MMS 200a, or Chapter VI for MMS 200b.</p>
+        <p>It lists all sources cited in the manuscript, including academic studies, books, technical documentation, existing systems, frameworks, standards, and other works that informed the study.</p>
+        <blockquote class="def"><strong>Use APA format</strong> — Both the reference list and the in-text citations should follow APA style (7th edition).</blockquote>
+        <table class="compare">
+          <thead>
+            <tr><th>Element</th><th>APA requirement</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>In-text citations</strong></td><td>Cite sources in the body using the author–date format, e.g., (Santos, 2024) or Santos (2024). Include page numbers for direct quotations, e.g., (Santos, 2024, p. 15).</td></tr>
+            <tr><td><strong>Reference list</strong></td><td>List entries alphabetically by the first author's surname, with a hanging indent, following APA formatting for each source type.</td></tr>
+          </tbody>
+        </table>
+        <ul>
+          <li>Every source cited in the text should appear in the References, and every entry in the References should be cited in the text.</li>
+          <li>Each source should be verified to exist and to support the claim for which it is cited.</li>
+        </ul>
+        <blockquote class="def"><strong>Remember</strong> — Sources suggested or generated by AI tools must be checked against the actual publication before they are cited.</blockquote>
+        <div class="refbox">
+          <div class="refbox-label">APA Reference Examples</div>
+          <ul><li><a href="https://apastyle.apa.org/style-grammar-guidelines/references/examples" target="_blank" rel="noopener">apastyle.apa.org — Reference examples</a></li></ul>
+        </div>
+      </section>
+
+      <!-- 10. Declaration of AI Use -->
+      <section class="chapter" id="ai-declaration">
+        <div class="eyebrow">10 · Back Matter</div>
+        <h2>Declaration of AI Use</h2>
+        <p class="lede">This section provides a transparent account of the use of artificial intelligence (AI) tools in preparing and conducting the research.</p>
+        <p>Students should disclose:</p>
+        <ul>
+          <li>the AI tools used, including their names and purposes;</li>
+          <li>how the tools were used in the research process, such as literature exploration, writing assistance, coding, data analysis, or multimedia production;</li>
+          <li>the extent of AI assistance in producing research outputs; and</li>
+          <li>how AI-generated content or outputs were reviewed, verified, and validated, where applicable.</li>
+        </ul>
+        <div class="callout"><strong>Disclose even limited use.</strong> AI use should be disclosed even when limited to writing or language assistance. The declaration should distinguish between AI-assisted work and the student's own intellectual contributions. If no AI tools were used, students should explicitly state this.</div>
+
+        <h3>Suggested Declaration Format</h3>
+        <blockquote class="def"><strong>Declaration of AI Use</strong> — The researcher(s) declare(s) the use of the following artificial intelligence tools in the conduct and preparation of this study:</blockquote>
+        <table class="compare">
+          <thead>
+            <tr><th>AI Tool</th><th>Purpose of Use</th><th>Extent of Use</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>[Tool name]</td><td>[e.g., language editing, coding assistance, data analysis]</td><td>[Brief description of how the tool was used]</td></tr>
+            <tr><td>[Tool name]</td><td>[Purpose]</td><td>[Extent of use]</td></tr>
+          </tbody>
+        </table>
+        <p>All AI-assisted outputs were reviewed and verified as appropriate. The researcher(s) assume(s) full responsibility for the accuracy, originality, integrity, and final content of this manuscript.</p>
+        <p>For studies without AI use:</p>
+        <blockquote class="def">The researcher(s) declare(s) that no generative artificial intelligence tools were used in the conduct of the research or preparation of this manuscript.</blockquote>
+
+        <div class="keyidea">
+          <h3>AI assists. Researchers remain responsible.</h3>
+          <p>Students remain fully responsible for the accuracy, originality, integrity, and ethical conduct of their research, regardless of whether AI tools were used.</p>
+          <div class="qgrid">
+            <div class="col">
+              <div class="col-label">MMS 200a</div>
+              <ul><li>Covers AI use during proposal preparation.</li></ul>
+            </div>
+            <div class="col">
+              <div class="col-label">MMS 200b</div>
+              <ul><li>Updated to reflect AI use throughout the completed research, including implementation, analysis, and manuscript preparation.</li></ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 11. Appendices -->
+      <section class="chapter" id="appendices">
+        <div class="eyebrow">11 · Back Matter</div>
+        <h2>Appendices</h2>
+        <p class="lede">The Appendices contain supplementary materials that support the research but are too detailed or extensive for inclusion in the main manuscript.</p>
+        <p>Depending on the study, these may include:</p>
+        <div class="refbox">
+          <div class="refbox-label">Possible Appendix Materials</div>
+          <ul>
+            <li>Research instruments and questionnaires</li>
+            <li>Interview and focus group discussion guides</li>
+            <li>Informed consent forms</li>
+            <li>Ethics approval documents</li>
+            <li>Detailed coding schemes or codebooks</li>
+            <li>Supplementary tables and statistical outputs</li>
+            <li>Sample transcripts or anonymized excerpts</li>
+            <li>Additional figures or visual materials</li>
+            <li>Research protocols</li>
+            <li>Technical specifications</li>
+            <li>System or multimedia artifact screenshots</li>
+            <li>Supplementary design documents</li>
+            <li>Evaluation instruments</li>
+            <li>Relevant documentation of research procedures</li>
+            <li>Other supporting materials</li>
+          </ul>
+        </div>
+        <p>Appendices should be included only when they provide meaningful supplementary evidence or documentation. Students should avoid turning the Appendices into an unorganized collection of raw materials.</p>
+        <div class="callout"><strong>The main manuscript must stand on its own.</strong> It should remain understandable without requiring readers to consult the Appendices for essential explanations, findings, or interpretations.</div>
+        <div class="keyidea">
+          <h3>Developed systems and artifacts</h3>
+          <div class="qgrid">
+            <div class="col">
+              <div class="col-label">Chapter V</div>
+              <ul><li>Representative screenshots and visual demonstrations of major features or outputs, discussed as part of the research results.</li></ul>
+            </div>
+            <div class="col">
+              <div class="col-label">Appendices</div>
+              <ul><li>More extensive screenshots, interface inventories, detailed technical documentation, and supplementary implementation materials.</li></ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 12. Coherence -->
+      <section class="chapter" id="coherence">
+        <div class="eyebrow">12 · Putting It Together</div>
+        <h2>General Guidance on Manuscript Coherence</h2>
+        <p class="lede">The six chapters should not be treated as independent requirements. They should form a coherent progression.</p>
+        <div class="flow">
+          <span class="step">Problem &amp; Objectives</span><span class="arrow">→</span>
+          <span class="step">Literature &amp; Research Gap</span><span class="arrow">→</span>
+          <span class="step">Theoretical &amp; Conceptual Foundations</span><span class="arrow">→</span>
+          <span class="step">Research Methodology</span><span class="arrow">→</span>
+          <span class="step">Results &amp; Discussion</span><span class="arrow">→</span>
+          <span class="step">Conclusions &amp; Recommendations</span>
+        </div>
+        <p>Students should maintain clear alignment throughout the manuscript:</p>
+        <table class="compare">
+          <thead>
+            <tr><th>Element</th><th>Should…</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="num">Research problem</td><td>Establish the need for investigation</td></tr>
+            <tr><td class="num">Questions &amp; objectives</td><td>Define what the study seeks to accomplish</td></tr>
+            <tr><td class="num">Literature review</td><td>Establish the scholarly foundation and research gap</td></tr>
+            <tr><td class="num">Framework</td><td>Guide the investigation and interpretation, as appropriate</td></tr>
+            <tr><td class="num">Methodology</td><td>Provide a systematic means of generating and analyzing evidence</td></tr>
+            <tr><td class="num">Results</td><td>Directly address the research questions and objectives</td></tr>
+            <tr><td class="num">Discussion</td><td>Interpret the findings in relation to relevant literature and frameworks</td></tr>
+            <tr><td class="num">Conclusions</td><td>Be supported by the findings</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Guidance for MMS 200a</h3>
+        <p>For MMS 200a, this progression establishes a defensible and feasible research blueprint through <strong>Chapters I to IV</strong>. The manuscript should demonstrate that the student has moved beyond identifying an interesting topic and has developed a research plan that is sufficiently grounded, focused, and methodologically sound for implementation.</p>
+        <p>At the end of MMS 200a, the student should be prepared to proceed with the approved research activities without requiring a fundamental redesign of the study.</p>
+
+        <h3>Guidance for MMS 200b</h3>
+        <p>For MMS 200b, the manuscript should document the <strong>completed research through Chapters I to VI</strong>, with Chapters I to IV revised as necessary to accurately reflect the research as actually conducted.</p>
+        <p>The approved MMS 200a manuscript serves as the foundation for MMS 200b. Students should maintain continuity between the approved research blueprint and its implementation. Any substantial methodological changes should be justified and discussed with the adviser.</p>
+
+        <div class="keyidea">
+          <h3>What each stage establishes</h3>
+          <div class="qgrid">
+            <div class="col">
+              <div class="col-label">MMS 200a · Chapters I–IV</div>
+              <ul><li>A defensible and feasible research blueprint, ready for implementation</li></ul>
+            </div>
+            <div class="col">
+              <div class="col-label">MMS 200b · Chapters I–VI</div>
+              <ul><li>A coherent account of the research process, findings, interpretation, and contributions</li></ul>
+            </div>
+          </div>
+        </div>
+        <blockquote class="def" style="margin-top:18px;"><strong>The final manuscript</strong> — should read as a completed academic research study, not as a research proposal, project progress report, technical manual, or repository of raw data and supplementary materials.</blockquote>
+      </section>
+
+      <!-- 13. Summary -->
+      <section class="chapter" id="summary">
+        <div class="eyebrow">13 · Wrap-up</div>
+        <h2>Summary of Manuscript Coverage</h2>
+        <table class="compare">
+          <thead>
+            <tr><th>Component</th><th>MMS 200a</th><th>MMS 200b</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Chapter I. Introduction</strong></td><td>Research problem, objectives, significance, and scope</td><td>Updated tense, same plan</td></tr>
+            <tr><td><strong>Chapter II. Review of Related Literature</strong></td><td>Scholarly foundations, synthesis, research gap, and positioning</td><td>Updated tense, same plan</td></tr>
+            <tr><td><strong>Chapter III. Theoretical and Conceptual Framework</strong></td><td>Frameworks and concepts guiding the proposed research</td><td>Approved plan, carried out</td></tr>
+            <tr><td><strong>Chapter IV. Research Methodology</strong></td><td>Detailed research blueprint and planned procedures</td><td>Approved plan, carried out, with any adviser-approved modifications documented</td></tr>
+            <tr><td><strong>Chapter V. Results and Discussion</strong></td><td>Not required</td><td>Presentation, analysis, and interpretation of research findings</td></tr>
+            <tr><td><strong>Chapter VI. Conclusion and Recommendations</strong></td><td>Not required</td><td>Evidence-based conclusions and recommendations</td></tr>
+            <tr><td><strong>References</strong></td><td>Sources cited in Chapters I to IV</td><td>Complete and updated references</td></tr>
+            <tr><td><strong>Declaration of AI Use</strong></td><td>Disclosure of AI use during proposal preparation</td><td>Updated disclosure covering the completed research</td></tr>
+            <tr><td><strong>Appendices</strong></td><td>Proposed instruments, protocols, and relevant supporting materials</td><td>Final instruments, supplementary evidence, and supporting documentation</td></tr>
+          </tbody>
+        </table>
+        <div class="keyidea">
+          <h3>MMS 200a establishes the research blueprint. MMS 200b implements that blueprint and completes the research.</h3>
+          <p style="margin-bottom:0;">The overarching expectation is that the student produces a rigorous, coherent, and meaningful research contribution to the field of Multimedia Studies.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<footer>From Research Blueprint to Completed Study · Dr. Reinald Adrian Pugoy</footer>
+
+<script>
+  // Sidebar active-link highlighting on scroll
+  const sections = document.querySelectorAll('section.chapter');
+  const tocLinks = document.querySelectorAll('.toc-link');
+
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const id = entry.target.getAttribute('id');
+        tocLinks.forEach(link=>{
+          link.classList.toggle('active', link.dataset.target === id);
+        });
+      }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px' });
+
+  sections.forEach(sec => observer.observe(sec));
+</script>
+
+</body>
+</html>
+
+</body></html>
