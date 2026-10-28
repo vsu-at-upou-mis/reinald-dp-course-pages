@@ -551,6 +551,12 @@
   .sidebar a.home-link:hover{
     background:var(--accent); border-color:var(--accent); color:#fff;
   }
+  .gantt-caption{ font-size:14.5px; margin:20px 0 8px; }
+  .gantt-wrap{ overflow-x:auto; margin:0 0 20px; }
+  .gantt-wrap table.compare{ margin:0; }
+  table.compare.gantt th, table.compare.gantt td{ padding:7px 0; text-align:center; font-size:12.5px; min-width:26px; }
+  table.compare.gantt th:first-child, table.compare.gantt td:first-child{ text-align:left; padding:7px 10px; min-width:220px; font-size:13.5px; }
+  table.compare.gantt td.on{ background:var(--accent); }
 </style>
 </head>
 <body>
@@ -594,12 +600,14 @@
           <li><a href="#ch3-c">C. Development Approach</a></li>
           <li><a href="#ch3-d">D. Architecture &amp; Technology Stack</a></li>
           <li><a href="#ch3-e">E. System Design &amp; Modules</a></li>
+          <li><a href="#ch3-f">F. Implementation Plan</a></li>
         </ul>
       </li>
       <li><a class="toc-link" href="#ch4" data-target="ch4">Chapter IV · Testing and Evaluation Methodology</a>
         <ul class="sub">
           <li><a href="#ch4-a">A. Testing &amp; Technical Validation</a></li>
           <li><a href="#ch4-b">B. User Evaluation Procedures</a></li>
+          <li><a href="#ch4-c">C. Evaluation of Objectives</a></li>
         </ul>
       </li>
       <li><a class="toc-link" href="#ch5" data-target="ch5">Chapter V · Results and Discussion</a>
@@ -778,6 +786,7 @@
           <span class="step">Evaluating outcomes</span>
         </div>
         <p>Evaluation objectives may address usability, acceptance, effectiveness, performance, or other relevant outcomes. The objectives should <strong>align with the succeeding methodology, results, and conclusions</strong>.</p>
+        <p>Each specific objective must be assessable. Chapter IV-C states how its achievement will be demonstrated.</p>
         <blockquote class="def"><strong>Guiding question</strong> — What does the study aim to achieve?</blockquote>
 
         <h3 id="ch1-d">D. Significance of the Study</h3>
@@ -981,6 +990,54 @@
           <li><strong>Interpreting every diagram.</strong> Follow each figure with a discussion of what it shows and how it addresses the requirements.</li>
         </ol>
         <blockquote class="def"><strong>Red flags</strong> — "The system shall…" statements; requirement tables or text copied from the SRS; diagrams with no accompanying discussion; paragraphs that describe <em>what</em> the system does but never <em>how</em> or <em>why</em>; and code-level artifacts such as CRUD walkthroughs, exhaustive database documentation, complete API specifications, or source code listings, which belong in the Appendices.</blockquote>
+
+        <h3 id="ch3-f">F. Implementation Plan</h3>
+        <p>Presents a realistic plan for developing the system in IS 295b. Describe the phases of development and the sequence of activities, consistent with the development approach in Chapter III-C. Include, where applicable:</p>
+        <ul>
+          <li>the major phases and activities;</li>
+          <li>their sequence and dependencies;</li>
+          <li>the duration of each activity;</li>
+          <li>key milestones and deliverables, such as the completion of each development iteration, testing, user evaluation, and the final manuscript; and</li>
+          <li>scheduled adviser consultations.</li>
+        </ul>
+        <blockquote class="def"><strong>Keep it feasible</strong> — The plan should be achievable within the IS 295b term. Allot adequate time for testing, user evaluation, and manuscript writing rather than devoting the entire term to development.</blockquote>
+        <p>Present the schedule as a Gantt chart. Table 3.1 is a worked example for a hypothetical project: an online appointment system for a university health clinic. It shows how activities are sequenced and tied to the objectives, not content to reuse. Build your own plan from your own modules, tests, and evaluation activities.</p>
+        <p class="gantt-caption"><strong>Table 3.1</strong><br><em>Example Implementation Plan for a Clinic Appointment System (16-Week Term)</em></p>
+        <div class="gantt-wrap">
+        <table class="compare gantt">
+          <thead>
+            <tr><th>Activity / Week</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Set up the development environment; confirm requirements with the clinic head</td><td class="on"></td><td class="on"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>Measure baseline staff scheduling time (for SO4)</td><td></td><td class="on"></td><td class="on"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>Finalize the database and interface design</td><td></td><td class="on"></td><td class="on"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>Iteration 1: online booking module</td><td></td><td></td><td class="on"></td><td class="on"></td><td class="on"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>Iteration 2: appointment queue module</td><td></td><td></td><td></td><td></td><td class="on"></td><td class="on"></td><td class="on"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>Iteration 3: SMS reminder module and integration</td><td></td><td></td><td></td><td></td><td></td><td></td><td class="on"></td><td class="on"></td><td class="on"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>Unit and integration testing (ongoing)</td><td></td><td></td><td class="on"></td><td class="on"></td><td class="on"></td><td class="on"></td><td class="on"></td><td class="on"></td><td class="on"></td><td class="on"></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>Deploy to the clinic test server; user acceptance testing with clinic staff</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="on"></td><td class="on"></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>Usability test with 15 students (SO3)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="on"></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>Two-week pilot; scheduling time comparison (SO4)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="on"></td><td class="on"></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>Data analysis; writing of Chapters V and VI</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="on"></td><td class="on"></td><td class="on"></td><td></td><td></td></tr>
+            <tr><td>Revision of Chapters I to IV; final manuscript</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="on"></td><td class="on"></td><td class="on"></td></tr>
+            <tr><td>Final defense preparation</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="on"></td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="keyidea">
+          <h3>Part of your blueprint</h3>
+          <div class="qgrid">
+            <div class="col">
+              <div class="col-label">IS 295a</div>
+              <ul><li>Present the plan and the Gantt chart for developing the system in IS 295b.</li></ul>
+            </div>
+            <div class="col">
+              <div class="col-label">IS 295b</div>
+              <ul><li>Briefly report how development proceeded against the plan, and explain any schedule adjustments approved by your adviser.</li></ul>
+            </div>
+          </div>
+        </div>
       </section>
 
       <!-- 6. Chapter IV -->
@@ -1024,6 +1081,37 @@
         </ul>
         <blockquote class="def"><strong>Purpose over complexity</strong> — The evaluation method should be appropriate to the study objectives. Avoid adding statistical procedures simply for complexity. Analytical methods should be used only when they meaningfully answer the study's questions or objectives.</blockquote>
         <p>Detailed instruments, questionnaires, consent forms, task sheets, and similar materials may be placed in the Appendix.</p>
+
+        <h3 id="ch4-c">C. Evaluation of Objectives</h3>
+        <p>Show how you will demonstrate that each specific objective in Chapter I-C has been achieved. For each objective, state the expected outcome and the test or evaluation that will provide the evidence, including the criterion for success.</p>
+        <p>Use Table 4.1 as your template, with one row for each specific objective. The first row gives the guiding question for each column. The next two rows show one objective from a hypothetical library system, first written generically and then made specific.</p>
+        <p class="gantt-caption"><strong>Table 4.1</strong><br><em>Template for the Evaluation of Objectives, with an Example</em></p>
+        <table class="compare">
+          <thead>
+            <tr><th></th><th>Specific Objective</th><th>Expected Outcome</th><th>Test or Evaluation (Evidence)</th><th>Criterion for Success</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Guiding question</strong></td><td><em>Copy each specific objective exactly as written in Chapter I-C.</em></td><td><em>What will exist, or what will change, if this objective is met?</em></td><td><em>Which test in Chapter IV-A or evaluation in Chapter IV-B will produce the evidence? With whom, and how many?</em></td><td><em>What measurable result counts as success, and why is that threshold appropriate for your study?</em></td></tr>
+            <tr><td><strong>Too generic</strong></td><td>Evaluate the system’s usability</td><td>A usable system</td><td>SUS with target users</td><td>Mean SUS score ≥ 68</td></tr>
+            <tr><td><strong>Specific (example)</strong></td><td>Evaluate the usability of the book reservation feature for undergraduate library users</td><td>Students can reserve a book without assistance</td><td>Task-based test with 15 undergraduates performing three reservation tasks, followed by the SUS (Chapter IV-B)</td><td>At least 80% complete all three tasks unaided; mean SUS score ≥ 68, the commonly cited average benchmark</td></tr>
+          </tbody>
+        </table>
+        <p>The specific version names the feature and the user group, states the tasks and the number of participants, and gives a reason for the threshold. Use it as a model for the level of detail expected, not as a row to reuse. In your own Table 4.1, remove the label column and the example rows, and keep only your own objectives.</p>
+        <div class="callout"><strong>Fill in the template with your own study.</strong> Every row must come from your own study: your specific objectives in Chapter I-C, stated exactly as written there, and the tests and evaluations you describe in Chapters IV-A and IV-B. Justify each threshold for success, such as why a given percentage or number of participants is appropriate for your study.</div>
+        <blockquote class="def"><strong>Make criteria measurable</strong> — Each criterion should be specific and checkable, such as a pass rate, a score threshold, or a time limit, rather than a general statement such as "the system is effective." Every specific objective in Chapter I-C must appear in the table.</blockquote>
+        <div class="keyidea">
+          <h3>Part of your blueprint</h3>
+          <div class="qgrid">
+            <div class="col">
+              <div class="col-label">IS 295a</div>
+              <ul><li>Present the table as part of your approved plan.</li></ul>
+            </div>
+            <div class="col">
+              <div class="col-label">IS 295b</div>
+              <ul><li>Keep the same objectives and criteria for success. Any change should be justified and approved by your adviser.</li></ul>
+            </div>
+          </div>
+        </div>
       </section>
 
       <!-- 7. Chapter V -->
@@ -1092,7 +1180,8 @@
           <h3>Interpret, don't repeat</h3>
           <p>Students should not merely repeat results already presented in Chapters V-B and V-C. The discussion should explain what the findings mean and why they matter.</p>
         </div>
-        <p style="margin-top:18px;">Where appropriate, the organization of Chapter V may follow the specific objectives established in Chapter I to maintain clear alignment across the manuscript.</p>
+        <blockquote class="def" style="margin-top:18px;"><strong>Report each objective</strong> — For each specific objective, state whether it was met, partially met, or not met against its criterion for success in Chapter IV-C, citing the evidence from Chapters V-B and V-C.</blockquote>
+        <p>Where appropriate, the organization of Chapter V may follow the specific objectives established in Chapter I to maintain clear alignment across the manuscript.</p>
       </section>
 
       <!-- 8. Chapter VI -->
@@ -1105,7 +1194,7 @@
         <p>Presents the conclusions that can reasonably be drawn from the study. The conclusion should:</p>
         <ul>
           <li>synthesize the major findings;</li>
-          <li>indicate the extent to which the objectives were achieved;</li>
+          <li>indicate the extent to which the objectives were achieved, based on the assessment in Chapter V-D;</li>
           <li>explain how the developed system addressed the identified problem;</li>
           <li>highlight the overall contribution of the study; and</li>
           <li>acknowledge important limitations where relevant.</li>
@@ -1161,6 +1250,15 @@
           <li>the parts of the study or manuscript in which they were used; and</li>
           <li>how AI-generated outputs were reviewed, verified, and revised.</li>
         </ul>
+        <p>Present this information in a table using the template below, with one row for each tool and use. Replace each guiding question with your own content.</p>
+        <table class="compare">
+          <thead>
+            <tr><th>AI Tool</th><th>Purpose</th><th>Where Used</th><th>How Outputs Were Reviewed and Verified</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><em>Name and version of the tool, and dates of use</em></td><td><em>What exactly did you use it for?</em></td><td><em>Which chapter, section, or part of the system?</em></td><td><em>How did you check, correct, or revise what it produced?</em></td></tr>
+          </tbody>
+        </table>
         <p>If no AI tools were used, the declaration should state so.</p>
         <div class="keyidea">
           <h3>AI assists. Authors remain accountable.</h3>
@@ -1228,6 +1326,7 @@
           <tbody>
             <tr><td class="num">Problem</td><td>Justify the objectives</td></tr>
             <tr><td class="num">Objectives</td><td>Guide the system design and methodology</td></tr>
+            <tr><td class="num">Criteria for success</td><td>Define what counts as achieving each objective</td></tr>
             <tr><td class="num">Requirements</td><td>Inform the system's features and design</td></tr>
             <tr><td class="num">Methodology</td><td>Produce evidence capable of addressing the objectives</td></tr>
             <tr><td class="num">Developed system</td><td>Demonstrate how the requirements were implemented</td></tr>
@@ -1264,7 +1363,7 @@
           <li><strong>Limitations are genuine boundaries,</strong> not justifications for avoidable shortcomings.</li>
           <li><strong>Chapter II synthesizes; the gap emerges from the review.</strong> "No similar system exists" is not a gap analysis.</li>
           <li><strong>Chapter III stays at an academic level of abstraction.</strong> Requirements are traceable to Chapter I; frameworks are meaningfully integrated; code-level artifacts go to the Appendix.</li>
-          <li><strong>Chapter IV fits testing and evaluation to the system and objectives.</strong> Use analytical methods only when they answer the study's questions.</li>
+          <li><strong>Chapter IV fits testing and evaluation to the system and objectives.</strong> Use analytical methods only when they answer the study's questions, and link each objective to its evidence and criterion for success (Chapter IV-C).</li>
           <li><strong>Chapter V is selective and interpretive.</strong> Purposeful, captioned screenshots; results organized by objectives; a discussion that explains what findings mean.</li>
           <li><strong>Chapter VI stays within the evidence.</strong> Conclusions rest on Chapter V; recommendations follow from results and limitations, not a wish list.</li>
           <li><strong>References and the Declaration of AI Use are required.</strong> Both come before the Appendices; cite only verified sources and disclose how AI tools were used.</li>

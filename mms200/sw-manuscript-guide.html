@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MMS 200 Manuscript for a Software Development Project</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ---- Design tokens ------------------------------------------------------- */
+:root{
+    --bg:#EEF2F8;
+    --paper:#FFFFFF;
+    --ink:#1B2333;
+    --ink-soft:#4A5568;
+    --sidebar:#16243E;
+    --sidebar-hover:#22385F;
+    --sidebar-text:#C6D2E8;
+    --sidebar-text-dim:#7E93B8;
+    --accent:#2F5D9C;
+    --accent-deep:#1E3F6E;
+    --gold:#A9822F;
+    --border:#DAE1EC;
+    --correct:#1E7B57;
+    --correct-bg:#E5F4EC;
+    --incorrect:#B03B33;
+    --incorrect-bg:#FBEAE8;
+    --neutral:#8A6D1E;
+    --neutral-bg:#FBF3E1;
+  }
+  /* ---- Base & typography ---------------------------------------------- */
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:"IBM Plex Sans", -apple-system, Segoe UI, Roboto, sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.6;
+  }
+  h1,h2,h3,h4{
+    font-family:"Source Serif 4", Georgia, "Times New Roman", serif;
+    color:var(--ink);
+    line-height:1.25;
+    font-weight:600;
+  }
+  a{color:var(--accent-deep);}
+  a:hover{color:var(--accent);}
+
+  /* ---- Page layout: sidebar + main ------------------------------------ */
+  .layout{ min-height:100vh; width:100%; }
+  nav.sidebar{
+    width:280px;
+    flex-shrink:0;
+    background:var(--sidebar);
+    color:var(--sidebar-text);
+    padding:28px 22px 40px;
+    position:fixed;
+    top:0;
+    left:0;
+    height:100vh;
+    overflow-y:auto;
+    z-index:10;
+  }
+  nav.sidebar::-webkit-scrollbar{width:8px;}
+  nav.sidebar::-webkit-scrollbar-thumb{background:var(--sidebar-hover); border-radius:4px;}
+
+  .sidebar .kicker{
+    text-transform:uppercase; font-size:11px; letter-spacing:0.14em;
+    color:var(--sidebar-text-dim); margin-bottom:6px;
+  }
+  .sidebar .course-title{
+    font-family:"Source Serif 4", Georgia, serif;
+    font-size:21px; color:#fff; margin:0 0 4px;
+  }
+  .sidebar .course-topic{
+    font-size:13.5px; color:var(--sidebar-text);
+    padding-bottom:18px; border-bottom:1px solid rgba(255,255,255,0.12);
+    margin:0 0 18px;
+  }
+  .sidebar .nav-heading{
+    font-size:11px; text-transform:uppercase; letter-spacing:0.1em;
+    color:var(--sidebar-text-dim); margin:18px 0 6px;
+  }
+  .sidebar .nav-heading:first-of-type{ margin-top:0; }
+  .sidebar ol{ list-style:none; margin:0; padding:0; counter-reset:section; }
+  .sidebar > ol > li{ counter-increment:section; margin-bottom:2px; }
+  .sidebar a.toc-link{
+    display:flex; gap:10px; align-items:flex-start;
+    text-decoration:none; color:var(--sidebar-text);
+    padding:8px 10px; border-radius:6px; font-size:14px;
+    transition:background 0.15s ease, color 0.15s ease;
+  }
+  .sidebar a.toc-link::before{
+    content:counter(section, decimal-leading-zero);
+    font-family:"IBM Plex Sans", sans-serif;
+    font-size:11px; color:var(--sidebar-text-dim); padding-top:2px;
+  }
+  .sidebar a.toc-link:hover, .sidebar a.toc-link.active{
+    background:var(--sidebar-hover); color:#fff;
+  }
+  .sidebar ul.sub{
+    list-style:none; margin:2px 0 8px 26px; padding:0;
+    border-left:1px solid rgba(255,255,255,0.12);
+  }
+  .sidebar ul.sub li a{
+    display:block; text-decoration:none; color:var(--sidebar-text-dim);
+    font-size:12.5px; padding:5px 0 5px 14px; transition:color 0.15s ease;
+  }
+  .sidebar ul.sub li a:hover{color:#fff;}
+
+  main{ display:block; margin-left:280px; padding:0 0 100px; }
+
+  /* ---- Hero banner ---------------------------------------------------- */
+  .hero{
+    background:linear-gradient(155deg, var(--accent-deep) 0%, var(--sidebar) 65%);
+    color:#fff; padding:64px 56px 46px;
+  }
+  .hero .kicker{
+    text-transform:uppercase; letter-spacing:0.16em; font-size:12px;
+    color:#AFC3E4; margin-bottom:14px;
+  }
+  .hero h1{ color:#fff; font-size:38px; margin:0 0 10px; max-width:900px; }
+  .hero p.dek{ max-width:820px; color:#D6E0F1; font-size:16px; margin:0 0 22px; }
+  .hero .byline{
+    font-size:14px; color:#AFC3E4;
+    border-top:1px solid rgba(255,255,255,0.18);
+    padding-top:14px; display:inline-block;
+  }
+  .hero .byline strong{color:#fff; font-weight:600;}
+
+  /* ---- Content column -------------------------------------------------- */
+  .content-inner{ padding:0 56px; max-width:960px; }
+
+  section.chapter{ padding-top:52px; scroll-margin-top:24px; }
+  section.chapter:first-of-type{padding-top:40px;}
+
+  .chapter .eyebrow{ font-size:13px; color:var(--accent); font-weight:600; margin-bottom:6px; }
+  .chapter h2{
+    font-size:27px; margin:0 0 16px; padding-bottom:14px;
+    border-bottom:2px solid var(--border);
+  }
+  .chapter h3{ font-size:19px; margin:30px 0 10px; color:var(--accent-deep); }
+  .chapter h4{ font-size:15.5px; margin:20px 0 8px; color:var(--accent-deep); }
+  .chapter p{ font-size:15.5px; color:var(--ink); margin:0 0 14px; }
+  .chapter ul, .chapter ol.plain{ padding-left:22px; margin:0 0 16px; }
+  .chapter li{ font-size:15.5px; margin-bottom:6px; }
+  .lede{
+    font-size:17px; color:var(--ink-soft);
+    border-left:3px solid var(--gold); padding-left:16px; margin:0 0 22px;
+  }
+
+  /* ---- Definition / emphasis callout ------------------------------------ */
+  blockquote.def{
+    background:var(--paper); border:1px solid var(--border);
+    border-left:4px solid var(--accent); border-radius:6px;
+    padding:16px 20px; margin:0 0 20px; font-size:15px; color:var(--ink-soft);
+  }
+  blockquote.def strong{color:var(--ink); font-family:"Source Serif 4", serif;}
+
+  /* ---- Data table -------------------------------------------------------- */
+  table.compare{
+    width:100%; border-collapse:collapse; margin:8px 0 20px; font-size:14.5px;
+    background:var(--paper); border:1px solid var(--border);
+    border-radius:8px; overflow:hidden;
+  }
+  table.compare th{
+    background:var(--sidebar); color:#fff; text-align:left;
+    padding:10px 14px; font-weight:600; font-size:13px;
+  }
+  table.compare td{ padding:10px 14px; border-top:1px solid var(--border); vertical-align:top; }
+  table.compare tr:nth-child(even) td{background:#F6F8FC;}
+  table.compare td.num{ font-weight:600; color:var(--accent-deep); white-space:nowrap; }
+  table.compare td.center, table.compare th.center{ text-align:center; }
+  table.compare tr.highlight td{ background:var(--correct-bg); font-weight:600; color:var(--correct); }
+
+  /* ---- Numbered list ---------------------------------------------------- */
+  .commandments{
+    counter-reset:cmd; padding:0; list-style:none; margin:0 0 20px;
+    display:grid; gap:8px;
+  }
+  .commandments li{
+    counter-increment:cmd; background:var(--paper);
+    border:1px solid var(--border); border-radius:8px;
+    padding:12px 14px 12px 44px; position:relative; font-size:14.5px;
+  }
+  .commandments li::before{
+    content:counter(cmd); position:absolute; left:12px; top:10px;
+    font-family:"Source Serif 4", serif; font-weight:700; font-size:16px; color:var(--gold);
+  }
+
+  /* ---- Process/flow chips ----------------------------------------------- */
+  .flow{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:6px 0 22px; }
+  .flow .step{
+    background:var(--accent-deep); color:#fff; padding:8px 13px;
+    border-radius:20px; font-size:13.5px; white-space:nowrap;
+  }
+  .flow .arrow{color:var(--ink-soft); font-size:15px;}
+
+  /* ---- Reference / notes box --------------------------------------------- */
+  .refbox{
+    background:#F4F7FC; border:1px solid var(--border); border-radius:8px;
+    padding:16px 18px; margin:0 0 22px;
+  }
+  .refbox .refbox-label{
+    font-size:11.5px; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--accent-deep); font-weight:600; margin-bottom:8px;
+  }
+  .refbox ul{ margin:0; padding-left:18px; }
+  .refbox li{ font-size:14px; margin-bottom:4px; }
+
+  /* ---- Highlighted key-idea panel ---------------------------------------- */
+  .keyidea{
+    background:linear-gradient(155deg, var(--accent-deep), var(--sidebar));
+    color:#fff; border-radius:12px; padding:28px 30px; margin:8px 0 10px;
+  }
+  .keyidea h3{color:#fff; margin-top:0;}
+  .keyidea p{ color:#E3EAF6; }
+  .keyidea .qgrid{ display:flex; flex-wrap:wrap; gap:6px 24px; margin-top:14px; }
+  .keyidea .qgrid .col{ flex:1 1 220px; }
+  .keyidea .qgrid .col-label{
+    font-size:11px; text-transform:uppercase; letter-spacing:0.1em;
+    color:#AFC3E4; margin-bottom:6px;
+  }
+  .keyidea .qgrid ul{margin:0; padding-left:18px;}
+  .keyidea .qgrid li{font-size:14px; margin-bottom:5px; color:#E3EAF6;}
+
+  /* ---- Warning / important-notice callout (red) ----------------------- */
+  .callout{
+    background:var(--incorrect-bg); border:1px solid #F0C6C1; border-radius:8px;
+    padding:16px 18px; margin:0 0 20px; font-size:14.5px; color:var(--incorrect);
+  }
+  .callout strong{ color:var(--incorrect); }
+
+  /* ---- Good vs. weak example boxes -------------------------------------- */
+  .examples{ display:grid; gap:12px; margin:8px 0 20px; }
+  .ex{
+    border-radius:8px; padding:16px 18px; font-size:14.5px;
+    border:1px solid var(--border); background:var(--paper);
+  }
+  .ex .ex-label{
+    font-size:11.5px; text-transform:uppercase; letter-spacing:0.08em;
+    font-weight:600; margin-bottom:8px;
+  }
+  .ex p{ font-size:14.5px; margin:0 0 8px; }
+  .ex ul, .ex ol{ margin:0 0 6px; padding-left:20px; }
+  .ex li{ font-size:14.5px; margin-bottom:5px; }
+  .ex .why{ font-size:13.5px; color:var(--ink-soft); margin:8px 0 0; }
+  .ex.weak{ border-left:4px solid var(--incorrect); }
+  .ex.weak .ex-label{ color:var(--incorrect); }
+  .ex.weak .quote{ background:var(--incorrect-bg); }
+  .ex.good{ border-left:4px solid var(--correct); }
+  .ex.good .ex-label{ color:var(--correct); }
+  .ex.good .quote{ background:var(--correct-bg); }
+  .ex .quote{ padding:8px 12px; border-radius:6px; font-style:italic; margin:0 0 8px; }
+
+  /* ---- Page-level footer -------------------------------------------------- */
+  footer{
+    text-align:center; padding:30px 20px 10px; font-size:12.5px;
+    color:var(--ink-soft); margin-left:280px;
+  }
+
+  @media (max-width: 880px){
+    nav.sidebar{ position:relative; width:100%; height:auto; max-height:none; }
+    main{ margin-left:0; }
+    footer{ margin-left:0; }
+    .hero{padding:40px 24px 32px;}
+    .content-inner{padding:0 22px;}
+    .table-scroll{ overflow-x:auto; }
+  }
+
+  /* ---- Page-specific additions ---- */
+  .hero-inner{ max-width:904px; }
+  .chapter h3[id]{ scroll-margin-top:24px; }
+  .sidebar a.home-link{
+    display:block; text-decoration:none;
+    background:var(--sidebar-hover); color:#fff;
+    border:1px solid rgba(255,255,255,0.18); border-radius:6px;
+    padding:9px 12px; font-size:13.5px; font-weight:500;
+    margin:0 0 20px;
+    transition:background 0.15s ease, border-color 0.15s ease;
+  }
+  .sidebar a.home-link:hover{ background:var(--accent); border-color:var(--accent); color:#fff; }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <nav class="sidebar" aria-label="Table of contents">
+    <a class="home-link" href="https://reinald-dp.github.io/mms200/">&larr; Back to MMS 200 Home</a>
+    <div class="course-title">MMS 200 Manuscript</div>
+    <p class="course-topic">for a Software Development Project</p>
+
+    <div class="nav-heading">Overview</div>
+    <ol>
+      <li><a class="toc-link" href="#overview" data-target="overview">Purpose of the Manuscript</a></li>
+      <li><a class="toc-link" href="#stages" data-target="stages">MMS 200a and MMS 200b</a></li>
+    </ol>
+
+    <div class="nav-heading">The Six Chapters</div>
+    <ol style="counter-reset:section 2">
+      <li><a class="toc-link" href="#ch1" data-target="ch1">Chapter I · Introduction</a>
+        <ul class="sub">
+          <li><a href="#ch1-a">A. Background of the Study</a></li>
+          <li><a href="#ch1-b">B. Statement of the Problem</a></li>
+          <li><a href="#ch1-c">C. Objectives of the Study</a></li>
+          <li><a href="#ch1-d">D. Significance of the Study</a></li>
+          <li><a href="#ch1-e">E. Scope and Limitations</a></li>
+        </ul>
+      </li>
+      <li><a class="toc-link" href="#ch2" data-target="ch2">Chapter II · Review of Related Works</a>
+        <ul class="sub">
+          <li><a href="#ch2-a">A. Related Studies &amp; Existing Apps</a></li>
+          <li><a href="#ch2-b">B. Comparative Analysis</a></li>
+          <li><a href="#ch2-c">C. Gaps and Opportunities</a></li>
+          <li><a href="#ch2-d">D. Conceptual Positioning</a></li>
+        </ul>
+      </li>
+      <li><a class="toc-link" href="#ch3" data-target="ch3">Chapter III · Design and Development Methodology</a>
+        <ul class="sub">
+          <li><a href="#ch3-a">A. Requirements Analysis</a></li>
+          <li><a href="#ch3-b">B. Guiding Framework</a></li>
+          <li><a href="#ch3-c">C. Development Approach</a></li>
+          <li><a href="#ch3-d">D. Architecture &amp; Technology Stack</a></li>
+          <li><a href="#ch3-e">E. Interface &amp; Feature Design</a></li>
+        </ul>
+      </li>
+      <li><a class="toc-link" href="#ch4" data-target="ch4">Chapter IV · Testing and Evaluation Methodology</a>
+        <ul class="sub">
+          <li><a href="#ch4-a">A. Functional Testing</a></li>
+          <li><a href="#ch4-b">B. User Evaluation Procedures</a></li>
+        </ul>
+      </li>
+      <li><a class="toc-link" href="#ch5" data-target="ch5">Chapter V · Results and Discussion</a>
+        <ul class="sub">
+          <li><a href="#ch5-a">A. Developed Application &amp; Features</a></li>
+          <li><a href="#ch5-b">B. Technical Testing Results</a></li>
+          <li><a href="#ch5-c">C. User Evaluation Results</a></li>
+          <li><a href="#ch5-d">D. Discussion of Findings</a></li>
+        </ul>
+      </li>
+      <li><a class="toc-link" href="#ch6" data-target="ch6">Chapter VI · Conclusion and Recommendations</a>
+        <ul class="sub">
+          <li><a href="#ch6-a">A. Conclusion</a></li>
+          <li><a href="#ch6-b">B. Recommendations</a></li>
+        </ul>
+      </li>
+    </ol>
+
+    <div class="nav-heading">Back Matter</div>
+    <ol style="counter-reset:section 8">
+      <li><a class="toc-link" href="#references" data-target="references">References</a></li>
+      <li><a class="toc-link" href="#ai-declaration" data-target="ai-declaration">Declaration of AI Use</a></li>
+      <li><a class="toc-link" href="#appendices" data-target="appendices">Appendices</a></li>
+    </ol>
+
+    <div class="nav-heading">Putting It Together</div>
+    <ol style="counter-reset:section 11">
+      <li><a class="toc-link" href="#coherence" data-target="coherence">Manuscript Coherence</a></li>
+    </ol>
+
+    <div class="nav-heading">Wrap-up</div>
+    <ol style="counter-reset:section 12">
+      <li><a class="toc-link" href="#takeaways" data-target="takeaways">Key Takeaways</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <div class="hero">
+      <div class="hero-inner">
+        <div class="kicker">From Proposal to Completed Project</div>
+        <h1>MMS 200 Manuscript for a Software Development Project</h1>
+        <p class="dek">A chapter-by-chapter guide to documenting the design, development, and evaluation of a software application or digital product — from the problem and its context, through design, development, testing, and user evaluation, to conclusions and recommendations.</p>
+        <span class="byline">Prepared by: <strong>Dr. Reinald Adrian Pugoy</strong> — First Semester, AY 2026–2027</span>
+      </div>
+    </div>
+
+    <div class="content-inner">
+
+      <!-- 1. Purpose -->
+      <section class="chapter" id="overview">
+        <div class="eyebrow">01 · Overview</div>
+        <h2>Purpose of the Manuscript</h2>
+        <p class="lede">The MMS 200 manuscript documents the design, development, and evaluation of a software application or digital product that responds to an identified problem, need, or opportunity.</p>
+        <p>This guide is for MMS 200 projects that involve <strong>software development</strong>, such as web applications, mobile applications, games, interactive learning modules, and AR/VR experiences.</p>
+        <p>The manuscript should demonstrate the student's ability to:</p>
+        <ol class="commandments">
+          <li>Analyze a problem and the needs of the intended users.</li>
+          <li>Ground the solution in relevant literature, existing products, and relevant theoretical or design frameworks.</li>
+          <li>Systematically design and develop an appropriate software application or digital product.</li>
+          <li>Test the application and evaluate it with its intended users.</li>
+        </ol>
+      </section>
+
+      <!-- 2. Stages -->
+      <section class="chapter" id="stages">
+        <div class="eyebrow">02 · Overview</div>
+        <h2>Manuscript Coverage for MMS 200a and MMS 200b</h2>
+        <p class="lede">MMS 200a is the proposal stage. MMS 200b is the completed project.</p>
+
+        <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>Chapter</th><th>Title</th><th>MMS 200a</th><th>MMS 200b</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="num">Chapter I</td><td>Introduction</td><td>✓ Proposal</td><td>✓ Updated tense, same plan</td></tr>
+            <tr><td class="num">Chapter II</td><td>Review of Related Works</td><td>✓ Proposal</td><td>✓ Updated tense, same plan</td></tr>
+            <tr><td class="num">Chapter III</td><td>Design and Development Methodology</td><td>✓ Planned</td><td>✓ Approved plan, carried out</td></tr>
+            <tr><td class="num">Chapter IV</td><td>Testing and Evaluation Methodology</td><td>✓ Planned</td><td>✓ Approved plan, carried out</td></tr>
+            <tr><td class="num">Chapter V</td><td>Results and Discussion</td><td>—</td><td>✓</td></tr>
+            <tr><td class="num">Chapter VI</td><td>Conclusion and Recommendations</td><td>—</td><td>✓</td></tr>
+            <tr><td class="num">Back matter</td><td>References</td><td>✓ Required</td><td>✓ Required</td></tr>
+            <tr><td class="num">Back matter</td><td>Declaration of AI Use</td><td>✓ Required</td><td>✓ Required</td></tr>
+            <tr><td class="num">Back matter</td><td>Appendices</td><td>As needed</td><td>As needed</td></tr>
+          </tbody>
+        </table>
+        </div>
+
+        <h3>MMS 200a: Proposal Stage</h3>
+        <p>MMS 200a covers <strong>Chapters I to IV</strong>. At this stage, the manuscript presents the problem to be addressed, establishes the basis for the project, describes the intended application and its design, and specifies how it will be developed, tested, and evaluated.</p>
+        <p>Because MMS 200a is the proposal stage, future-oriented language may be used for activities not yet completed. However, the proposal should already present a <strong>sufficiently developed and feasible plan</strong> rather than a preliminary idea. The student should be able to show that:</p>
+        <ul>
+          <li>the problem and the needs of the target users have been adequately investigated;</li>
+          <li>the proposed application is justified; and</li>
+          <li>the development, testing, and evaluation plans are appropriate and achievable within the available time.</li>
+        </ul>
+
+        <h3>MMS 200b: Completed Project</h3>
+        <p>MMS 200b covers the <strong>complete manuscript, Chapters I to VI</strong>, including the developed application, the results of testing and user evaluation, conclusions, and recommendations.</p>
+        <p>The MMS 200b manuscript should read as a <strong>completed project rather than a proposal</strong>. Chapters I to IV should therefore be updated to reflect what was done according to the approved MMS 200a plan. Future-oriented statements should be replaced with descriptions of the actual application, procedures, participants, technologies, development activities, testing, and evaluation.</p>
+
+        <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>MMS 200a (Proposal)</th><th>MMS 200b (Completed Project)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>"The project will develop..."</td><td>"The project developed..."</td></tr>
+            <tr><td>"The proposed application will provide..."</td><td>"The application provides..." or "The developed application provides..."</td></tr>
+            <tr><td>"The proponent will conduct user testing..."</td><td>"User testing was conducted..."</td></tr>
+            <tr><td>"The application will be evaluated using..."</td><td>"The application was evaluated using..."</td></tr>
+          </tbody>
+        </table>
+        </div>
+
+        <div class="keyidea">
+          <h3>The approved MMS 200a proposal is your blueprint.</h3>
+          <p>MMS 200b should carry out the objectives, scope, design, and methodology approved in MMS 200a as closely as possible. Revising Chapters I–IV mainly means updating them from future to past or present tense and confirming what was done according to plan. It does not mean redesigning the project to match whatever was built.</p>
+          <p style="margin-bottom:0;"><strong>Any substantive change should be justified and approved by your adviser.</strong></p>
+        </div>
+      </section>
+
+      <!-- 3. Chapter I -->
+      <section class="chapter" id="ch1">
+        <div class="eyebrow">03 · The Six Chapters</div>
+        <h2>Chapter I. Introduction</h2>
+        <p class="lede">This chapter establishes the foundation of the project by presenting the problem context, rationale, objectives, significance, and boundaries of the work.</p>
+
+        <h3 id="ch1-a">A. Background of the Study</h3>
+        <p>Provides the context and justification for the project. This section should explain:</p>
+        <ul>
+          <li>the real-world problem, unmet need, or opportunity being addressed;</li>
+          <li>who experiences this problem — the intended users;</li>
+          <li>the broader domain or setting in which the problem exists;</li>
+          <li>existing apps, products, or current ways people deal with the problem;</li>
+          <li>limitations or gaps in these current approaches;</li>
+          <li>why the problem is important; and</li>
+          <li>why a software application or digital product is an appropriate response.</li>
+        </ul>
+        <p>The discussion should progressively move from the broader context toward the specific problem addressed by the project.</p>
+        <div class="flow">
+          <span class="step">Broader domain</span><span class="arrow">→</span>
+          <span class="step">Current approaches</span><span class="arrow">→</span>
+          <span class="step">Gaps &amp; limitations</span><span class="arrow">→</span>
+          <span class="step">Specific problem</span>
+        </div>
+        <blockquote class="def"><strong>No client required</strong> — A partner organization or client is not required. The project may respond to the needs of a clearly identified target user group, provided those needs are supported by evidence such as literature, a survey, interviews, or observation.</blockquote>
+        <blockquote class="def"><strong>Guiding question</strong> — What problem context gave rise to this project, and why does it matter?</blockquote>
+
+        <h3 id="ch1-b">B. Statement of the Problem</h3>
+        <p>Clearly defines the specific problem or problems the project seeks to address. This section should:</p>
+        <ul>
+          <li>translate the broader background into focused problem statements;</li>
+          <li>identify the user-centered, informational, or technical issues involved;</li>
+          <li>clarify what is currently lacking, ineffective, or difficult for users; and</li>
+          <li>logically establish the need for the application developed in the project.</li>
+        </ul>
+        <p>This may be presented as a general problem statement followed by specific questions, where appropriate.</p>
+        <blockquote class="def"><strong>Guiding question</strong> — What exactly is the problem this project intends to solve?</blockquote>
+
+        <h3 id="ch1-c">C. Objectives of the Study</h3>
+        <p>States what the project aims to accomplish.</p>
+        <div class="keyidea">
+          <h3>One general objective, three to five specific objectives</h3>
+          <div class="qgrid">
+            <div class="col">
+              <div class="col-label">General Objective (one)</div>
+              <ul><li>States the overall purpose of the project in a single sentence: what will be built, for whom, and to address what problem.</li></ul>
+            </div>
+            <div class="col">
+              <div class="col-label">Specific Objectives (3–5)</div>
+              <ul><li>Break the general objective into concrete steps that can each be checked: done or not done, met or not met.</li></ul>
+            </div>
+          </div>
+        </div>
+        <p style="margin-top:18px;">Specific objectives typically follow the life cycle of the project:</p>
+        <div class="flow">
+          <span class="step">Identify user needs</span><span class="arrow">→</span>
+          <span class="step">Design</span><span class="arrow">→</span>
+          <span class="step">Develop</span><span class="arrow">→</span>
+          <span class="step">Test</span><span class="arrow">→</span>
+          <span class="step">Evaluate with users</span>
+        </div>
+
+        <h4>A good objective is specific and checkable</h4>
+        <p>Words like <em>user-friendly</em>, <em>efficient</em>, <em>engaging</em>, or <em>effective</em> are not objectives by themselves — they are claims that need to be measured. A good objective names <strong>what</strong> will be done, <strong>for whom</strong>, and, for evaluation objectives, <strong>how it will be measured</strong>.</p>
+
+        <div class="examples">
+          <div class="ex weak">
+            <div class="ex-label">✗ Vague objectives</div>
+            <div class="quote">General: To create a user-friendly app for students.</div>
+            <ul>
+              <li>To make an app that is easy to use.</li>
+              <li>To design an attractive interface.</li>
+              <li>To help students manage their time better.</li>
+            </ul>
+            <p class="why">Why these fall short: they do not say which students, what the app actually does, or how "easy," "attractive," or "better" will be determined. There is no way to tell at the end of the project whether they were achieved.</p>
+          </div>
+          <div class="ex good">
+            <div class="ex-label">✓ Specific objectives</div>
+            <div class="quote">General: To develop a mobile application that helps first-year university students track course deadlines and plan study sessions.</div>
+            <ol>
+              <li>To identify the features first-year students need in a deadline-tracking app through a survey of first-year students and a review of existing planner apps.</li>
+              <li>To design the application's user flow, wireframes, and high-fidelity mockups based on the identified needs.</li>
+              <li>To develop an Android application with deadline tracking, a study-session planner, and reminder notification features.</li>
+              <li>To verify that each feature works as intended through functional testing using a set of test cases.</li>
+              <li>To evaluate the application's usability with first-year students using task completion rates and the System Usability Scale (SUS).</li>
+            </ol>
+            <p class="why">Why these work: each names a concrete action and output, and each can be checked in Chapter V. Notice that "user-friendly" became objective 5 — a usability evaluation with a stated method.</p>
+          </div>
+        </div>
+
+        <p>The objectives should <strong>align with the methodology in Chapters III–IV, the results in Chapter V, and the conclusions in Chapter VI</strong>.</p>
+        <blockquote class="def"><strong>Guiding question</strong> — What does the project aim to achieve, and how will we know it did?</blockquote>
+
+        <h3 id="ch1-d">D. Significance of the Study</h3>
+        <p>Explains who may benefit from the project and how. Potential beneficiaries may include:</p>
+        <ul>
+          <li>the intended users;</li>
+          <li>organizations, communities, or groups the users belong to;</li>
+          <li>educators, content creators, or practitioners in the domain;</li>
+          <li>future developers and students; and</li>
+          <li>researchers.</li>
+        </ul>
+        <blockquote class="def"><strong>Remember</strong> — Explain the specific value of the project to each relevant stakeholder rather than merely listing potential beneficiaries.</blockquote>
+        <blockquote class="def"><strong>Guiding question</strong> — Who benefits from this project, and in what ways?</blockquote>
+
+        <h3 id="ch1-e">E. Scope and Limitations</h3>
+        <p>Defines the boundaries of the project.</p>
+        <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>Scope clarifies, where applicable…</th><th>Limitations identify constraints such as…</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Target users</td><td>Excluded features</td></tr>
+            <tr><td>Target platform and devices (e.g., Android phones, desktop browsers)</td><td>Unsupported platforms or devices</td></tr>
+            <tr><td>Included features and modules</td><td>Unavailable integrations</td></tr>
+            <tr><td>Content or data covered</td><td>Limited participants or data</td></tr>
+            <tr><td>Extent of testing and evaluation</td><td>Technological constraints</td></tr>
+            <tr><td></td><td>Time or resource constraints</td></tr>
+            <tr><td></td><td>Prototype-only or limited deployment, where applicable</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="callout"><strong>Limitations are not excuses.</strong> Limitations should describe genuine boundaries or constraints of the work rather than serve as justification for avoidable shortcomings.</div>
+        <blockquote class="def"><strong>Guiding question</strong> — What does this project cover, and what falls outside its boundaries?</blockquote>
+      </section>
+
+      <!-- 4. Chapter II -->
+      <section class="chapter" id="ch2">
+        <div class="eyebrow">04 · The Six Chapters</div>
+        <h2>Chapter II. Review of Related Works</h2>
+        <p class="lede">This chapter situates the project among existing studies, products, and technologies.</p>
+        <p>It should establish what is already available, identify what is missing, and show how the project is positioned in relation to existing work.</p>
+        <div class="callout"><strong>Analyze and compare — don't just summarize.</strong> Do not simply describe one study or app after another. Explain what each contributes, how they compare, and what they leave unaddressed.</div>
+
+        <h3 id="ch2-a">A. Related Studies and Existing Apps</h3>
+        <p>Presents relevant studies, existing applications and products, and technologies related to the problem. Depending on the project, this may include:</p>
+        <ul>
+          <li>prior studies on the problem, the target users, or similar applications;</li>
+          <li>existing apps, websites, games, or digital products addressing the same need;</li>
+          <li>relevant design principles or concepts; and</li>
+          <li>technologies or approaches used in comparable projects.</li>
+        </ul>
+        <p>Prioritize works that <strong>directly inform the problem, the application's design, or how it will be evaluated</strong>.</p>
+        <blockquote class="def"><strong>Expected depth</strong> — Around <strong>10 to 20 sources</strong> is typical for an MMS 200 manuscript. Choose relevant, credible sources over a long list. Existing apps and products count as related works and should be described accurately, with links or app store references.</blockquote>
+
+        <h3 id="ch2-b">B. Comparative Analysis</h3>
+        <p>This is the <strong>centerpiece of Chapter II</strong>. Select <strong>3 to 5 existing apps or products</strong> that are most comparable to the proposed application and compare them systematically. The comparison may examine:</p>
+        <div class="flow">
+          <span class="step">Features</span><span class="arrow">·</span>
+          <span class="step">Target users</span><span class="arrow">·</span>
+          <span class="step">Platform</span><span class="arrow">·</span>
+          <span class="step">Design &amp; user experience</span><span class="arrow">·</span>
+          <span class="step">Cost &amp; access</span><span class="arrow">·</span>
+          <span class="step">Strengths &amp; weaknesses</span>
+        </div>
+        <p>Present the comparison as a <strong>feature matrix</strong>, for example:</p>
+        <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>Feature / Criterion</th><th class="center">App A</th><th class="center">App B</th><th class="center">App C</th><th class="center">Proposed App</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Feature 1</td><td class="center">✓</td><td class="center">✓</td><td class="center">—</td><td class="center">✓</td></tr>
+            <tr><td>Feature 2</td><td class="center">—</td><td class="center">✓</td><td class="center">—</td><td class="center">✓</td></tr>
+            <tr><td>Feature 3</td><td class="center">—</td><td class="center">—</td><td class="center">—</td><td class="center">✓</td></tr>
+            <tr><td>Platform</td><td class="center">Android</td><td class="center">Web</td><td class="center">iOS</td><td class="center">Android</td></tr>
+            <tr><td>Free to use</td><td class="center">✓</td><td class="center">Freemium</td><td class="center">—</td><td class="center">✓</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <blockquote class="def"><strong>A matrix is not enough</strong> — Every matrix must be followed by a discussion of what it shows: which needs are well served, which are not, and why the differences matter for the target users.</blockquote>
+
+        <h3 id="ch2-c">C. Identified Gaps and Opportunities</h3>
+        <p>Synthesizes the review and identifies the unmet needs or opportunities that justify the project. This section should clearly explain:</p>
+        <ol class="commandments">
+          <li>What existing studies or apps already address.</li>
+          <li>What they fail to address adequately for the target users.</li>
+          <li>What limitations or needs remain unresolved.</li>
+          <li>What opportunity exists for an improved or alternative application.</li>
+        </ol>
+        <div class="callout"><strong>"No similar app exists" is not a gap.</strong> The gap should logically emerge from the review and the comparative analysis. If you claim nothing similar exists, you probably have not searched widely enough.</div>
+
+        <h3 id="ch2-d">D. Conceptual Positioning of the Application</h3>
+        <p>Explains how the application responds to the identified gaps and how it is positioned relative to existing alternatives. This section should clarify:</p>
+        <ul>
+          <li>the intended contribution of the application;</li>
+          <li>the improvement, adaptation, or new combination of features it introduces;</li>
+          <li>how it differs meaningfully from the apps in the comparative analysis; and</li>
+          <li>why the project is warranted.</li>
+        </ul>
+        <div class="keyidea">
+          <h3>Proposed vs. developed</h3>
+          <div class="qgrid">
+            <div class="col">
+              <div class="col-label">MMS 200a</div>
+              <ul><li>This section discusses the <strong>proposed application</strong>.</li></ul>
+            </div>
+            <div class="col">
+              <div class="col-label">MMS 200b</div>
+              <ul><li>Revise it to describe the <strong>application developed in the project</strong>.</li></ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Chapter III -->
+      <section class="chapter" id="ch3">
+        <div class="eyebrow">05 · The Six Chapters</div>
+        <h2>Chapter III. Design and Development Methodology</h2>
+        <p class="lede">This chapter explains how the application was conceptualized, designed, and developed.</p>
+        <p>For MMS 200a, the chapter describes the <strong>planned</strong> design and development. For MMS 200b, it documents how this approved plan was carried out. Any substantive deviation should be justified and <strong>approved by your adviser</strong>.</p>
+        <div class="callout"><strong>Writing guidance.</strong> Explain your design decisions and development process, not your code. Avoid turning this chapter into a developer manual or a code walkthrough. Detailed technical material belongs in the Appendices.</div>
+
+        <h3 id="ch3-a">A. Requirements Analysis</h3>
+        <p>Explains how the needs of the target users were identified and translated into the application's features. This section should present:</p>
+        <table class="compare">
+          <thead>
+            <tr><th>Element</th><th>What to include</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Needs gathering</strong></td><td>How user needs were identified: survey, interviews, observation, or review of existing apps. Summarize the key findings.</td></tr>
+            <tr><td><strong>Personas</strong></td><td>Short profiles of representative users: who they are, their goals, and their frustrations.</td></tr>
+            <tr><td><strong>User stories</strong></td><td>Needs written from the user's point of view: <em>"As a [user], I want to [action] so that [benefit]."</em></td></tr>
+            <tr><td><strong>Feature list</strong></td><td>The features the application will have, each given an ID (F-01, F-02, …) and a priority (must-have or nice-to-have).</td></tr>
+            <tr><td><strong>Quality requirements</strong></td><td>Brief non-functional requirements where relevant, such as supported devices, offline use, accessibility, or response time.</td></tr>
+          </tbody>
+        </table>
+        <p>Show <strong>traceability</strong> with one compact table linking features to user stories and to the specific objectives in Chapter I:</p>
+        <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>Feature ID</th><th>Feature</th><th>User Story</th><th>Objective</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="num">F-01</td><td>Deadline tracker</td><td>US-01, US-02</td><td>Obj. 3</td></tr>
+            <tr><td class="num">F-02</td><td>Study-session planner</td><td>US-03</td><td>Obj. 3</td></tr>
+            <tr><td class="num">F-03</td><td>Reminder notifications</td><td>US-04</td><td>Obj. 3</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <blockquote class="def"><strong>Traceability</strong> — Every feature should trace back to a user need, and every user need should trace back to the problem in Chapter I. A feature that traces to nothing is a feature to question.</blockquote>
+
+        <h3 id="ch3-b">B. Guiding Framework</h3>
+        <p>Presents the guiding framework of the project: the framework that shapes how the application is designed and evaluated. This may be a <strong>theoretical framework</strong>, which explains <em>why</em> the application should work for its users, a <strong>design framework</strong>, which guides <em>how</em> it is designed and built, or a combination of both. Choose what best fits your project. Examples include:</p>
+        <table class="compare">
+          <thead>
+            <tr><th>Framework</th><th>Type</th><th>Suited to</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Technology Acceptance Model (TAM)</strong></td><td>Theoretical</td><td>Projects examining whether users find the application useful and easy to use</td></tr>
+            <tr><td><strong>Cognitive Theory of Multimedia Learning</strong></td><td>Theoretical</td><td>Educational applications combining text, images, audio, or video</td></tr>
+            <tr><td><strong>Self-Determination Theory</strong></td><td>Theoretical</td><td>Games and applications that aim to motivate or engage users</td></tr>
+            <tr><td><strong>User-Centered Design (UCD)</strong></td><td>Design</td><td>Most applications built around a clear user group</td></tr>
+            <tr><td><strong>Design Thinking</strong></td><td>Design</td><td>Projects that begin with an open problem and require exploring user needs</td></tr>
+            <tr><td><strong>Nielsen's Usability Heuristics</strong></td><td>Design</td><td>Guiding interface design decisions and heuristic review</td></tr>
+            <tr><td><strong>MDA (Mechanics, Dynamics, Aesthetics)</strong></td><td>Design</td><td>Games and gamified applications</td></tr>
+            <tr><td><strong>ADDIE</strong></td><td>Design</td><td>Interactive learning modules and educational applications</td></tr>
+          </tbody>
+        </table>
+        <p>Explain why the framework was chosen and show where it shapes the project — for example, which design decisions it informed and which evaluation criteria it provided.</p>
+        <blockquote class="def"><strong>Integrate, don't decorate</strong> — A framework mentioned once in Chapter III and never again is decoration. It should visibly shape the design in Chapter III-E and the evaluation in Chapter IV.</blockquote>
+
+        <h3 id="ch3-c">C. Development Approach</h3>
+        <p>Explains how the application was or will be built. An <strong>iterative or Agile-lite approach</strong> suits most MMS 200 projects. This may mean:</p>
+        <ul>
+          <li>dividing the work into short sprints or milestones (e.g., two-week cycles);</li>
+          <li>building the must-have features first, then adding nice-to-have features;</li>
+          <li>reviewing progress with the adviser or test users at the end of each cycle; and</li>
+          <li>refining the design based on feedback.</li>
+        </ul>
+        <div class="flow">
+          <span class="step">Plan</span><span class="arrow">→</span>
+          <span class="step">Design</span><span class="arrow">→</span>
+          <span class="step">Build</span><span class="arrow">→</span>
+          <span class="step">Test</span><span class="arrow">→</span>
+          <span class="step">Review &amp; refine</span><span class="arrow">↺</span>
+        </div>
+        <p>Include a <strong>project timeline or Gantt chart</strong> showing the major phases or sprints across MMS 200a and MMS 200b.</p>
+        <blockquote class="def"><strong>Apply, don't define</strong> — Explain how the approach was applied to your project — your sprints, your milestones, your review points — rather than giving a textbook definition of Agile.</blockquote>
+
+        <h3 id="ch3-d">D. Architecture and Technology Stack</h3>
+        <p>Describes the technical setup of the application. Keep this section <strong>short</strong>: a simple architecture diagram and a brief justification of each major technology choice.</p>
+        <table class="compare">
+          <thead>
+            <tr><th>Component</th><th>What to describe</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Architecture</strong></td><td>A simple diagram of how the main parts connect (e.g., app ↔ backend ↔ database)</td></tr>
+            <tr><td><strong>Frontend / Engine</strong></td><td>Framework or engine used (e.g., React, Flutter, Unity)</td></tr>
+            <tr><td><strong>Backend &amp; Data</strong></td><td>Server, database, or cloud service, if any</td></tr>
+            <tr><td><strong>Integrations</strong></td><td>External APIs or services, if any</td></tr>
+            <tr><td><strong>Hosting / Distribution</strong></td><td>Where and how the application is deployed or installed</td></tr>
+          </tbody>
+        </table>
+        <blockquote class="def"><strong>Justify your stack</strong> — Answer the question "Why this technology for this project?" For example: why Flutter instead of native Android, or why Unity instead of a web framework. Link each choice to a requirement, the target platform, or a practical constraint such as your existing skills or available time.</blockquote>
+
+        <h3 id="ch3-e">E. Interface and Feature Design</h3>
+        <p>Presents the design of the application and shows how it responds to the requirements. As multimedia students, this is where your design work should be most visible. Include, where applicable:</p>
+
+        <h4>1. Sitemap or user flow</h4>
+        <p>A diagram showing the screens or pages of the application and how users move between them, including the main tasks users complete.</p>
+
+        <h4>2. Wireframes to high-fidelity mockups</h4>
+        <p>Show how the interface developed: low-fidelity wireframes for layout and structure, then high-fidelity mockups showing the final visual design. Present a representative selection of key screens, not every screen.</p>
+
+        <h4>3. UI style guide</h4>
+        <p>Document the visual design system: color palette, typography, iconography, buttons and other interface components, and spacing or layout rules. Explain how these choices suit the target users and support usability and accessibility.</p>
+
+        <h4>4. Media assets</h4>
+        <p>Describe the images, illustrations, animations, audio, video, or 3D assets used in the application — whether created by the student or obtained from other sources — and their licenses. A full asset credit list belongs in the Appendices.</p>
+
+        <h4>5. Features and modules</h4>
+        <p>For each major feature or module, explain its purpose, the key design decisions behind it, and the feature IDs it satisfies (e.g., F-01 to F-03).</p>
+
+        <div class="keyidea">
+          <h3>Mockups in MMS 200a, screenshots in Chapter V</h3>
+          <div class="qgrid">
+            <div class="col">
+              <div class="col-label">Chapter III · MMS 200a</div>
+              <ul><li>Wireframes and mockups communicate the intended design.</li></ul>
+            </div>
+            <div class="col">
+              <div class="col-label">Chapter III · MMS 200b</div>
+              <ul><li>Keep the design process, but move most mockups to the Appendices. Keep a mockup only when it explains a design decision.</li></ul>
+            </div>
+            <div class="col">
+              <div class="col-label">Chapter V · MMS 200b</div>
+              <ul><li>Screenshots of the completed application are presented here.</li></ul>
+            </div>
+          </div>
+        </div>
+        <p style="margin-top:18px;">Write Chapter III-E by:</p>
+        <ol class="commandments">
+          <li><strong>Explaining design rationale.</strong> Why does the screen look and work this way? What alternatives were considered?</li>
+          <li><strong>Connecting to the framework.</strong> Show where your guiding framework in Chapter III-B shaped a decision.</li>
+          <li><strong>Interpreting every figure.</strong> Follow each diagram or mockup with a discussion of what it shows and which features it addresses.</li>
+          <li><strong>Referring to features by ID</strong> instead of repeating the feature list from Chapter III-A.</li>
+        </ol>
+        <blockquote class="def"><strong>Red flags</strong> — Long lists of "The app shall…" statements; mockups with no accompanying discussion; descriptions of <em>what</em> a screen contains but never <em>why</em> it was designed that way; and code-level material such as source code listings, full database documentation, or step-by-step CRUD walkthroughs, which belong in the Appendices.</blockquote>
+      </section>
+
+      <!-- 6. Chapter IV -->
+      <section class="chapter" id="ch4">
+        <div class="eyebrow">06 · The Six Chapters</div>
+        <h2>Chapter IV. Testing and Evaluation Methodology</h2>
+        <p class="lede">This chapter explains how the application was or will be tested and evaluated.</p>
+        <p>For MMS 200a, this chapter specifies the <strong>planned</strong> testing and evaluation procedures. For MMS 200b, it documents how these approved procedures were carried out. Any substantive deviation should be justified and <strong>approved by your adviser</strong>.</p>
+        <div class="callout"><strong>Writing guidance.</strong> Focus on how testing and evaluation were planned and carried out. Raw logs, completed questionnaires, and full test case lists belong in the Appendices.</div>
+
+        <h3 id="ch4-a">A. Functional Testing</h3>
+        <p>Describes how you will check that each feature of the application works as intended, using a set of test cases. Each test case should be traceable to a feature ID from Chapter III-A. Use a simple table such as:</p>
+        <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>Test ID</th><th>Feature</th><th>Steps</th><th>Expected Result</th><th>Actual Result</th><th>Pass / Fail</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="num">TC-01</td><td>F-01</td><td>Add a deadline with title and date; save.</td><td>Deadline appears in the list, sorted by date.</td><td>—</td><td>—</td></tr>
+            <tr><td class="num">TC-02</td><td>F-03</td><td>Set a reminder 1 hour before a deadline.</td><td>Notification appears at the set time.</td><td>—</td><td>—</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p>In Chapter IV, describe the testing approach and show a few representative test cases. Place the complete list in the Appendices.</p>
+
+        <p>Also describe how bugs found during testing will be recorded, fixed, and retested.</p>
+
+        <blockquote class="def"><strong>Only when relevant</strong> — Security testing and performance testing are <strong>not required</strong> unless they matter to your application. For example, include security testing if the application handles user accounts or personal data, and performance testing if it handles large media files or many simultaneous users.</blockquote>
+
+        <h3 id="ch4-b">B. User Evaluation Procedures</h3>
+        <p>Describes how the application will be evaluated by its intended users. Include:</p>
+        <ul>
+          <li><strong>Participants:</strong> who they are, how they are selected, and how they represent the target users.</li>
+          <li><strong>Setting:</strong> where and how the evaluation takes place (in person, online, on whose device).</li>
+          <li><strong>Tasks:</strong> the specific tasks participants will complete, based on the main user stories.</li>
+          <li><strong>Instruments:</strong> the questionnaires and data collection methods used.</li>
+          <li><strong>Analysis:</strong> how the data will be summarized.</li>
+        </ul>
+
+        <h4>Some instruments you may consider</h4>
+        <p>User evaluation is required. The methods below are examples of commonly used instruments for carrying it out; you may use these or other appropriate instruments. Select the ones that best fit your application and your objectives, and justify your choice.</p>
+        <table class="compare">
+          <thead>
+            <tr><th>Method</th><th>What it measures</th><th>How it is reported</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>System Usability Scale (SUS)</strong></td><td>Overall perceived usability, through a standard 10-item questionnaire</td><td>A score from 0–100; 68 is commonly treated as average</td></tr>
+            <tr><td><strong>Task completion rate</strong></td><td>Whether users can complete key tasks without help</td><td>Percentage of participants who completed each task; optionally time on task and errors</td></tr>
+            <tr><td><strong>Think-aloud sessions</strong></td><td>Where and why users struggle, in their own words</td><td>Recurring issues and observations, grouped by theme</td></tr>
+          </tbody>
+        </table>
+        <p>Questionnaires, task sheets, consent forms, and similar materials should be placed in the Appendices.</p>
+      </section>
+
+      <!-- 7. Chapter V -->
+      <section class="chapter" id="ch5">
+        <div class="eyebrow">07 · The Six Chapters</div>
+        <h2>Chapter V. Results and Discussion</h2>
+        <p class="lede">This chapter presents what was actually developed, what was found through testing and evaluation, and what those findings mean.</p>
+        <p>Chapter V forms part of <strong>MMS 200b</strong> and is not required during the MMS 200a proposal stage.</p>
+        <div class="callout"><strong>Writing guidance.</strong> Present the completed application and summarized findings rather than raw documentation or data dumps. Interpret the findings in relation to the objectives, requirements, guiding framework, and related works.</div>
+
+        <h3 id="ch5-a">A. Developed Application and Major Features</h3>
+        <p>Presents the completed application and its major features. Include, where appropriate:</p>
+        <ul>
+          <li>an overview of the completed application;</li>
+          <li>its major features and modules;</li>
+          <li>representative screenshots of important screens and features;</li>
+          <li>a brief explanation of what each major feature does;</li>
+          <li>important workflows or user interactions; and</li>
+          <li>how the implemented features relate to the feature list and objectives.</li>
+        </ul>
+        <p>Screenshots should be <strong>selective and purposeful</strong>. Each should be a numbered, captioned figure discussed in the text. For example:</p>
+        <blockquote class="def"><strong>Figure 5.1. Home Screen</strong> — The accompanying discussion should explain what the screen shows, its role in the application, and the features or objectives it relates to.</blockquote>
+        <div class="callout"><strong>Not a complete visual tour.</strong> Do not include screenshots of every screen, button, form, or minor variation. Comprehensive interface documentation may be placed in the Appendices.</div>
+
+        <h3 id="ch5-b">B. Technical Testing Results</h3>
+        <p>Presents the results of the testing described in Chapter IV-A. Include, where applicable:</p>
+        <ul>
+          <li>a summary of functional test results (e.g., number of test cases passed);</li>
+          <li>security or performance findings, if these were tested;</li>
+          <li>significant issues found and how they were resolved; and</li>
+          <li>an overall statement of whether the application met its intended functionality.</li>
+        </ul>
+        <p>Summarize results in tables or figures. Full test case lists and bug logs belong in the Appendices.</p>
+
+        <h3 id="ch5-c">C. User Evaluation Results</h3>
+        <p>Presents the findings from the user evaluation described in Chapter IV-B. Include, where applicable:</p>
+        <ul>
+          <li>a brief profile of the participants;</li>
+          <li>task completion results;</li>
+          <li>results from the evaluation instruments used and their interpretation;</li>
+          <li>results from any additional instruments;</li>
+          <li>qualitative feedback and think-aloud observations; and</li>
+          <li>recurring themes or issues.</li>
+        </ul>
+        <blockquote class="def"><strong>Organize by purpose</strong> — Organize results by the evaluation objectives rather than reproducing questionnaire responses item by item.</blockquote>
+
+        <h3 id="ch5-d">D. Discussion of Findings</h3>
+        <p>Interprets the findings and explains their significance. The discussion should address questions such as:</p>
+        <ol class="commandments">
+          <li>What do the results indicate about the developed application?</li>
+          <li>To what extent were the planned features implemented and working?</li>
+          <li>To what extent were the objectives achieved?</li>
+          <li>What strengths and weaknesses emerged from testing and evaluation?</li>
+          <li>How do the findings relate to the guiding framework?</li>
+          <li>How does the application compare with the existing apps reviewed in Chapter II?</li>
+          <li>What was learned from designing and developing the application?</li>
+        </ol>
+        <div class="keyidea">
+          <h3>Interpret, don't repeat</h3>
+          <p>Do not merely repeat the results already presented in Chapters V-B and V-C. Explain what the findings mean and why they matter.</p>
+        </div>
+        <p style="margin-top:18px;">Where appropriate, Chapter V may be organized according to the specific objectives in Chapter I to maintain clear alignment across the manuscript.</p>
+      </section>
+
+      <!-- 8. Chapter VI -->
+      <section class="chapter" id="ch6">
+        <div class="eyebrow">08 · The Six Chapters</div>
+        <h2>Chapter VI. Conclusion and Recommendations</h2>
+        <p class="lede">This chapter summarizes the overall contribution of the completed project and identifies directions arising from its findings.</p>
+
+        <h3 id="ch6-a">A. Conclusion</h3>
+        <p>Presents the conclusions that can reasonably be drawn from the project. The conclusion should:</p>
+        <ul>
+          <li>summarize the major findings;</li>
+          <li>state the extent to which each objective was achieved;</li>
+          <li>explain how the developed application addressed the identified problem;</li>
+          <li>highlight the overall contribution of the project; and</li>
+          <li>acknowledge important limitations where relevant.</li>
+        </ul>
+        <div class="callout"><strong>Stay within the evidence.</strong> The conclusion should be based on the evidence presented in Chapter V. It should not introduce new findings or make claims the project did not support.</div>
+
+        <h3 id="ch6-b">B. Recommendations</h3>
+        <p>Presents practical recommendations arising from the findings and limitations of the project. Recommendations may include:</p>
+        <ul>
+          <li>improvements to the application;</li>
+          <li>additional features or integrations;</li>
+          <li>support for additional platforms or devices;</li>
+          <li>deployment or wider release;</li>
+          <li>further evaluation with more or different users; and</li>
+          <li>directions for future projects.</li>
+        </ul>
+        <blockquote class="def"><strong>Remember</strong> — Recommendations should follow from the results and limitations of the project rather than serve as a general wish list of features.</blockquote>
+      </section>
+
+      <!-- 9. References -->
+      <section class="chapter" id="references">
+        <div class="eyebrow">09 · Back Matter</div>
+        <h2>References</h2>
+        <p class="lede">The References section is a required part of the manuscript. It is placed after the last chapter: Chapter IV for MMS 200a, or Chapter VI for MMS 200b.</p>
+        <p>It lists all sources cited in the manuscript, including studies, books, technical documentation, existing apps and products, frameworks, and other works that informed the project.</p>
+        <blockquote class="def"><strong>Use APA format</strong> — Both the reference list and the in-text citations should follow APA style (7th edition).</blockquote>
+        <table class="compare">
+          <thead>
+            <tr><th>Element</th><th>APA requirement</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>In-text citations</strong></td><td>Cite sources in the body using the author–date format, e.g., (Santos, 2024) or Santos (2024). Include page numbers for direct quotations, e.g., (Santos, 2024, p. 15).</td></tr>
+            <tr><td><strong>Reference list</strong></td><td>List entries alphabetically by the first author's surname, with a hanging indent, following APA formatting for each source type, including apps and software.</td></tr>
+          </tbody>
+        </table>
+        <ul>
+          <li>Every source cited in the text should appear in the References, and every entry in the References should be cited in the text.</li>
+          <li>Each source should be verified to exist and to support the claim for which it is cited.</li>
+        </ul>
+        <blockquote class="def"><strong>Remember</strong> — Sources suggested or generated by AI tools must be checked against the actual publication before they are cited.</blockquote>
+      </section>
+
+      <!-- 10. Declaration of AI Use -->
+      <section class="chapter" id="ai-declaration">
+        <div class="eyebrow">10 · Back Matter</div>
+        <h2>Declaration of AI Use</h2>
+        <p class="lede">The Declaration of AI Use is a required part of the manuscript and is placed after the References and before the Appendices.</p>
+        <p>It discloses whether and how AI tools were used in carrying out the project and preparing the manuscript. Where applicable, the declaration should state:</p>
+        <ul>
+          <li>the AI tools used;</li>
+          <li>the purposes for which they were used, such as ideation, literature search, coding assistance, generating media assets, writing, or editing;</li>
+          <li>the parts of the project, application, or manuscript in which they were used; and</li>
+          <li>how AI-generated outputs were reviewed, verified, and revised.</li>
+        </ul>
+        <p>If no AI tools were used, the declaration should state so.</p>
+        <div class="keyidea">
+          <h3>AI assists. Authors remain accountable.</h3>
+          <p>The use of AI tools does not transfer responsibility for the accuracy, originality, and integrity of the project. Students remain accountable for all content they submit.</p>
+        </div>
+      </section>
+
+      <!-- 11. Appendices -->
+      <section class="chapter" id="appendices">
+        <div class="eyebrow">11 · Back Matter</div>
+        <h2>Appendices</h2>
+        <p class="lede">The Appendices contain supporting materials that are important for documentation and verification but would interrupt the flow of the main manuscript if presented in full.</p>
+        <p>Depending on the project, these may include:</p>
+        <div class="refbox">
+          <div class="refbox-label">Possible Appendix Materials</div>
+          <ul>
+            <li>Complete wireframes and mockups</li>
+            <li>Detailed screenshots and interface documentation</li>
+            <li>Full UI style guide</li>
+            <li>Media asset credits and licenses</li>
+            <li>Complete test cases and testing logs</li>
+            <li>Questionnaires, task sheets, and evaluation instruments</li>
+            <li>Interview or survey guides</li>
+            <li>Consent forms and related documents</li>
+            <li>Supplementary diagrams and database schemas</li>
+            <li>Installation or deployment instructions</li>
+            <li>User manual</li>
+            <li>Other supporting materials</li>
+          </ul>
+        </div>
+        <div class="keyidea">
+          <h3>Main manuscript vs. Appendices</h3>
+          <div class="qgrid">
+            <div class="col">
+              <div class="col-label">Main manuscript</div>
+              <ul><li>Only those materials necessary to explain and support the project</li></ul>
+            </div>
+            <div class="col">
+              <div class="col-label">Appendices</div>
+              <ul><li>The more comprehensive design, technical, and documentary record</li></ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 12. Coherence -->
+      <section class="chapter" id="coherence">
+        <div class="eyebrow">12 · Putting It Together</div>
+        <h2>General Guidance on Manuscript Coherence</h2>
+        <p class="lede">The six chapters should not be treated as independent requirements. They should form a coherent progression.</p>
+        <div class="flow">
+          <span class="step">Problem &amp; Objectives</span><span class="arrow">→</span>
+          <span class="step">Related Works &amp; Gap</span><span class="arrow">→</span>
+          <span class="step">Design &amp; Development</span><span class="arrow">→</span>
+          <span class="step">Testing &amp; Evaluation Methodology</span><span class="arrow">→</span>
+          <span class="step">Application, Results &amp; Discussion</span><span class="arrow">→</span>
+          <span class="step">Conclusions &amp; Recommendations</span>
+        </div>
+        <p>Maintain clear alignment throughout the manuscript:</p>
+        <table class="compare">
+          <thead>
+            <tr><th>Element</th><th>Should…</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="num">Problem</td><td>Justify the objectives</td></tr>
+            <tr><td class="num">Objectives</td><td>Guide the design, development, and evaluation</td></tr>
+            <tr><td class="num">User needs &amp; features</td><td>Shape the application's design</td></tr>
+            <tr><td class="num">Guiding framework</td><td>Inform both the design and the evaluation</td></tr>
+            <tr><td class="num">Testing &amp; evaluation</td><td>Produce evidence that answers the objectives</td></tr>
+            <tr><td class="num">Developed application</td><td>Show how the planned features were implemented</td></tr>
+            <tr><td class="num">Results</td><td>Report evidence from testing and evaluation</td></tr>
+            <tr><td class="num">Discussion</td><td>Interpret what that evidence means</td></tr>
+            <tr><td class="num">Conclusions</td><td>Be supported by the results</td></tr>
+          </tbody>
+        </table>
+        <div class="keyidea">
+          <h3>What each stage establishes</h3>
+          <div class="qgrid">
+            <div class="col">
+              <div class="col-label">MMS 200a · Chapters I–IV</div>
+              <ul><li>A clear, feasible plan for the project</li></ul>
+            </div>
+            <div class="col">
+              <div class="col-label">MMS 200b · Chapters I–VI</div>
+              <ul><li>The completed project, carrying out the approved MMS 200a plan, with Chapters I–IV updated in tense and any adviser-approved changes reflected</li></ul>
+            </div>
+          </div>
+        </div>
+        <blockquote class="def" style="margin-top:18px;"><strong>The final manuscript</strong> — should read as an academic account of a completed design and development project, not as a proposal, a software manual, or a collection of screenshots.</blockquote>
+      </section>
+
+      <!-- 13. Key Takeaways -->
+      <section class="chapter" id="takeaways">
+        <div class="eyebrow">13 · Wrap-up</div>
+        <h2>Key Takeaways</h2>
+        <ol class="commandments">
+          <li><strong>MMS 200a is a feasible plan, not a rough idea.</strong> Chapters I–IV should show the problem is investigated, the application justified, and the plan achievable.</li>
+          <li><strong>The approved MMS 200a proposal is your blueprint.</strong> MMS 200b carries out that plan; Chapters I–IV are updated to past or present tense. Any substantive change needs your adviser's approval.</li>
+          <li><strong>No client is required.</strong> A clearly identified target user group with evidenced needs is enough.</li>
+          <li><strong>Objectives must be checkable.</strong> One general objective and 3–5 specific ones. "User-friendly" is not an objective until you say how you will measure it.</li>
+          <li><strong>The comparative analysis is the heart of Chapter II.</strong> Compare 3–5 existing apps in a feature matrix, then discuss it. "No similar app exists" is not a gap.</li>
+          <li><strong>Ground features in user needs.</strong> Use personas, user stories, and a feature list with IDs, traced back to your objectives.</li>
+          <li><strong>Choose a guiding framework and use it.</strong> It should shape both your design and your evaluation.</li>
+          <li><strong>Show your design work.</strong> User flow, wireframes to mockups, style guide, and media assets — with the reasoning behind each decision.</li>
+          <li><strong>Keep the tech section short and justified.</strong> A simple diagram and a reason for each technology choice.</li>
+          <li><strong>Test what matters.</strong> Functional test cases for each feature; security and performance only if relevant.</li>
+          <li><strong>Evaluate with your target users.</strong> Choose evaluation instruments that fit your application and objectives, and justify your choice.</li>
+          <li><strong>References and the Declaration of AI Use are required.</strong> Cite only verified sources and disclose how AI tools were used, including for code and media assets.</li>
+        </ol>
+      </section>
+    </div>
+  </main>
+</div>
+
+<footer>From Proposal to Completed Project · Dr. Reinald Adrian Pugoy</footer>
+
+<script>
+  // Sidebar active-link highlighting on scroll
+  const sections = document.querySelectorAll('section.chapter');
+  const tocLinks = document.querySelectorAll('.toc-link');
+
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const id = entry.target.getAttribute('id');
+        tocLinks.forEach(link=>{
+          link.classList.toggle('active', link.dataset.target === id);
+        });
+      }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px' });
+
+  sections.forEach(sec => observer.observe(sec));
+</script>
+
+</body>
+</html>

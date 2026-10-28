@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IS 201 — Midterm Group Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ---- Design tokens -------------------------------------------------------
+   Theme: "Oblation" — UP forest green sidebar, maroon accents, cool stone
+   paper. Change colors/fonts for the whole site by editing these only.
+   All class names are unchanged from the original template, so topic pages
+   can swap in this <style> block (plus the font <link>) as-is. */
+:root{
+    --bg:#F4F5F1;
+    --paper:#FFFFFF;
+    --ink:#1E2420;
+    --ink-soft:#56605A;
+    --sidebar:#12352A;
+    --sidebar-hover:#1B4637;
+    --sidebar-text:#D3E0D8;
+    --sidebar-text-dim:#8FAA9C;
+    --accent:#8C1D22;
+    --accent-deep:#6A1418;
+    --gold:#B08A3E;
+    --border:#DCE1DA;
+    --rule:#C9D0C7;
+    --correct:#1E6B4C;
+    --correct-bg:#E6F2EB;
+    --incorrect:#9E2A26;
+    --incorrect-bg:#FAECEA;
+    --neutral:#7D5F12;
+    --neutral-bg:#FAF3E2;
+    --serif:"Newsreader", Georgia, "Times New Roman", serif;
+    --sans:"Public Sans", -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+
+  /* ---- Base & typography ---------------------------------------------- */
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+  body{
+    margin:0;
+    font-family:var(--sans);
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:var(--serif);
+    color:var(--ink);
+    line-height:1.2;
+    font-weight:500;
+  }
+  a{color:var(--accent); text-underline-offset:3px; text-decoration-thickness:1px;}
+  a:hover{color:var(--accent-deep); text-decoration-thickness:2px;}
+  :focus-visible{outline:2px solid var(--gold); outline-offset:3px; border-radius:3px;}
+
+  /* ---- Page layout: sidebar + main ------------------------------------
+     .layout wraps everything; nav.sidebar is the sticky dark TOC column.
+     Sidebar TOC markup:
+       <div class="nav-heading">Group label</div>
+       <ol><li><a class="toc-link" href="#id">Label</a></li></ol>
+     Optional sub-links under a toc-link:
+       <ul class="sub"><li><a href="#id">…</a></li></ul>
+     .toc-link.active (added by the IntersectionObserver script at the
+     bottom of the page skeleton) highlights the section in view. -------- */
+  .layout{ min-height:100vh; width:100%; }
+
+  nav.sidebar{
+    width:290px;
+    background:var(--sidebar);
+    color:var(--sidebar-text);
+    padding:34px 0 40px;
+    position:fixed;
+    top:0; left:0;
+    height:100vh;
+    overflow-y:auto;
+    z-index:10;
+    border-right:4px solid var(--accent);
+  }
+  nav.sidebar::-webkit-scrollbar{width:8px;}
+  nav.sidebar::-webkit-scrollbar-thumb{background:var(--sidebar-hover); border-radius:4px;}
+
+  .sidebar .kicker{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:14px;
+    color:var(--sidebar-text-dim);
+    margin:0 26px 4px;
+  }
+  .sidebar .course-title{
+    font-family:var(--serif);
+    font-size:28px;
+    line-height:1.1;
+    color:#fff;
+    margin:0 26px 8px;
+  }
+  .sidebar .course-topic{
+    font-size:13px;
+    color:var(--sidebar-text);
+    margin:0 26px 22px;
+    padding-bottom:22px;
+    border-bottom:1px solid rgba(255,255,255,0.14);
+  }
+  .sidebar .nav-heading{
+    font-family:var(--serif);
+    font-size:15px;
+    color:#E7C98A;
+    margin:22px 26px 6px;
+  }
+  .sidebar .nav-heading:first-of-type{ margin-top:0; }
+  .sidebar ol{ list-style:none; margin:0; padding:0; }
+  .sidebar ol > li{ margin:0; }
+  .sidebar a.toc-link{
+    display:block;
+    text-decoration:none;
+    color:var(--sidebar-text);
+    padding:7px 26px 7px 34px;
+    font-size:14px;
+    border-left:3px solid transparent;
+    transition:background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .sidebar a.toc-link:hover{ background:rgba(255,255,255,0.05); color:#fff; }
+  .sidebar a.toc-link.active{
+    background:var(--sidebar-hover);
+    border-left-color:var(--gold);
+    color:#fff;
+    font-weight:600;
+  }
+  .sidebar ul.sub{
+    list-style:none;
+    margin:2px 0 8px 34px;
+    padding:0;
+    border-left:1px solid rgba(255,255,255,0.14);
+  }
+  .sidebar ul.sub li a{
+    display:block;
+    text-decoration:none;
+    color:var(--sidebar-text-dim);
+    font-size:12.5px;
+    padding:4px 0 4px 14px;
+  }
+  .sidebar ul.sub li a:hover{color:#fff;}
+
+  main{ margin-left:290px; padding:0 0 40px; }
+
+  /* ---- Hero banner (top of main, above the content column) -----------
+     <div class="hero">
+       <div class="kicker">Eyebrow</div>
+       <h1>Title</h1>
+       <p class="dek">Description</p>
+       <span class="byline">Faculty-in-Charge: <strong>Name</strong></span>
+     </div> ------------------------------------------------------------- */
+  .hero{
+    position:relative;
+    background:var(--paper);
+    padding:72px 64px 48px;
+    border-bottom:1px solid var(--border);
+    overflow:hidden;
+  }
+  .hero::after{
+    /* faint section mark — the page's one decorative flourish */
+    content:"§";
+    position:absolute;
+    right:40px; top:-40px;
+    font-family:var(--serif);
+    font-size:300px;
+    line-height:1;
+    color:var(--accent);
+    opacity:0.06;
+    pointer-events:none;
+  }
+  .hero .kicker{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:17px;
+    color:var(--accent);
+    margin-bottom:14px;
+  }
+  .hero h1{
+    font-size:clamp(38px, 5vw, 60px);
+    font-weight:500;
+    letter-spacing:-0.015em;
+    line-height:1.04;
+    margin:0 0 18px;
+    max-width:920px;
+    padding-left:22px;
+    border-left:6px solid var(--accent);
+  }
+  .hero p.dek{
+    max-width:740px;
+    color:var(--ink-soft);
+    font-size:17px;
+    margin:0 0 26px;
+  }
+  .hero .byline{
+    display:inline-block;
+    font-size:14px;
+    color:var(--ink-soft);
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:999px;
+    padding:7px 16px;
+  }
+  .hero .byline strong{color:var(--sidebar); font-weight:600;}
+
+  /* ---- Content column --------------------------------------------------
+     .content-inner is the comfortable-reading-width wrapper inside <main>.
+     Each page section is a <section class="chapter" id="anchor"> with an
+     .eyebrow label (group name, matches the sidebar nav-heading) and an h2.
+     Use .lede for an intro paragraph with a gold left rule. --------------- */
+  .content-inner{ padding:0 64px; max-width:1060px; }
+
+  section.chapter{ padding-top:60px; scroll-margin-top:24px; }
+  section.chapter:first-of-type{ padding-top:48px; }
+
+  .chapter .eyebrow{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:15px;
+    color:var(--accent);
+    margin-bottom:2px;
+  }
+  .chapter h2{
+    font-size:34px;
+    letter-spacing:-0.01em;
+    margin:0 0 20px;
+    padding-bottom:0;
+    border-bottom:none;
+  }
+  .chapter h2::after{
+    content:"";
+    display:block;
+    width:56px;
+    height:3px;
+    background:var(--gold);
+    margin-top:14px;
+  }
+  .chapter h3{
+    font-size:22px;
+    margin:34px 0 12px;
+    color:var(--sidebar);
+  }
+  .chapter h4{
+    font-family:var(--sans);
+    font-size:15px;
+    font-weight:700;
+    margin:22px 0 6px;
+    color:var(--sidebar);
+  }
+  .chapter p{ font-size:16px; margin:0 0 14px; max-width:85ch; }
+  .chapter ul, .chapter ol.plain{ padding-left:22px; margin:0 0 16px; }
+  .chapter li{ font-size:16px; margin-bottom:6px; }
+  .chapter ul li::marker{ color:var(--accent); }
+  .lede{
+    font-family:var(--serif);
+    font-size:21px !important;
+    line-height:1.5;
+    color:var(--ink) !important;
+    border-left:3px solid var(--gold);
+    padding-left:18px;
+    margin:0 0 24px !important;
+  }
+
+  /* ---- Definition / emphasis callout ------------------------------------
+     <blockquote class="def"><strong>Term</strong> — explanation…</blockquote>
+     ------------------------------------------------------------------- */
+  blockquote.def{
+    background:var(--paper);
+    border:1px solid var(--border);
+    border-radius:4px 14px 14px 4px;
+    box-shadow:inset 4px 0 0 var(--sidebar);
+    padding:18px 22px 18px 26px;
+    margin:0 0 16px;
+    font-size:15.5px;
+    color:var(--ink-soft);
+  }
+  blockquote.def strong{
+    color:var(--ink);
+    font-family:var(--serif);
+    font-size:17.5px;
+    font-weight:600;
+  }
+
+  /* ---- Data table --------------------------------------------------------
+     <table class="compare">
+       <thead><tr><th>Col</th><th>Col</th></tr></thead>
+       <tbody><tr><td class="num">Value</td><td>...</td></tr></tbody>
+     </table>
+     Row modifiers: tr.deadline (amber highlight), tr.lowgrade (red highlight)
+     td.num bolds/colors a key figure (grade, week number, percentage). ---- */
+  table.compare{
+    width:100%;
+    border-collapse:collapse;
+    margin:6px 0 22px;
+    font-size:15px;
+    background:var(--paper);
+    border-top:2px solid var(--sidebar);
+    border-bottom:2px solid var(--sidebar);
+  }
+  table.compare th{
+    background:transparent;
+    color:var(--sidebar);
+    text-align:left;
+    padding:11px 14px;
+    font-weight:700;
+    font-size:13px;
+    border-bottom:1px solid var(--rule);
+  }
+  table.compare td{
+    padding:11px 14px;
+    border-top:1px solid var(--border);
+    vertical-align:top;
+  }
+  table.compare tbody tr:first-child td{ border-top:none; }
+  table.compare tbody tr:hover td{ background:#F8FAF7; }
+  table.compare td.num{
+    font-family:var(--serif);
+    font-size:17px;
+    font-weight:600;
+    color:var(--accent);
+    white-space:nowrap;
+  }
+  table.compare tr.deadline td{
+    background:var(--neutral-bg);
+    color:var(--neutral);
+    font-weight:600;
+  }
+  table.compare tr.deadline td:first-child{ box-shadow:inset 4px 0 0 var(--gold); }
+  table.compare tr.lowgrade td{ background:var(--incorrect-bg); color:var(--incorrect); font-weight:600; }
+
+  /* ---- Bio / reference card ------------------------------------------
+     <div class="scholar-card">
+       <span class="tag">Label</span>
+       <h4>Name</h4>
+       <p>Bio text…</p>
+       <ul class="fic-links"><li>Email: <a href="mailto:...">...</a></li></ul>
+     </div> ------------------------------------------------------------- */
+  .scholar-card{
+    background:var(--paper);
+    border:1px solid var(--border);
+    border-top:5px solid var(--accent);
+    border-radius:4px;
+    padding:24px 26px;
+    margin-bottom:18px;
+    scroll-margin-top:24px;
+  }
+  .scholar-card h4{
+    font-family:var(--serif);
+    font-size:22px;
+    font-weight:500;
+    margin:0 0 10px;
+    color:var(--ink);
+  }
+  .scholar-card .tag{
+    display:inline-block;
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:14px;
+    color:var(--accent);
+    margin-bottom:4px;
+  }
+  .scholar-card p{ margin:0 0 6px; font-size:15px; color:var(--ink-soft); }
+  .scholar-card .fic-links{
+    margin:16px 0 0;
+    padding:14px 0 0;
+    list-style:none;
+    border-top:1px solid var(--border);
+    font-size:14px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 24px;
+  }
+  .scholar-card .fic-links li{ margin:0; }
+
+  /* ---- Numbered list (learning outcomes, rules, steps) ----------------
+     <ol class="commandments"><li>Item text</li></ol>
+     Numbers are auto-generated in gold via a CSS counter. ---------------- */
+  .commandments{
+    counter-reset:cmd;
+    padding:0;
+    list-style:none;
+    margin:0 0 20px;
+    border-top:1px solid var(--rule);
+  }
+  .commandments li{
+    counter-increment:cmd;
+    position:relative;
+    padding:14px 0 14px 52px;
+    border-bottom:1px solid var(--rule);
+    margin:0;
+    font-size:16px;
+  }
+  .commandments li::before{
+    content:counter(cmd);
+    position:absolute;
+    left:0;
+    top:12px;
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:30px;
+    line-height:1;
+    color:var(--gold);
+  }
+
+  /* ---- Process/flow chips -----------------------------------------------
+     <div class="flow">
+       <span class="step">Step A</span><span class="arrow">→</span>
+       <span class="step">Step B</span>
+     </div> ------------------------------------------------------------- */
+  .flow{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    align-items:center;
+    margin:6px 0 22px;
+  }
+  .flow .step{
+    background:var(--paper);
+    color:var(--sidebar);
+    border:1.5px solid var(--sidebar);
+    padding:7px 14px;
+    border-radius:4px;
+    font-size:13.5px;
+    font-weight:600;
+    white-space:nowrap;
+  }
+  .flow .arrow{ color:var(--gold); font-size:16px; }
+
+  /* ---- Reference / notes box ---------------------------------------------
+     <div class="refbox">
+       <div class="refbox-label">Heading</div>
+       <ul><li><strong>Key</strong> → meaning</li></ul>
+     </div> ------------------------------------------------------------- */
+  .refbox{
+    background:#EEF2EC;
+    border-radius:10px;
+    padding:18px 22px;
+    margin:0 0 22px;
+  }
+  .refbox .refbox-label{
+    font-family:var(--serif);
+    font-size:18px;
+    color:var(--sidebar);
+    font-weight:600;
+    margin-bottom:8px;
+  }
+  .refbox ul{ margin:0; padding-left:18px; }
+  .refbox li{ font-size:15px; margin-bottom:5px; }
+  .refbox a{ text-decoration:none; border-bottom:1px dotted var(--accent); }
+  .refbox a:hover{ border-bottom-style:solid; }
+
+  /* ---- Weighted requirement row (percentage + description) --------------
+     <div class="req-card">
+       <div class="pct">25<sub>%</sub></div>
+       <div><h4>Title</h4><p>Description…</p></div>
+     </div> ------------------------------------------------------------- */
+  .req-card{
+    display:flex;
+    gap:24px;
+    align-items:flex-start;
+    padding:20px 0;
+    border-bottom:1px solid var(--rule);
+  }
+  .req-card:first-of-type{ border-top:1px solid var(--rule); }
+  .req-card .pct{
+    font-family:var(--serif);
+    font-size:46px;
+    font-weight:500;
+    line-height:0.95;
+    letter-spacing:-0.02em;
+    color:var(--accent);
+    flex:0 0 96px;
+  }
+  .req-card .pct sub{
+    font-size:20px;
+    vertical-align:baseline;
+    color:var(--gold);
+    margin-left:1px;
+  }
+  .req-card h4{
+    font-family:var(--serif) !important;
+    font-size:21px !important;
+    font-weight:500 !important;
+    color:var(--ink) !important;
+    margin:0 0 6px !important;
+  }
+  .req-card p{ margin:0; font-size:15px; color:var(--ink-soft); }
+
+  /* ---- Highlighted key-idea panel (for closing/summary blocks) -----------
+     <div class="keyidea">
+       <h3>Headline</h3>
+       <p>Supporting text…</p>
+       Optional two-column list: <div class="qgrid"><div class="col">
+       <div class="col-label">Label</div><ul><li>Item</li></ul></div></div>
+     </div> ------------------------------------------------------------- */
+  .keyidea{
+    background:var(--sidebar);
+    color:#fff;
+    border-radius:4px;
+    border-left:8px solid var(--gold);
+    padding:32px 34px;
+    margin:8px 0 10px;
+  }
+  .keyidea h3{
+    color:#fff;
+    margin-top:0;
+    font-size:26px;
+    font-weight:400;
+    line-height:1.3;
+  }
+  .keyidea p{ color:var(--sidebar-text); }
+  .keyidea .qgrid{ display:flex; flex-wrap:wrap; gap:6px 24px; margin-top:14px; }
+  .keyidea .qgrid .col{ flex:1 1 220px; }
+  .keyidea .qgrid .col-label{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:15px;
+    color:#E7C98A;
+    margin-bottom:6px;
+  }
+  .keyidea .qgrid ul{ margin:0; padding-left:18px; }
+  .keyidea .qgrid li{ font-size:14.5px; margin-bottom:5px; color:var(--sidebar-text); }
+
+  /* ---- Warning / important-notice callout (red) -----------------------
+     <div class="callout"><strong>Heads up.</strong> Notice text…</div>
+     Add .info for an amber informational variant. --------------------- */
+  .callout{
+    background:var(--incorrect-bg);
+    border-left:4px solid var(--incorrect);
+    border-radius:0 8px 8px 0;
+    padding:14px 18px;
+    margin:0 0 14px;
+    font-size:15px;
+    color:var(--incorrect);
+  }
+  .callout strong{ color:var(--incorrect); }
+  .callout.info{
+    background:var(--neutral-bg);
+    border-left-color:var(--gold);
+    color:#5E4A1A;
+  }
+  .callout.info strong{ color:#5E4A1A; }
+
+  /* ---- Pull-quote list ---------------------------------------------------
+     <ul class="quotes"><li>"Quote text"<span>— Attribution</span></li></ul>
+     ------------------------------------------------------------------- */
+  .quotes{
+    list-style:none;
+    padding:0;
+    margin:10px 0 0;
+    display:grid;
+    gap:22px;
+  }
+  .quotes li{
+    position:relative;
+    padding:0 0 0 44px;
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:20px;
+    line-height:1.45;
+    color:var(--ink);
+  }
+  .quotes li::before{
+    content:"“";
+    position:absolute;
+    left:0; top:-10px;
+    font-family:var(--serif);
+    font-style:normal;
+    font-size:58px;
+    line-height:1;
+    color:var(--accent);
+    opacity:0.55;
+  }
+  .quotes li span{
+    display:block;
+    font-family:var(--sans);
+    font-style:normal;
+    font-size:13.5px;
+    color:var(--ink-soft);
+    margin-top:6px;
+  }
+
+  /* ---- Page-level footnote & footer --------------------------------------
+     <p class="ai-note page-note">Footnote text, placed outside all
+       <section> elements, right before <footer>.</p>
+     <footer>Page footer text</footer>
+     .ai-note (without .page-note) can also be used inside a section as a
+     smaller inline note with just a top rule. --------------------------- */
+  .ai-note{
+    margin-top:26px;
+    padding-top:16px;
+    border-top:1px solid var(--border);
+    font-size:13.5px;
+    color:var(--ink-soft);
+    font-family:var(--serif);
+    font-style:italic;
+  }
+  .ai-note.page-note{
+    max-width:none;
+    margin:56px 64px 0;
+    padding:20px 0 0;
+    text-align:left;
+  }
+
+  footer{
+    margin:18px 64px 0;
+    padding:18px 0 10px;
+    border-top:3px double var(--rule);
+    font-size:12.5px;
+    color:var(--ink-soft);
+  }
+
+  /* ---- Deadline banner (in the hero, between .dek and .byline) ----------
+     <div class="deadline-banner">
+       <div class="dl-label">Submission deadline</div>
+       <div class="dl-date">Sunday, November 15, 2026</div>
+       <div class="dl-time">11:59:59 PM · GMT+8 (Philippine time)</div>
+     </div> ------------------------------------------------------------- */
+  .deadline-banner{
+    position:relative;
+    z-index:1;
+    display:block;
+    width:fit-content;
+    max-width:100%;
+    background:var(--accent);
+    color:#fff;
+    border-radius:5px;
+    border-left:6px solid var(--gold);
+    padding:10px 18px 11px;
+    margin:0 0 20px;
+  }
+  .deadline-banner .dl-label{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:14px;
+    color:#F3D9A4;
+  }
+  .deadline-banner .dl-date{
+    display:inline;
+    font-family:var(--serif);
+    font-size:21px;
+    font-weight:600;
+    line-height:1.3;
+  }
+  .deadline-banner .dl-time{
+    display:inline;
+    font-size:14.5px;
+    font-weight:700;
+    margin-left:8px;
+    white-space:nowrap;
+  }
+  .deadline-banner .dl-note{
+    font-size:13px;
+    color:#F2DCDC;
+    margin-top:3px;
+  }
+
+  /* ---- Action button (link styled as a button) ---------------------------
+     <a class="btn" href="…" target="_blank" rel="noopener">Label</a> ---- */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:var(--sidebar);
+    color:#fff;
+    text-decoration:none;
+    font-weight:600;
+    font-size:15px;
+    padding:12px 22px;
+    border-radius:6px;
+    border-bottom:3px solid var(--gold);
+    margin:0 0 20px;
+    transition:background 0.15s ease;
+  }
+  .btn:hover{ background:var(--sidebar-hover); color:#fff; text-decoration:none; }
+  .btn .btn-icon{ font-size:14px; opacity:0.8; }
+
+  @media (max-width: 880px){
+    nav.sidebar{
+      position:relative;
+      width:100%;
+      height:auto;
+      border-right:none;
+      border-bottom:4px solid var(--accent);
+    }
+    main{ margin-left:0; }
+    .hero{ padding:44px 22px 34px; }
+    .hero::after{ font-size:180px; right:10px; top:-20px; }
+    .hero h1{ padding-left:16px; border-left-width:5px; }
+    .content-inner{ padding:0 22px; }
+    .req-card .pct{ flex-basis:72px; font-size:38px; }
+    .deadline-banner .dl-date{ font-size:19px; }
+    .deadline-banner .dl-time{ display:block; margin-left:0; }
+    .ai-note.page-note, footer{ margin-left:22px; margin-right:22px; }
+    table.compare{ display:block; overflow-x:auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <nav class="sidebar" aria-label="Table of contents">
+    <div class="kicker">IS 201 · Computer Ethics</div>
+    <div class="course-title">Midterm Group Report</div>
+    <p class="course-topic">Workplace Computer Ethics Case Analysis</p>
+
+    <div class="nav-heading">The Requirement</div>
+    <ol>
+      <li><a class="toc-link" href="#overview">Overview</a></li>
+      <li><a class="toc-link" href="#case-selection">Case Selection</a></li>
+      <li><a class="toc-link" href="#confidentiality">Confidentiality &amp; Disclosure</a></li>
+    </ol>
+
+    <div class="nav-heading">Report Structure</div>
+    <ol>
+      <li><a class="toc-link" href="#structure">At a Glance</a></li>
+      <li><a class="toc-link" href="#abstract">Abstract</a></li>
+      <li><a class="toc-link" href="#s1">I. Case Background</a></li>
+      <li><a class="toc-link" href="#s2">II. Problem &amp; Ethical Issues</a></li>
+      <li><a class="toc-link" href="#s3">III. Stakeholder Analysis</a></li>
+      <li><a class="toc-link" href="#s4">IV. Ethical, Professional &amp; Societal Analysis</a>
+        <ul class="sub">
+          <li><a href="#s4a">A. Ethical Frameworks</a></li>
+          <li><a href="#s4b">B. Professional, Legal &amp; Organizational</a></li>
+          <li><a href="#s4c">C. Societal Implications</a></li>
+          <li><a href="#s4d">D. Additional Ethical Principles</a></li>
+          <li><a href="#s4e">E. Synthesis</a></li>
+        </ul>
+      </li>
+      <li><a class="toc-link" href="#s5">V. Ethical Evaluation &amp; Recommendations</a>
+        <ul class="sub">
+          <li><a href="#s5a">A–C. Courses of Action</a></li>
+          <li><a href="#s5d">D. Comparison</a></li>
+          <li><a href="#s5e">E. Recommended Course of Action</a></li>
+          <li><a href="#s5f">F. Counterargument and Response</a></li>
+        </ul>
+      </li>
+      <li><a class="toc-link" href="#s6">VI. Summary</a></li>
+      <li><a class="toc-link" href="#references">References</a></li>
+      <li><a class="toc-link" href="#appendices">Appendices</a>
+        <ul class="sub">
+          <li><a href="#appx-a">A. Individual Reflections</a></li>
+          <li><a href="#appx-b">B. Contribution Statement</a></li>
+          <li><a href="#appx-c">C. Declaration of AI Use</a></li>
+        </ul>
+      </li>
+    </ol>
+
+    <div class="nav-heading">Submission &amp; Grading</div>
+    <ol>
+      <li><a class="toc-link" href="#scope">Scope &amp; Length</a></li>
+      <li><a class="toc-link" href="#submission">Submission Requirements</a></li>
+      <li><a class="toc-link" href="#studiosity">Writing Feedback: Studiosity</a></li>
+      <li><a class="toc-link" href="#rubric">Grading Rubric</a></li>
+    </ol>
+
+    <div class="nav-heading">Closing</div>
+    <ol>
+      <li><a class="toc-link" href="#reminders">Important Reminders</a></li>
+      <li><a class="toc-link" href="#guiding">Guiding Question</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <div class="hero">
+      <div class="kicker">IS 201: Computer Ethics · Midterm Requirement</div>
+      <h1>Midterm Group Report: Workplace Computer Ethics Case Analysis</h1>
+      <p class="dek">Identify a real ethical issue from a group member's workplace, analyze it with the frameworks and principles from IS 201, and defend the most ethically defensible course of action.</p>
+      <div class="deadline-banner" role="note" aria-label="Submission deadline">
+        <div class="dl-label">Submission deadline</div>
+        <div class="dl-date">Sunday, November 15, 2026</div>
+        <div class="dl-time">11:59:59 PM · GMT+8 (Philippine time)</div>
+        <div class="dl-note">Submit through MyPortal. Late submissions will not be accepted.</div>
+      </div>
+      <span class="byline">Faculty-in-Charge: <strong>Dr. Reinald Adrian Pugoy</strong> — First Semester, AY 2026–2027</span>
+    </div>
+
+    <div class="content-inner">
+
+      <!-- Overview -->
+      <section class="chapter" id="overview">
+        <div class="eyebrow">The Requirement</div>
+        <h2>Overview</h2>
+        <p class="lede">Each group will identify and critically analyze a real-world computer ethics issue experienced or directly observed by at least one group member in their workplace or organization.</p>
+        <p>The purpose of this requirement is to apply the concepts, ethical frameworks, and principles discussed in IS 201 to an authentic situation and develop a reasoned and ethically defensible response.</p>
+
+        <div class="req-card">
+          <div class="pct">25<sub>%</sub></div>
+          <div><h4>Of your final course grade</h4><p>The Midterm Group Report is due on <strong>November 15, 2026, 11:59:59 PM (GMT+8)</strong>, submitted through MyPortal as a compiled PDF and a ZIP of the complete LaTeX project.</p></div>
+        </div>
+      </section>
+
+      <!-- Case Selection -->
+      <section class="chapter" id="case-selection">
+        <div class="eyebrow">The Requirement</div>
+        <h2>Case Selection</h2>
+        <p>Each group must identify <strong>one real-world issue</strong> involving computing, information systems, data, digital technologies, or the professional practice of computing.</p>
+        <p>The case must have been <strong>experienced or directly observed by at least one group member in their workplace or organization</strong>. It should not be based solely on a news article, hypothetical scenario, or case found online.</p>
+        <p>The case must involve a <strong>meaningful ethical tension, dilemma, or conflict</strong>. A purely technical or operational problem is not sufficient.</p>
+
+        <blockquote class="def"><strong>An event is not yet an ethical problem.</strong> “The organization experienced a data breach” describes an event but does not by itself constitute an ethical problem. An ethical case might instead examine whether and how the breach should be disclosed, who should be informed, how competing organizational and stakeholder interests should be balanced, and what responsibilities computing professionals have when faced with conflicting obligations.</blockquote>
+      </section>
+
+      <!-- Confidentiality -->
+      <section class="chapter" id="confidentiality">
+        <div class="eyebrow">The Requirement</div>
+        <h2>Confidentiality and Disclosure</h2>
+        <p>The actual organization <strong>does not need to be named in the report</strong>. Groups may use a pseudonym or a general description of the organization. Names of individuals, systems, projects, clients, and other identifying information should likewise be anonymized when appropriate.</p>
+        <div class="callout">Do not disclose confidential, proprietary, personally identifiable, security-sensitive, or otherwise restricted information.</div>
+
+        <div class="refbox">
+          <div class="refbox-label">Disclose privately to the professor</div>
+          <ul>
+            <li>The actual name of the organization</li>
+            <li>The group member who experienced or directly observed the case</li>
+          </ul>
+        </div>
+        <a class="btn" href="https://myportal.upou.edu.ph/mod/forum/view.php?id=360686" target="_blank" rel="noopener">Submit your private disclosure on MyPortal <span class="btn-icon" aria-hidden="true">↗</span></a>
+        <p>This information is for verification purposes only and should not appear in the report.</p>
+        <p>Exercise professional judgment when presenting workplace situations. The objective is to analyze the <strong>ethical problem</strong>, not to expose or investigate particular organizations or individuals.</p>
+      </section>
+
+      <!-- Structure at a glance -->
+      <section class="chapter" id="structure">
+        <div class="eyebrow">Report Structure</div>
+        <h2>The Report at a Glance</h2>
+        <p>Use the shared LaTeX template, which already contains the title page, abstract, table of contents, every section heading, and the tables described below. Your report should move from understanding the case to defending an ethically reasoned decision, in this order:</p>
+        <div class="flow">
+          <span class="step">Abstract</span><span class="arrow">→</span>
+          <span class="step">I. Background</span><span class="arrow">→</span>
+          <span class="step">II. Ethical Issues</span><span class="arrow">→</span>
+          <span class="step">III. Stakeholders</span><span class="arrow">→</span>
+          <span class="step">IV. Ethical, Professional &amp; Societal Analysis</span><span class="arrow">→</span>
+          <span class="step">V. Evaluation &amp; Recommendations</span><span class="arrow">→</span>
+          <span class="step">VI. Summary</span>
+        </div>
+        <p>Followed by <strong>References</strong> (APA 7th edition) and three <strong>Appendices</strong>: Individual Ethical Reflections, Group Contribution Statement, and Declaration of AI Use.</p>
+        <div class="callout info">The template contains guide text and notes in each section. <strong>Delete all guide text before submission.</strong></div>
+      </section>
+
+      <!-- Abstract -->
+      <section class="chapter" id="abstract">
+        <div class="eyebrow">Report Structure</div>
+        <h2>Abstract</h2>
+        <p>Give an overall view of the report in <strong>not more than 250 words</strong>. Briefly state:</p>
+        <ul>
+          <li>the workplace context of the case, without identifying the organization;</li>
+          <li>the central ethical problem and the major stakeholders;</li>
+          <li>the ethical frameworks and principles applied;</li>
+          <li>the course of action the group recommends, and why; and</li>
+          <li>the main lesson of the case for ethical responsibility in computing or information systems practice.</li>
+        </ul>
+        <p>Write the abstract <strong>last</strong>, after the rest of the report is complete.</p>
+      </section>
+
+      <!-- I -->
+      <section class="chapter" id="s1">
+        <div class="eyebrow">Report Structure · Section I</div>
+        <h2>Case Background and Context</h2>
+        <p>Establish the factual and contextual foundation of the case.</p>
+        <ul>
+          <li>Describe what happened or what is happening.</li>
+          <li>Explain the technological, social, institutional, organizational, and legal context necessary to understand the case.</li>
+          <li>Support the account with credible evidence or sources, such as academic, professional, legal, institutional, or industry sources.</li>
+          <li>Explain why the case matters from a computer ethics perspective.</li>
+        </ul>
+        <p>Provide enough information for a reader unfamiliar with the organization to understand the situation without unnecessarily revealing confidential or identifying information.</p>
+        <blockquote class="def"><strong>Describe the organization generally.</strong> Use a pseudonym or a general description, such as “a private financial services company,” “a government agency,” or “a higher education institution,” and anonymize the names of employees, clients, systems, and projects.</blockquote>
+      </section>
+
+      <!-- II -->
+      <section class="chapter" id="s2">
+        <div class="eyebrow">Report Structure · Section II</div>
+        <h2>Problem and Ethical Issues</h2>
+        <p>Clearly identify the problem being examined.</p>
+        <blockquote class="def"><strong>Central Ethical Problem</strong> — State the central ethical problem or dilemma that the group seeks to resolve, framed as a genuine question about what ought to be done.</blockquote>
+        <blockquote class="def"><strong>Specific Ethical Questions</strong> — Identify the specific ethical questions arising from the case, such as questions of rights, duties, harms and benefits, fairness, autonomy and consent, privacy, transparency, accountability, or competing obligations, and connect each to the facts of the case.</blockquote>
+        <blockquote class="def"><strong>Dimensions of the Problem</strong> — Distinguish among the technical, legal, organizational, professional, and ethical dimensions of the problem.</blockquote>
+        <div class="callout info">Make clear why the issue <strong>cannot be resolved solely</strong> by determining what is technically possible, legally permissible, or organizationally convenient.</div>
+      </section>
+
+      <!-- III -->
+      <section class="chapter" id="s3">
+        <div class="eyebrow">Report Structure · Section III</div>
+        <h2>Stakeholder Analysis</h2>
+        <p>Identify and analyze the major stakeholders involved in or affected by the case, <strong>by role rather than by name</strong>. For each significant stakeholder or stakeholder group, consider its:</p>
+        <div class="flow">
+          <span class="step">Interests</span>
+          <span class="step">Rights</span>
+          <span class="step">Responsibilities</span>
+          <span class="step">Vulnerabilities</span>
+          <span class="step">Power or influence</span>
+          <span class="step">Benefits and harms</span>
+          <span class="step">Conflicting interests</span>
+        </div>
+        <p>Demonstrate how different decisions may affect different stakeholders, and how competing interests or responsibilities contribute to the ethical complexity of the case.</p>
+        <div class="refbox">
+          <div class="refbox-label">Table 1 in the template: Summary of Stakeholder Analysis</div>
+          <ul>
+            <li>Use it to organize the analysis, adding or removing rows as needed.</li>
+            <li>It does not replace substantive discussion. Follow the table with a discussion of what it reveals.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- IV -->
+      <section class="chapter" id="s4">
+        <div class="eyebrow">Report Structure · Section IV</div>
+        <h2>Ethical, Professional, and Societal Analysis</h2>
+        <p class="lede">This section forms the core of the report.</p>
+        <p>Analyze the case through the ethical frameworks discussed in the course, the professional, legal, and organizational obligations that apply, the wider societal implications of the case, and any additional ethical principles the case requires. The ethical frameworks discussed in IS 201 should serve as the primary analytical lenses.</p>
+
+        <h3>For each applicable framework or additional principle</h3>
+        <ol class="commandments">
+          <li>Explain what it considers ethically or morally relevant.</li>
+          <li>Explain why it is applicable to the case.</li>
+          <li>Apply it systematically to the facts and circumstances of the case.</li>
+          <li>Determine what action, responsibility, or position it would support.</li>
+          <li>Identify limitations, tensions, or conflicts in its application.</li>
+        </ol>
+        <div class="callout">Simply defining or summarizing ethical frameworks, principles, codes, or laws is not sufficient. The emphasis should be on <strong>applying them to reason through the actual ethical problem</strong>.</div>
+
+        <h3 id="s4a">A. Ethical Frameworks Discussed in the Course</h3>
+        <p>Apply <strong>all ethical frameworks discussed in the course</strong> that the group determines to be applicable to the case, following the five steps above. Present each framework under its own heading.</p>
+
+        <h3 id="s4b">B. Professional, Legal, and Organizational Obligations</h3>
+        <p>Examine what the profession, the law, and the organization require in this case, and who is responsible for meeting those requirements. Assess whether these obligations were met and whether they were adequate to the situation. Consider:</p>
+        <ul>
+          <li>responsibilities of computing and IT professionals;</li>
+          <li>relevant professional codes or standards, such as the ACM Code of Ethics and Professional Conduct;</li>
+          <li>applicable laws and regulations, such as the Data Privacy Act of 2012 (RA 10173), the Cybercrime Prevention Act of 2012 (RA 10175), or the Intellectual Property Code of the Philippines (RA 8293); and</li>
+          <li>organizational policies or governance mechanisms.</li>
+        </ul>
+        <blockquote class="def"><strong>Compliant is not the same as ethical.</strong> Distinguish among legal, organizational, professional, and ethical obligations in the case. Something may comply with a law or organizational policy and still raise significant ethical concerns.</blockquote>
+
+        <h3 id="s4c">C. Societal Implications</h3>
+        <p>Examine the case beyond the immediate ethical dilemma. Discuss its wider effects on users, institutions, society, and the computing profession, such as effects on public trust, digital inclusion, or professional norms.</p>
+
+        <h3 id="s4d">D. Additional Ethical Principles</h3>
+        <p>Identify and justify additional ethical principles that address what Subsections A to C leave unresolved, drawing from appropriate scholarly literature, professional codes, standards, or established ethical guidelines, and cite the sources.</p>
+        <ul>
+          <li>Explain the gap each principle addresses.</li>
+          <li>Apply each principle following the same five steps, and present each under its own heading.</li>
+          <li>Do not repeat obligations already examined in Subsection B.</li>
+        </ul>
+
+        <h3 id="s4e">E. Synthesis</h3>
+        <p>Conclude the section by synthesizing the analysis. Identify where the frameworks, obligations, societal considerations, and principles <strong>converge</strong>, where they lead to <strong>different conclusions</strong>, and what ethical tensions or trade-offs <strong>remain unresolved</strong>. This synthesis provides the basis for evaluating the courses of action in Section V.</p>
+      </section>
+
+      <!-- V -->
+      <section class="chapter" id="s5">
+        <div class="eyebrow">Report Structure · Section V</div>
+        <h2>Ethical Evaluation and Recommendations</h2>
+        <p class="lede">Develop at least three plausible and realistic courses of action in response to the ethical problem.</p>
+        <p>The alternatives should represent <strong>meaningfully different responses</strong> rather than minor variations of the same solution.</p>
+
+        <h3 id="s5a">A–C. Courses of Action 1 to 3</h3>
+        <p>Present each course of action under its own subsection, with a short description in its heading. Additional courses of action may be added as further subsections. For each one:</p>
+        <ul>
+          <li>explain what the proposed response entails;</li>
+          <li>analyze its potential benefits and advantages;</li>
+          <li>analyze its risks and potential harms;</li>
+          <li>consider its implications for the relevant stakeholders;</li>
+          <li>examine its ethical consequences and trade-offs; and</li>
+          <li>evaluate it using the ethical analysis developed earlier.</li>
+        </ul>
+
+        <h3 id="s5d">D. Comparison of the Courses of Action</h3>
+        <p>Compare the courses of action with one another. <strong>Table 2</strong> in the template (Comparative Evaluation of Courses of Action) may be used to summarize the comparison, but it should be accompanied by analytical discussion.</p>
+
+        <h3 id="s5e">E. Recommended Course of Action</h3>
+        <ol class="commandments">
+          <li>Identify the course of action the group considers <strong>most ethically defensible</strong>, and provide a clear and reasoned argument for this position.</li>
+          <li>Explain why the selected course of action is preferable to the alternatives.</li>
+          <li>Connect the decision to the ethical frameworks, principles, and evidence presented earlier.</li>
+          <li>Provide concrete and realistic recommendations to the relevant stakeholders, such as management, IT staff, policy owners, and affected users.</li>
+        </ol>
+
+        <h3 id="s5f">F. Counterargument and Response</h3>
+        <p>Identify the <strong>strongest reasonable counterargument</strong> to the group's position, stated fairly and in its most persuasive form, and respond to it.</p>
+        <div class="callout info">The objective is not merely to state what the group believes. The group must <strong>defend its position through ethical reasoning</strong>.</div>
+      </section>
+
+      <!-- VI -->
+      <section class="chapter" id="s6">
+        <div class="eyebrow">Report Structure · Section VI</div>
+        <h2>Summary</h2>
+        <p>Provide a concise summary of the case and the group's analysis. The section should:</p>
+        <ul>
+          <li>restate the central ethical problem;</li>
+          <li>summarize the most important insights from the stakeholder, ethical, professional, and societal analyses;</li>
+          <li>state the group's final position and key recommendations; and</li>
+          <li>highlight the main lesson or implication of the case for ethical responsibility in computing or information systems practice.</li>
+        </ul>
+        <p>The Summary should <strong>synthesize the report</strong> rather than introduce new arguments, evidence, or issues.</p>
+      </section>
+
+      <!-- References -->
+      <section class="chapter" id="references">
+        <div class="eyebrow">Report Structure</div>
+        <h2>References</h2>
+        <p>Use credible and appropriate sources to support factual, theoretical, legal, professional, and contextual claims. Use <strong>APA Style (7th edition)</strong> for both in-text citations and the reference list.</p>
+        <blockquote class="def"><strong>In-text citations</strong> — Use the author–date format, e.g., (Santos, 2024) or Santos (2024). Include page numbers for direct quotations, e.g., (Santos, 2024, p. 15).</blockquote>
+        <blockquote class="def"><strong>Reference list</strong> — List entries alphabetically by the first author's surname, with a hanging indent, following the APA format for each source type. In the template, type each entry as its own paragraph inside the <code>apareferences</code> environment; the hanging indent is applied automatically.</blockquote>
+        <p>Every source cited in the text should appear in the References, and every entry in the References should be cited in the text. <strong>Verify that each source exists and supports the claim</strong> for which it is cited, including sources suggested or generated by AI tools.</p>
+        <a class="btn" href="https://apastyle.apa.org/style-grammar-guidelines/references/examples" target="_blank" rel="noopener">APA 7th edition reference examples <span class="btn-icon" aria-hidden="true">↗</span></a>
+      </section>
+
+      <!-- Appendices -->
+      <section class="chapter" id="appendices">
+        <div class="eyebrow">Report Structure</div>
+        <h2>Appendices</h2>
+
+        <h3 id="appx-a">Appendix A. Individual Ethical Reflections</h3>
+        <p>Each group member must provide a short, <strong>individually identified reflection</strong>, under a heading with their name, addressing:</p>
+        <ol class="commandments">
+          <li>What aspect of the case did you find most ethically difficult or significant?</li>
+          <li>Did your initial position change after the group's analysis? Why or why not?</li>
+          <li>What responsibility does a computing or information systems professional have when encountering a similar situation?</li>
+        </ol>
+        <p>The reflection should demonstrate the member's own ethical engagement with the case and should not simply summarize the group report.</p>
+
+        <h3 id="appx-b">Appendix B. Group Contribution Statement</h3>
+        <p>Identify the substantive contribution of each group member in <strong>Table 3</strong> of the template. The statement should make clear how each member participated in the investigation, analysis, writing, and/or revision of the report.</p>
+        <p>The final submission should read as <strong>one coherent report</strong>, not as independently written sections simply combined into one document. All members remain collectively responsible for the quality and integrity of the final submission.</p>
+
+        <h3 id="appx-c">Appendix C. Declaration of AI Use</h3>
+        <p>Declare <strong>whether and how AI tools were used</strong> in completing the requirement, including generative AI tools and AI-powered writing feedback such as Studiosity. If AI was used, identify:</p>
+        <ul>
+          <li>the AI tool(s) used;</li>
+          <li>the purposes for which each tool was used;</li>
+          <li>the parts or stages of the work in which AI assistance was used; and</li>
+          <li>how the group reviewed, verified, revised, or otherwise took responsibility for the AI-assisted output.</li>
+        </ul>
+        <p>Record each use in <strong>Table 4</strong> of the template, one row per tool and purpose. If no AI tool was used, delete the table and replace it with an explicit statement to that effect.</p>
+        <div class="callout info">The declaration does not exempt the group from responsibility for the submitted work. All members remain responsible for its accuracy, originality, ethical reasoning, citations, and overall integrity.</div>
+      </section>
+
+      <!-- Scope -->
+      <section class="chapter" id="scope">
+        <div class="eyebrow">Submission &amp; Grading</div>
+        <h2>Scope and Length</h2>
+        <table class="compare">
+          <thead><tr><th>Item</th><th>Requirement</th></tr></thead>
+          <tbody>
+            <tr><td>Main report (Sections I to VI)</td><td class="num">3,500–5,000 words</td></tr>
+            <tr><td>Abstract</td><td class="num">250 words max</td></tr>
+            <tr><td>Excluded from word count</td><td>References and appendices</td></tr>
+            <tr><td>Group size</td><td class="num">4–5 students</td></tr>
+          </tbody>
+        </table>
+        <p>The emphasis is on the <strong>depth, coherence, and quality of the ethical analysis</strong>, not simply the length of the report.</p>
+      </section>
+
+      <!-- Submission -->
+      <section class="chapter" id="submission">
+        <div class="eyebrow">Submission &amp; Grading</div>
+        <h2>Submission Requirements</h2>
+        <p>The report must be prepared using <strong>LaTeX</strong>. Start from the shared Overleaf project below.</p>
+        <a class="btn" href="https://www.overleaf.com/project/6adafef4148298048c7912a7/share#40c76d1661245c1f96937b28a1f790dd76a2c16775144d37" target="_blank" rel="noopener">Open the LaTeX template on Overleaf <span class="btn-icon" aria-hidden="true">↗</span></a>
+        <p>Each group must submit both of the following through <strong>MyPortal</strong>:</p>
+        <ol class="commandments">
+          <li>The <strong>final compiled PDF</strong>.</li>
+          <li>The <strong>complete LaTeX source files</strong> as a ZIP file, including all <code>.tex</code> files, bibliography files, figures, and other files necessary to compile the report.</li>
+        </ol>
+        <div class="callout"><strong>Deadline: November 15, 2026, 11:59:59 PM (GMT+8).</strong> Late submissions will not be accepted.</div>
+        <div class="callout"><strong>The LaTeX project must compile successfully.</strong> Non-compliant submissions will not be considered for grading.</div>
+      </section>
+
+      <!-- Studiosity -->
+      <section class="chapter" id="studiosity">
+        <div class="eyebrow">Submission &amp; Grading</div>
+        <h2>Writing Feedback through Studiosity</h2>
+        <p class="lede">Get feedback on your draft before you submit.</p>
+        <p>Groups are <strong>highly encouraged</strong> to use <strong>Studiosity</strong>, available to UPOU students through MyPortal, and to use the feedback to improve the clarity, structure, grammar, and referencing of their writing.</p>
+        <ul>
+          <li>You can use Studiosity <strong>anytime</strong>, at any stage of your writing.</li>
+          <li>Feedback addresses writing quality, not the substance of your ethical analysis. The reasoning, arguments, and decisions remain the group's own.</li>
+          <li>Review each suggestion critically. Accept what improves the report and set aside what does not fit your argument.</li>
+        </ul>
+        <div class="callout info"><strong>Declare it in Appendix C.</strong> Studiosity's feedback is AI-assisted, so record its use in the Declaration of AI Use, including what was submitted and how the group acted on the feedback.</div>
+      </section>
+
+      <!-- Rubric -->
+      <section class="chapter" id="rubric">
+        <div class="eyebrow">Submission &amp; Grading</div>
+        <h2>Grading Rubric</h2>
+
+        <div class="req-card">
+          <div class="pct">15<sub>%</sub></div>
+          <div><h4>Understanding of the Case and Ethical Problem</h4><p>Sections I–II: a clear factual foundation and a sharply defined ethical problem.</p></div>
+        </div>
+        <div class="req-card">
+          <div class="pct">15<sub>%</sub></div>
+          <div><h4>Stakeholder Analysis</h4><p>Section III: stakeholders identified by role, their interests, rights, vulnerabilities, and power, and how competing interests shape the case.</p></div>
+        </div>
+        <div class="req-card">
+          <div class="pct">35<sub>%</sub></div>
+          <div><h4>Ethical, Professional, and Societal Analysis</h4><p>Section IV, all subsections: application of the course frameworks, professional, legal, and organizational obligations, societal implications, additional ethical principles, and the synthesis across them.</p></div>
+        </div>
+        <div class="req-card">
+          <div class="pct">25<sub>%</sub></div>
+          <div><h4>Ethical Evaluation and Recommendations</h4><p>Section V: meaningfully different alternatives, a defended position, and a response to the strongest counterargument.</p></div>
+        </div>
+        <div class="req-card">
+          <div class="pct">10<sub>%</sub></div>
+          <div><h4>Writing Quality, Organization, and Use of Sources</h4><p>Coherence as one report, clarity, and correct APA 7th edition citation.</p></div>
+        </div>
+
+        <h3>Performance Levels</h3>
+        <blockquote class="def"><strong>Excellent</strong> — Demonstrates comprehensive, insightful, and well-supported analysis. Ethical reasoning is rigorous and nuanced, and conclusions follow convincingly from the evidence and analysis.</blockquote>
+        <blockquote class="def"><strong>Proficient</strong> — Demonstrates sound and generally well-supported analysis, with only minor gaps in depth, integration, or reasoning.</blockquote>
+        <blockquote class="def"><strong>Developing</strong> — Demonstrates partial understanding or analysis. Important aspects may be insufficiently developed, overly descriptive, weakly supported, or inadequately integrated.</blockquote>
+        <blockquote class="def"><strong>Insufficient</strong> — Demonstrates limited ethical analysis or substantial misunderstanding of the case. Major requirements are missing, inadequately addressed, or based largely on unsupported description or opinion.</blockquote>
+      </section>
+
+      <!-- Reminders -->
+      <section class="chapter" id="reminders">
+        <div class="eyebrow">Closing</div>
+        <h2>Important Reminders</h2>
+
+        <blockquote class="def"><strong>Authenticity of the case</strong> — The case must originate from the actual workplace or organizational experience of at least one group member. Invented cases or cases taken entirely from published sources do not satisfy this requirement.</blockquote>
+        <blockquote class="def"><strong>Focus on ethical analysis</strong> — A detailed description of what happened is not, by itself, an ethical analysis. The report should progress from understanding the case to identifying the ethical issues, analyzing stakeholders, applying ethical frameworks and principles, examining professional and societal dimensions, evaluating alternatives, and defending an ethically reasoned decision.</blockquote>
+        <blockquote class="def"><strong>Confidentiality and professional responsibility</strong> — Do not include information that could unnecessarily compromise the privacy, confidentiality, security, or legitimate interests of individuals or organizations. Anonymize, generalize, or omit information where appropriate.</blockquote>
+        <blockquote class="def"><strong>Group responsibility</strong> — This requirement is designed for a group of 4–5 students and should demonstrate meaningful intellectual participation from all members.</blockquote>
+        <blockquote class="def"><strong>AI use</strong> — AI tools may support the group's work where permitted, but it must not substitute for the group's own investigation, ethical reasoning, judgment, or individual reflection. All use of AI must be declared in Appendix C. The group remains fully responsible for the submitted work.</blockquote>
+      </section>
+
+      <!-- Guiding question -->
+      <section class="chapter" id="guiding">
+        <div class="eyebrow">Closing</div>
+        <h2>Guiding Question</h2>
+        <div class="keyidea">
+          <h3>Given the actual circumstances of this workplace case, what is the most ethically defensible course of action, and why?</h3>
+          <p>Every section of your report should help answer this question.</p>
+        </div>
+      </section>
+
+    </div>
+
+    <footer>IS 201: Computer Ethics · Midterm Group Report · Master in Information Systems, UP Open University · First Semester, AY 2026–2027</footer>
+  </main>
+</div>
+
+<script>
+  const sections = document.querySelectorAll('section.chapter');
+  const tocLinks = document.querySelectorAll('.toc-link');
+
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const id = entry.target.getAttribute('id');
+        tocLinks.forEach(link=>{
+          link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px' });
+
+  sections.forEach(sec => observer.observe(sec));
+</script>
+
+</body>
+</html>

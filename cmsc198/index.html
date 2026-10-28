@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CMSC 198 — Special Problem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --paper:#FFFFFF;
+    --paper-2:#EEF3FC;
+    --ink:#101828;
+    --ink-soft:#5B6B84;
+    --maroon:#1D4ED8;
+    --maroon-deep:#1E3A8A;
+    --gold:#2F6FED;
+    --line:#DCE4F3;
+    --line-soft:#E9EFFA;
+    --cream-card:#F6F9FF;
+    --focus:#1D4ED8;
+    --sidebar-w:300px;
+    --sidebar-bg:#22385E;
+    --sidebar-ink:#FFFFFF;
+    --sidebar-ink-soft:#C7D3EA;
+    --sidebar-line:rgba(255,255,255,0.14);
+    --sidebar-accent:#8FC1FF;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    font-size:16px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:var(--maroon);}
+  a:focus-visible, button:focus-visible, summary:focus-visible{
+    outline:2px solid var(--focus);
+    outline-offset:3px;
+    border-radius:2px;
+  }
+
+  h1,h2,h3,h4{
+    font-family:'Space Grotesk', sans-serif;
+    color:var(--ink);
+    line-height:1.2;
+    margin:0 0 0.5em 0;
+    font-weight:600;
+  }
+
+  .mono{
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:0.03em;
+  }
+
+  /* ---------- Layout shell ---------- */
+  .shell{
+    display:flex;
+    align-items:flex-start;
+    max-width:none;
+    margin:0;
+  }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar{
+    width:var(--sidebar-w);
+    flex-shrink:0;
+    position:sticky;
+    top:0;
+    height:100vh;
+    overflow-y:auto;
+    padding:34px 22px 34px 34px;
+    background:var(--sidebar-bg);
+    border-right:1px solid var(--sidebar-line);
+    scrollbar-width:thin;
+    scrollbar-color:var(--sidebar-line) transparent;
+  }
+  .sidebar::-webkit-scrollbar{width:6px;}
+  .sidebar::-webkit-scrollbar-thumb{background:var(--sidebar-line); border-radius:4px;}
+
+  .sidebar-brand{
+    display:block;
+    text-decoration:none;
+    margin-bottom:28px;
+  }
+  .sidebar-brand .code{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    color:var(--sidebar-accent);
+    text-transform:uppercase;
+    display:block;
+    margin-bottom:6px;
+  }
+  .sidebar-brand .title{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:20px;
+    font-weight:600;
+    color:var(--sidebar-ink);
+    display:block;
+  }
+
+  .spine{
+    position:relative;
+    padding-left:16px;
+    border-left:1px solid var(--sidebar-line);
+  }
+  .spine-progress{
+    position:absolute;
+    left:-1px;
+    top:0;
+    width:1px;
+    height:0%;
+    background:var(--sidebar-accent);
+    transition:height 0.15s linear;
+  }
+
+  nav.toc{
+    font-size:13.5px;
+  }
+  nav.toc ul{
+    list-style:none;
+    margin:0;
+    padding:0;
+  }
+  nav.toc .toc-group{
+    margin-bottom:22px;
+  }
+  nav.toc .toc-group-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--sidebar-ink-soft);
+    margin:0 0 8px 0;
+    opacity:1;
+  }
+  nav.toc a{
+    display:block;
+    color:var(--sidebar-ink-soft);
+    text-decoration:none;
+    padding:5px 0;
+    border-radius:3px;
+    transition:color 0.15s ease, transform 0.15s ease;
+  }
+  nav.toc a:hover{ color:var(--sidebar-ink); transform:translateX(2px); }
+  nav.toc a.active{
+    color:var(--sidebar-accent);
+    font-weight:600;
+  }
+  nav.toc .sub a{
+    padding-left:14px;
+    font-size:12.5px;
+  }
+  nav.toc .sub{
+    margin:2px 0 8px 0;
+  }
+  nav.toc .num{
+    display:inline-block;
+    width:1.6em;
+    color:var(--sidebar-accent);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+  }
+
+  /* ---------- Main content ---------- */
+  main{
+    flex:1;
+    min-width:0;
+    padding:0 0 100px 0;
+  }
+
+  .hero{
+    padding:44px 56px 30px 56px;
+    border-bottom:1px solid var(--line);
+    background:
+      linear-gradient(180deg, rgba(29,78,216,0.05), transparent 60%);
+  }
+  .hero .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--maroon);
+    margin-bottom:8px;
+  }
+  .hero h1{
+    font-size:44px;
+    line-height:1.1;
+    max-width:720px;
+    margin-bottom:10px;
+  }
+  .hero .dept{
+    font-size:16px;
+    line-height:1.45;
+    color:var(--ink-soft);
+    max-width:600px;
+    margin-bottom:16px;
+  }
+  .hero-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:24px;
+    margin-top:4px;
+  }
+  .hero-meta div{
+    border-left:2px solid var(--gold);
+    padding-left:12px;
+  }
+  .hero-meta p{ margin:0; line-height:1.35; }
+  .hero-meta .label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:2px;
+  }
+  .hero-meta .value{
+    font-size:15px;
+    font-weight:500;
+  }
+
+  section{
+    padding:52px 56px;
+    border-bottom:1px solid var(--line-soft);
+    max-width:950px;
+  }
+  section > .section-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:10px;
+  }
+  section h2{
+    font-size:28px;
+    margin-bottom:18px;
+  }
+  section p{ margin:0 0 16px 0; }
+  section ul{ margin:0 0 16px 0; padding-left:22px; }
+  section li{ margin-bottom:8px; }
+  section strong{ color:var(--ink); }
+
+  .lede{
+    font-size:18px;
+    color:var(--ink-soft);
+  }
+
+  .callout{
+    background:var(--cream-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--maroon);
+    border-radius:2px;
+    padding:18px 22px;
+    margin:20px 0;
+    font-size:15px;
+  }
+
+  .req-list{ list-style:none; padding:0; margin:0; }
+  .req-list li{
+    display:flex;
+    gap:14px;
+    padding:14px 0;
+    border-bottom:1px dashed var(--line);
+  }
+  .req-list li:last-child{ border-bottom:none; }
+  .req-list .req-num{
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--gold);
+    font-size:14px;
+    flex-shrink:0;
+    padding-top:1px;
+  }
+
+  .channels{
+    display:grid;
+    gap:14px;
+  }
+  .channel-card{
+    background:var(--cream-card);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:16px 20px;
+  }
+  .channel-card .ch-title{
+    font-weight:600;
+    margin-bottom:4px;
+  }
+  .channel-card .ch-desc{
+    color:var(--ink-soft);
+    font-size:14.5px;
+  }
+  .channel-card .ch-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .idea-tag{
+    display:inline-block;
+    font-size:10.5px;
+    letter-spacing:0.08em;
+    color:var(--maroon);
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:2px 10px;
+    font-weight:500;
+    text-transform:uppercase;
+  }
+
+  /* ---------- Manuscript structure ---------- */
+  .manuscript-intro{
+    padding:52px 56px 8px 56px;
+    max-width:950px;
+  }
+  .manuscript-intro h2{ font-size:32px; }
+
+  .chapter{
+    padding:44px 56px;
+    border-bottom:1px solid var(--line-soft);
+    max-width:950px;
+    scroll-margin-top:20px;
+  }
+  .chapter-head{
+    display:flex;
+    align-items:baseline;
+    gap:16px;
+    margin-bottom:8px;
+  }
+  .chapter-num{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:40px;
+    color:var(--line);
+    font-weight:600;
+    line-height:1;
+  }
+  .chapter h2{
+    font-size:26px;
+    margin-bottom:0;
+  }
+  .chapter > p.chapter-desc{
+    color:var(--ink-soft);
+    margin-bottom:26px;
+    font-size:15.5px;
+  }
+
+  .subsection{
+    margin:26px 0 0 0;
+    padding-left:20px;
+    border-left:2px solid var(--line-soft);
+  }
+  .subsection h3{
+    font-size:17px;
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+  }
+  .subsection h3 .letter{
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--maroon);
+    font-size:14px;
+  }
+  .subsection h4{
+    font-size:15px;
+    margin-top:20px;
+  }
+  .subsection p, .subsection ul{ font-size:15px; }
+
+  .guiding-q{
+    margin-top:14px;
+    padding:12px 16px;
+    background:var(--paper-2);
+    border-radius:3px;
+    font-family:'Space Grotesk', sans-serif;
+    font-style:italic;
+    color:var(--maroon-deep);
+    font-size:14.5px;
+    position:relative;
+  }
+  .guiding-q::before{
+    content:"Guiding question";
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-style:normal;
+    font-size:10px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:5px;
+  }
+
+  .writing-guidance{
+    margin:16px 0;
+    font-size:14.5px;
+    color:var(--ink-soft);
+    border-left:3px solid var(--gold);
+    padding-left:14px;
+  }
+  .writing-guidance strong{ color:var(--ink); }
+
+  .backmatter{
+    padding:40px 56px;
+    max-width:950px;
+    border-bottom:1px solid var(--line-soft);
+  }
+  .backmatter .chapter-head{ margin-bottom:10px;}
+  .backmatter .chapter-num{ font-size:26px; }
+
+  footer{
+    padding:40px 56px 80px 56px;
+    max-width:950px;
+    color:var(--ink-soft);
+    font-size:13.5px;
+  }
+
+  /* ---------- Course stages ---------- */
+  section h3.stage-h{
+    font-size:21px;
+    color:var(--maroon-deep);
+    margin:34px 0 12px 0;
+  }
+  .table-wrap{
+    overflow-x:auto;
+    margin:26px 0 4px 0;
+    border:1px solid var(--line);
+    border-radius:8px;
+  }
+  table.stage-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14.5px;
+  }
+  .stage-table th{
+    background:var(--sidebar-bg);
+    color:#fff;
+    text-align:left;
+    padding:14px 18px;
+    font-weight:600;
+    font-size:13.5px;
+  }
+  .stage-table td{
+    padding:14px 18px;
+    border-top:1px solid var(--line-soft);
+    vertical-align:top;
+  }
+  .stage-table tbody tr:nth-child(even) td{ background:var(--cream-card); }
+  .eval-table{ min-width:820px; font-size:13.5px; }
+  .eval-table .row-label{
+    font-size:10.5px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--maroon);
+    white-space:nowrap;
+    width:1%;
+  }
+  .eval-table .row-guide td:not(.row-label){
+    color:var(--ink-soft);
+    font-style:italic;
+  }
+  .table-caption{
+    margin:22px 0 8px 0 !important;
+    font-size:14px !important;
+  }
+
+  /* ---------- Roadmap ---------- */
+  .roadmap-wrap{ overflow-x:auto; margin:26px 0 8px 0; }
+  .roadmap{
+    display:grid;
+    grid-template-columns:repeat(6, minmax(100px, 1fr));
+    gap:8px;
+    min-width:660px;
+  }
+  .rm-ch{
+    background:var(--cream-card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:12px 10px;
+  }
+  .rm-ch.later{ border-color:var(--maroon); }
+  .rm-ch .n{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    color:var(--maroon);
+    margin-bottom:4px;
+  }
+  .rm-ch .t{
+    display:block;
+    font-size:12.5px;
+    font-weight:600;
+    line-height:1.3;
+  }
+  .rm-bar{
+    border-radius:6px;
+    padding:9px 12px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.04em;
+    font-weight:500;
+    color:#fff;
+  }
+  .rm-bar.b1{ grid-column:1 / span 4; background:var(--maroon); }
+  .rm-bar.b2{ grid-column:1 / span 6; background:var(--sidebar-bg); }
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    display:inline-block;
+    background:var(--maroon);
+    color:#fff;
+    text-decoration:none;
+    padding:9px 16px;
+    border-radius:6px;
+    font-weight:600;
+    font-size:14px;
+    margin-top:12px;
+    transition:background 0.15s ease, transform 0.15s ease;
+  }
+  .btn:hover{ background:var(--maroon-deep); transform:translateY(-1px); }
+  .btn-accent{ background:#F59E0B; color:#1F2937; box-shadow:0 2px 0 #B45309; }
+  .btn-accent:hover{ background:#D97706; color:#fff; }
+
+  /* ---------- Chapter course tags ---------- */
+  .chapter-head .idea-tag{ align-self:center; }
+
+  /* ---------- Mobile nav toggle ---------- */
+  .mobile-bar{
+    display:none;
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:var(--paper);
+    border-bottom:1px solid var(--line);
+    padding:14px 20px;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .mobile-bar .code{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.1em;
+    color:var(--maroon);
+  }
+  .nav-toggle{
+    background:var(--maroon);
+    color:var(--paper);
+    border:none;
+    border-radius:4px;
+    padding:8px 14px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.06em;
+    cursor:pointer;
+  }
+
+  @media (max-width: 900px){
+    .shell{ flex-direction:column; }
+    .mobile-bar{ display:flex; }
+    .sidebar{
+      position:fixed;
+      top:53px;
+      left:0;
+      right:0;
+      height:calc(100vh - 53px);
+      width:100%;
+      background:var(--sidebar-bg);
+      z-index:19;
+      transform:translateY(-110%);
+      transition:transform 0.22s ease;
+      padding:24px 24px 40px 24px;
+      border-right:none;
+    }
+    .sidebar.open{ transform:translateY(0); }
+    .sidebar-brand{ display:none; }
+    .hero, section, .chapter, .manuscript-intro, .backmatter, footer{
+      padding-left:24px;
+      padding-right:24px;
+    }
+    .hero h1{ font-size:32px; }
+  }
+
+  /* ---------- Collapsible sections ---------- */
+  details.subsection > summary{
+    list-style:none;
+    cursor:pointer;
+    position:relative;
+    padding-right:32px;
+  }
+  details.subsection > summary::-webkit-details-marker{ display:none; }
+  details.subsection > summary::after{
+    content:"+";
+    position:absolute;
+    right:0;
+    top:-2px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:20px;
+    line-height:1;
+    color:var(--maroon);
+  }
+  details.subsection[open] > summary::after{ content:"\2013"; }
+  details.subsection > summary h3{ margin-bottom:0.3em; transition:color 0.15s ease; }
+  details.subsection > summary:hover h3{ color:var(--maroon); }
+  details.subsection[open] > summary{ margin-bottom:8px; }
+
+  .expand-controls{ display:flex; gap:10px; margin-top:16px; }
+  .btn-sm{
+    background:transparent;
+    color:var(--maroon);
+    border:1px solid var(--maroon);
+    border-radius:6px;
+    padding:6px 14px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.04em;
+    cursor:pointer;
+    transition:background 0.15s ease;
+  }
+  .btn-sm:hover{ background:var(--paper-2); }
+
+  /* ---------- Back to top ---------- */
+  .to-top{
+    position:fixed;
+    right:24px;
+    bottom:24px;
+    width:44px;
+    height:44px;
+    border:none;
+    border-radius:50%;
+    background:var(--maroon);
+    color:#fff;
+    font-size:20px;
+    line-height:1;
+    cursor:pointer;
+    box-shadow:0 4px 14px rgba(16,24,40,0.25);
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(8px);
+    transition:opacity 0.2s ease, transform 0.2s ease, visibility 0.2s, background 0.15s ease;
+    z-index:18;
+  }
+  .to-top.show{ opacity:1; visibility:visible; transform:translateY(0); }
+  .to-top:hover{ background:var(--maroon-deep); }
+
+  /* ---------- Print (save as PDF) ---------- */
+  @page{ margin:18mm 16mm; }
+  @media print{
+    html{ scroll-behavior:auto; }
+    body{
+      background:#fff;
+      font-size:11pt;
+      line-height:1.5;
+      -webkit-print-color-adjust:exact;
+      print-color-adjust:exact;
+    }
+    .sidebar, .mobile-bar, .to-top, .btn, .expand-controls{ display:none !important; }
+    details.subsection > summary::after{ display:none; }
+    .shell{ display:block; max-width:none; }
+    main{ padding:0; }
+
+    .hero{
+      background:none;
+      padding:0 0 14px 0;
+      border-bottom:2px solid var(--maroon);
+    }
+    .hero h1{ font-size:30pt; }
+    section, .chapter, .manuscript-intro, .backmatter, footer{
+      max-width:none;
+      padding:16px 0;
+    }
+    .manuscript-intro{ break-before:page; }
+
+    /* keep related blocks together */
+    h1, h2, h3, h4{ break-after:avoid; }
+    .subsection, .callout, .guiding-q, .writing-guidance, .channel-card,
+    .req-list li, .stage-table tr, .rm-ch{ break-inside:avoid; }
+    .chapter-head{ break-after:avoid; }
+
+    /* ink-friendly tables, roadmap and tags (no white-on-dark text) */
+    .stage-table th{
+      background:#EEF3FC !important;
+      color:#101828 !important;
+      border-bottom:2px solid var(--maroon);
+    }
+    .stage-table tbody tr:nth-child(even) td{ background:#fff; }
+    .rm-bar{
+      background:#EEF3FC !important;
+      color:#101828 !important;
+      border:1px solid var(--maroon);
+    }
+    .table-wrap, .roadmap-wrap{ overflow:visible; }
+    .roadmap, .eval-table{ min-width:0; }
+    .eval-table{ font-size:9pt; }
+    .callout{ background:#fff; }
+
+    a{ color:inherit; text-decoration:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="mobile-bar">
+  <span class="code mono">CMSC 198</span>
+  <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="sidebar">Contents ≡</button>
+</div>
+
+<div class="shell">
+
+  <aside class="sidebar" id="sidebar">
+    <a href="#top" class="sidebar-brand">
+      <span class="code">CMSC 198</span>
+      <span class="title">Special Problem</span>
+    </a>
+
+    <div class="spine">
+      <div class="spine-progress" id="spineProgress"></div>
+      <nav class="toc" aria-label="Course contents">
+
+        <div class="toc-group">
+          <p class="toc-group-label">Course Info</p>
+          <ul>
+            <li><a href="#welcome" data-target="welcome">Welcome</a></li>
+            <li><a href="#main-goal" data-target="main-goal">Main Goal</a></li>
+            <li><a href="#stages" data-target="stages">Course Stages</a></li>
+            <li><a href="#requirements" data-target="requirements">CMSC 198.1 Requirements</a></li>
+            <li><a href="#templates" data-target="templates">Templates &amp; Links</a></li>
+            <li><a href="#private-meetings" data-target="private-meetings">Private Meetings</a></li>
+            <li><a href="#channels" data-target="channels">Communication Channels</a></li>
+          </ul>
+        </div>
+
+        <div class="toc-group">
+          <p class="toc-group-label">SP Manuscript · CMSC 198.1</p>
+          <ul>
+            <li><a href="#ch1" data-target="ch1"><span class="num">01</span>Introduction</a></li>
+            <li class="sub">
+              <ul>
+                <li><a href="#ch1a" data-target="ch1a">A. Background</a></li>
+                <li><a href="#ch1b" data-target="ch1b">B. Problem Statement</a></li>
+                <li><a href="#ch1c" data-target="ch1c">C. Objectives</a></li>
+                <li><a href="#ch1d" data-target="ch1d">D. Significance</a></li>
+                <li><a href="#ch1e" data-target="ch1e">E. Scope &amp; Limitations</a></li>
+              </ul>
+            </li>
+            <li><a href="#ch2" data-target="ch2"><span class="num">02</span>Related Literature</a></li>
+            <li><a href="#ch3" data-target="ch3"><span class="num">03</span>Design &amp; Dev. Methodology</a></li>
+            <li class="sub">
+              <ul>
+                <li><a href="#ch3a" data-target="ch3a">A. Research Design</a></li>
+                <li><a href="#ch3b" data-target="ch3b">B. Requirements &amp; Data</a></li>
+                <li><a href="#ch3c" data-target="ch3c">C. Development Plan</a></li>
+                <li><a href="#ch3d" data-target="ch3d">D. Project Timeline</a></li>
+              </ul>
+            </li>
+            <li><a href="#ch4" data-target="ch4"><span class="num">04</span>Testing &amp; Evaluation</a></li>
+            <li class="sub">
+              <ul>
+                <li><a href="#ch4a" data-target="ch4a">A. Testing &amp; Evaluation Plan</a></li>
+                <li><a href="#ch4b" data-target="ch4b">B. Experimental Settings</a></li>
+                <li><a href="#ch4c" data-target="ch4c">C. Evaluation of Objectives</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div class="toc-group">
+          <p class="toc-group-label">SP Manuscript · CMSC 198.2</p>
+          <ul>
+            <li><a href="#ch5" data-target="ch5"><span class="num">05</span>Results &amp; Discussion</a></li>
+            <li class="sub">
+              <ul>
+                <li><a href="#ch5a" data-target="ch5a">A. Results</a></li>
+                <li><a href="#ch5b" data-target="ch5b">B. Discussion</a></li>
+              </ul>
+            </li>
+            <li><a href="#ch6" data-target="ch6"><span class="num">06</span>Conclusion &amp; Recs.</a></li>
+            <li class="sub">
+              <ul>
+                <li><a href="#ch6a" data-target="ch6a">A. Conclusion</a></li>
+                <li><a href="#ch6b" data-target="ch6b">B. Recommendations</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div class="toc-group">
+          <p class="toc-group-label">Back Matter</p>
+          <ul>
+            <li><a href="#bm1" data-target="bm1">1. References</a></li>
+            <li><a href="#bm2" data-target="bm2">2. Declaration of AI Use</a></li>
+          </ul>
+        </div>
+
+      </nav>
+    </div>
+  </aside>
+
+  <main id="top">
+
+    <div class="hero">
+      <p class="eyebrow">BS Computer Science · Special Problem</p>
+      <h1>CMSC 198</h1>
+      <p class="dept">Department of Computer Science<br>College of Science<br>University of the Philippines Cebu</p>
+      <div class="hero-meta">
+        <div>
+          <p class="label">Academic Year</p>
+          <p class="value">AY 2026–2027</p>
+        </div>
+        <div>
+          <p class="label">Adviser</p>
+          <p class="value">Dr. Reinald Adrian Pugoy</p>
+        </div>
+      </div>
+    </div>
+
+    <section id="welcome">
+      <p class="section-label">Welcome</p>
+      <h2>Welcome to CMSC 198</h2>
+      <p class="lede">CMSC 198 is where you carry out your Special Problem (SP), from a proposal to a completed project. In CMSC 198.1, our focus is simple: to develop a solid SP proposal. You will identify a meaningful problem, determine how computing can help address it, examine what already exists, and define a scope that is both relevant and feasible.</p>
+      <div class="callout">
+        There is no implementation in CMSC 198.1. <strong>This stage is about establishing what you intend to do, why it matters, and how you plan to assess it.</strong> By its end, you should have a clear and well-developed proposal that will serve as your blueprint for CMSC 198.2, where you will develop, test, and defend your solution.
+      </div>
+    </section>
+
+    <section id="main-goal">
+      <p class="section-label">Direction</p>
+      <h2>Main Goal</h2>
+      <p>As my advisees, we conduct research that brings together <strong>innovation, relevance, and impact.</strong> This means exploring new methodologies, addressing novel or persistent problems, developing creative solutions, and contributing meaningfully to both society and scholarship.</p>
+      <p>In other words, your SP should not simply be about building a system. It should address a problem worth solving and demonstrate why your proposed solution matters.</p>
+    </section>
+
+    <section id="stages">
+      <p class="section-label">Course roadmap</p>
+      <h2>Course Stages</h2>
+      <p class="lede">Your SP manuscript is built across two courses. Here is what is expected of it at each stage.</p>
+
+      <div class="roadmap-wrap">
+        <div class="roadmap" role="img" aria-label="Chapters 1 to 4 belong to the CMSC 198.1 proposal; the complete manuscript, Chapters 1 to 6, is the CMSC 198.2 deliverable.">
+          <div class="rm-ch"><span class="n">CH 1</span><span class="t">Introduction</span></div>
+          <div class="rm-ch"><span class="n">CH 2</span><span class="t">Related Literature</span></div>
+          <div class="rm-ch"><span class="n">CH 3</span><span class="t">Design &amp; Development</span></div>
+          <div class="rm-ch"><span class="n">CH 4</span><span class="t">Testing &amp; Evaluation</span></div>
+          <div class="rm-ch later"><span class="n">CH 5</span><span class="t">Results &amp; Discussion</span></div>
+          <div class="rm-ch later"><span class="n">CH 6</span><span class="t">Conclusion &amp; Recs.</span></div>
+          <div class="rm-bar b1">CMSC 198.1 · Proposal · Chapters 1–4</div>
+          <div class="rm-bar b2">CMSC 198.2 · Completed project · Chapters 1–6</div>
+        </div>
+      </div>
+
+      <h3 class="stage-h">CMSC 198.1: Proposal Stage</h3>
+      <p>CMSC 198.1 covers <strong>Chapters 1 to 4</strong>. At this stage, the manuscript presents the problem to be addressed, establishes the basis for the project, and specifies how the proposed solution will be designed, developed, tested, and evaluated.</p>
+      <p>Because CMSC 198.1 is the proposal stage, future-oriented language may be used for activities not yet completed. However, the proposal should already present a <strong>sufficiently developed and feasible plan</strong> rather than a preliminary idea. The student should be able to show that:</p>
+      <ul>
+        <li>the problem has been adequately investigated;</li>
+        <li>the proposed solution is justified; and</li>
+        <li>the development, testing, and evaluation plans are appropriate and achievable within the available time.</li>
+      </ul>
+
+      <h3 class="stage-h">CMSC 198.2: Completed Project</h3>
+      <p>CMSC 198.2 covers the <strong>complete manuscript, Chapters 1 to 6</strong>, including the developed solution, the results and discussion of its testing and evaluation, conclusions, and recommendations.</p>
+      <p>The CMSC 198.2 manuscript should read as a <strong>completed project rather than a proposal</strong>. Chapters 1 to 4 should therefore be updated to reflect what was done according to the approved CMSC 198.1 plan. Future-oriented statements should be replaced with descriptions of the actual solution, procedures, participants or data, technologies, development activities, testing, and evaluation.</p>
+
+      <div class="table-wrap">
+        <table class="stage-table">
+          <thead>
+            <tr><th>CMSC 198.1 (Proposal)</th><th>CMSC 198.2 (Completed Project)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>"The project will develop…"</td><td>"The project developed…"</td></tr>
+            <tr><td>"The proposed solution will provide…"</td><td>"The solution provides…" or "The developed solution provides…"</td></tr>
+            <tr><td>"The proponent will conduct user testing…"</td><td>"User testing was conducted…"</td></tr>
+            <tr><td>"The solution will be evaluated using…"</td><td>"The solution was evaluated using…"</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="requirements">
+      <p class="section-label">Deliverables</p>
+      <h2>CMSC 198.1 Requirements</h2>
+      <ul class="req-list">
+        <li><span class="req-num mono">01</span><span>Attend scheduled private checkpoint meetings (typically every other week)</span></li>
+        <li><span class="req-num mono">02</span><span>Submit the SP proposal in LaTeX format</span></li>
+        <li><span class="req-num mono">03</span><span>Defend your SP proposal at the end of the semester, with a PPT presentation</span></li>
+      </ul>
+    </section>
+
+    <section id="templates">
+      <p class="section-label">Downloads</p>
+      <h2>Templates &amp; Links</h2>
+      <div class="channels">
+        <div class="channel-card">
+          <p class="ch-title">SP LaTeX Template</p>
+          <p class="ch-desc">Use this template for your SP manuscript, from the proposal in CMSC 198.1 to the complete paper in CMSC 198.2.</p>
+          <a class="btn btn-accent" href="https://www.overleaf.com/project/6ae17038ddbd797fb6be956c/share#f309a909f1c0e5718693c95c29d57d0180b8f3a5f8f7c83d" target="_blank" rel="noopener">SP LaTeX Template</a>
+        </div>
+        <div class="channel-card">
+          <p class="ch-title">APA Style guide</p>
+          <p class="ch-desc">Official guidance for in-text citations and the reference list.</p>
+          <a class="btn" href="https://apastyle.apa.org/" target="_blank" rel="noopener noreferrer">Visit APA Style</a>
+        </div>
+        <div class="channel-card">
+          <p class="ch-title">LaTeX help</p>
+          <p class="ch-desc">Tutorials and documentation for writing your proposal in LaTeX.</p>
+          <a class="btn" href="https://www.overleaf.com/learn" target="_blank" rel="noopener noreferrer">Open Overleaf Learn</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="private-meetings">
+      <p class="section-label">Cadence</p>
+      <h2>Private Meetings</h2>
+      <p>Regular private meetings are designed to maintain open and effective communication between us and to ensure that you are making consistent progress. These meetings are largely informal, so you do not need to present something perfect every time.</p>
+      <p>For each meeting, prepare a short PPT covering your recent progress, key updates, and any questions or concerns you would like to discuss. Feedback and suggestions will be provided in real time, and we can clarify issues and work through concerns together.</p>
+      <p>After each meeting, you will refine your proposal or project based on our discussion. This process continues throughout the semester as a continuous learning and feedback loop, allowing you to improve your work with each iteration until the end of the term.</p>
+    </section>
+
+    <section id="channels">
+      <p class="section-label">Stay in touch</p>
+      <h2>Communication Channels to Remember</h2>
+      <div class="channels">
+        <div class="channel-card">
+          <p class="ch-title">This website</p>
+          <p class="ch-desc">Your main reference for announcements, materials, and other course-related information.</p>
+        </div>
+        <div class="channel-card">
+          <p class="ch-title">Our Google Group Chat (GC)</p>
+          <p class="ch-desc">For quick updates, reminders, and informal communication.</p>
+        </div>
+        <div class="channel-card">
+          <p class="ch-title">Your UP email</p>
+          <p class="ch-desc">For official and formal communication.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="manuscript-intro">
+      <p class="section-label">Reference</p>
+      <h2>CMSC 198: SP Manuscript Structure</h2>
+      <p class="lede">The outline below mirrors the structure of your SP manuscript, chapter by chapter. Chapters 1 to 4 form the CMSC 198.1 proposal; later chapters are developed in the succeeding course.</p>
+      <div class="expand-controls">
+        <button type="button" class="btn-sm" id="expandAll">Expand all</button>
+        <button type="button" class="btn-sm" id="collapseAll">Collapse all</button>
+      </div>
+    </div>
+
+    <!-- Chapter 1 -->
+    <article class="chapter" id="ch1">
+      <div class="chapter-head">
+        <span class="chapter-num mono">01</span>
+        <h2>Introduction</h2>
+        <span class="idea-tag mono">CMSC 198.1</span>
+      </div>
+      <p class="chapter-desc">Establish the foundation of the study by presenting the problem context, rationale, objectives, significance, and boundaries.</p>
+
+      <details class="subsection" id="ch1a">
+        <summary><h3><span class="letter">A</span>Background of the Study</h3></summary>
+        <p>Provide the context and justification for the study. This section should explain:</p>
+        <ul>
+          <li>the real-world problem or unmet need, and the domain in which it exists</li>
+          <li>existing systems, practices, or approaches, and their limitations or gaps</li>
+          <li>why the problem is important</li>
+          <li>why a computing solution or approach is appropriate or needed</li>
+        </ul>
+        <div class="guiding-q">What context gave rise to this study, and why does it matter?</div>
+      </details>
+
+      <details class="subsection" id="ch1b">
+        <summary><h3><span class="letter">B</span>Statement of the Problem</h3></summary>
+        <p>Define clearly the specific problem(s) the study seeks to address. This section should:</p>
+        <ul>
+          <li>translate the background into focused problem statements</li>
+          <li>clarify what is currently lacking or inefficient, whether technical, practical, informational, or user-centered</li>
+          <li>establish the need for the proposed computing solution</li>
+        </ul>
+        <p>This may be presented as a general problem statement followed by specific problem statements.</p>
+        <div class="guiding-q">What exactly is the problem this study intends to solve?</div>
+      </details>
+
+      <details class="subsection" id="ch1c">
+        <summary><h3><span class="letter">C</span>Objectives of the Study</h3></summary>
+        <p>State what the study intends to accomplish. This section should include a <strong>General Objective</strong> and <strong>Specific Objectives</strong>. Depending on the nature of the SP, objectives may involve:</p>
+        <ul>
+          <li>analyzing the problem, existing approaches, or stakeholder needs</li>
+          <li>identifying requirements, then designing and developing the proposed solution, method, model, or framework</li>
+          <li>evaluating it on relevant measures, such as usability, accuracy, effectiveness, or efficiency</li>
+          <li>comparing it with existing methods or baselines, where applicable</li>
+        </ul>
+        <p>Objectives should be specific and measurable, with each objective corresponding to something that can eventually be demonstrated, tested, or evaluated in CMSC 198.2.</p>
+        <div class="guiding-q">What does the study aim to achieve?</div>
+      </details>
+
+      <details class="subsection" id="ch1d">
+        <summary><h3><span class="letter">D</span>Significance of the Study</h3></summary>
+        <p>Explain why the study matters, who may benefit from it, and how. Depending on the study, potential beneficiaries may include:</p>
+        <ul>
+          <li>end users</li>
+          <li>organizations, institutions, and decision-makers</li>
+          <li>practitioners, researchers, and future developers</li>
+          <li>the broader community and the computing field</li>
+        </ul>
+        <p>Explain the specific contribution or value of the study to each relevant beneficiary rather than simply listing stakeholders.</p>
+        <div class="guiding-q">Who benefits from this study, and in what ways?</div>
+      </details>
+
+      <details class="subsection" id="ch1e">
+        <summary><h3><span class="letter">E</span>Scope and Limitations</h3></summary>
+        <p>Define the boundaries of the study by establishing what is covered and what is not. This section should clarify:</p>
+        <ul>
+          <li>the problem addressed, and the intended users or context, where applicable</li>
+          <li>the features, methods, data, and technologies included</li>
+          <li>the extent of implementation, testing, and evaluation</li>
+          <li>boundaries that affect how the results should be interpreted</li>
+        </ul>
+        <p>Avoid listing minor constraints or unnecessary details that do not materially affect the study. Focus only on boundaries and limitations that are important for understanding the scope of the work and, eventually, interpreting its findings.</p>
+        <div class="guiding-q">What does the study cover, and what important boundaries should the reader understand?</div>
+      </details>
+    </article>
+
+    <!-- Chapter 2 -->
+    <article class="chapter" id="ch2">
+      <div class="chapter-head">
+        <span class="chapter-num mono">02</span>
+        <h2>Review of Related Literature</h2>
+        <span class="idea-tag mono">CMSC 198.1</span>
+      </div>
+      <p class="chapter-desc">Critically review the relevant studies, technologies, methods, frameworks, systems, and theories related to your proposed SP.</p>
+      <p>This chapter should:</p>
+      <ul>
+        <li>organize related literature by theme or topic rather than source by source</li>
+        <li>synthesize and compare key findings, approaches, methods, or systems</li>
+        <li>identify limitations, gaps, or opportunities in existing work</li>
+        <li>establish how the proposed study builds on or differs from existing work, and the basis for its design decisions</li>
+      </ul>
+      <p>Use reputable and relevant sources, prioritizing recent literature, preferably published within the last five years. Older sources may be included when they are foundational or particularly relevant to the study.</p>
+      <div class="guiding-q">What does existing work tell us about the problem, and how does the proposed study build upon or differ from what has already been done?</div>
+    </article>
+
+    <!-- Chapter 3 -->
+    <article class="chapter" id="ch3">
+      <div class="chapter-head">
+        <span class="chapter-num mono">03</span>
+        <h2>Design and Development Methodology</h2>
+        <span class="idea-tag mono">CMSC 198.1</span>
+      </div>
+      <p class="chapter-desc">Describe how the SP will be designed, developed, and implemented, with enough detail for the reader to understand how the study objectives will be achieved.</p>
+      <div class="writing-guidance"><strong>Writing guidance:</strong> Present the methodology, design rationale, and technical approach at an appropriate academic level of abstraction. Focus on the methods and design decisions necessary to understand, reproduce, and evaluate the study. Avoid turning this chapter into software engineering documentation, developer manuals, or code-level implementation walkthroughs.</div>
+      <div class="guiding-q">How will the study be conducted, and how will the proposed solution be designed and developed to achieve the study objectives?</div>
+
+      <details class="subsection" id="ch3a">
+        <summary><h3><span class="letter">A</span>Research Design</h3></summary>
+        <p>Describe the overall approach that will guide the study. Depending on the nature of the SP, this may include:</p>
+        <ul>
+          <li>developmental, design-oriented, or experimental research</li>
+          <li>quantitative, qualitative, or mixed methods</li>
+          <li>evaluation-centered or other appropriate computing research approaches</li>
+        </ul>
+        <p>Explain why the selected approach is appropriate for the objectives of the study.</p>
+        <div class="guiding-q">What overall approach will guide the study, and why is it appropriate for its objectives?</div>
+      </details>
+
+      <details class="subsection" id="ch3b">
+        <summary><h3><span class="letter">B</span>Requirements and Data Preparation</h3></summary>
+        <p>Describe the data, requirements, or other inputs needed for the proposed solution, <strong>as applicable</strong>.</p>
+        <p>For data-driven studies, this may include:</p>
+        <ul>
+          <li>dataset source, collection or generation method, and characteristics</li>
+          <li>preprocessing, cleaning, transformation, or feature extraction</li>
+          <li>data partitioning or sampling procedures</li>
+          <li>ethical, privacy, or data protection considerations</li>
+        </ul>
+        <p>For system-oriented studies, this may instead include:</p>
+        <ul>
+          <li>functional and non-functional requirements</li>
+          <li>user or stakeholder requirements</li>
+          <li>system inputs and outputs, and relevant operational or technical requirements</li>
+        </ul>
+        <p>Include only the elements relevant to the proposed SP.</p>
+        <div class="guiding-q">What data or requirements does the proposed solution need, and how will they be gathered and prepared?</div>
+      </details>
+
+      <details class="subsection" id="ch3c">
+        <summary><h3><span class="letter">C</span>Development Plan</h3></summary>
+        <p>Describe how the proposed computing solution will be designed and developed.</p>
+
+        <h4>C.1 Conceptual Overview</h4>
+        <p>Provide a high-level explanation of the proposed solution and how its major components work together. Appropriate diagrams, models, or flowcharts may be included.</p>
+
+        <h4>C.2 Technical and Theoretical Foundations</h4>
+        <p>Present the algorithms, models, computational principles, architectures, frameworks, or other foundations on which the proposed solution is based. Mathematical formulations or formal definitions should be included where relevant.</p>
+
+        <h4>C.3 Solution Architecture and Implementation Approach</h4>
+        <p>Describe how the proposed solution will be constructed. Depending on the solution, this may include:</p>
+        <ul>
+          <li>system or software architecture, and interface or component design</li>
+          <li>algorithms and pseudocode, or model architecture and training procedures</li>
+          <li>database or data design</li>
+          <li>parameter selection and optimization</li>
+          <li>integration of external services, and implementation procedures</li>
+        </ul>
+        <p>The level of detail should be sufficient to explain how the proposed solution will be developed and implemented in CMSC 198.2.</p>
+
+        <h4>C.4 Tools and Technologies</h4>
+        <p>Identify the major tools and technologies that will be used in developing the proposed solution, such as:</p>
+        <ul>
+          <li>programming languages, frameworks, and libraries</li>
+          <li>databases, APIs, and cloud platforms</li>
+          <li>AI/ML models or services, and development tools</li>
+        </ul>
+        <p>Briefly justify important technology choices when they materially affect the design or implementation of the study.</p>
+        <div class="guiding-q">How will the proposed solution be designed and developed, and with what tools?</div>
+      </details>
+
+      <details class="subsection" id="ch3d">
+        <summary><h3><span class="letter">D</span>Project Timeline</h3></summary>
+        <p>Present the planned schedule of activities for CMSC 198.2, from development and implementation through testing, evaluation, and final defense.</p>
+        <ul>
+          <li>Provide a week-by-week or month-by-month schedule; a Gantt chart is preferred.</li>
+          <li>Ensure activities and milestones are realistic and aligned with the CMSC 198.2 project period.</li>
+          <li>The timeline should reflect the major activities described in the methodology.</li>
+        </ul>
+        <div class="guiding-q">How will the proposed work be carried out within the CMSC 198.2 project period?</div>
+      </details>
+    </article>
+
+    <!-- Chapter 4 -->
+    <article class="chapter" id="ch4">
+      <div class="chapter-head">
+        <span class="chapter-num mono">04</span>
+        <h2>Testing and Evaluation Methodology</h2>
+        <span class="idea-tag mono">CMSC 198.1</span>
+      </div>
+      <p class="chapter-desc">Describe how the proposed solution will be tested and evaluated, and how the evidence will show that each objective has been achieved.</p>
+      <div class="guiding-q">How will the proposed solution be tested and evaluated, and what evidence will show that each objective was achieved?</div>
+
+      <details class="subsection" id="ch4a">
+        <summary><h3><span class="letter">A</span>Testing and Evaluation Plan</h3></summary>
+        <p>Describe how the proposed solution will be tested and evaluated. Depending on the objectives of the study, this may include:</p>
+        <ul>
+          <li>technical performance metrics, such as accuracy, precision, recall, F1-score, RMSE, latency, or response time</li>
+          <li>functional, reliability, and performance (stress or load) testing</li>
+          <li>usability and user evaluation measures, such as SUS or task success rate</li>
+          <li>comparison with baseline methods or existing solutions</li>
+          <li>appropriate statistical analysis, where applicable</li>
+        </ul>
+        <div class="guiding-q">What will be tested or measured, and by what methods?</div>
+      </details>
+
+      <details class="subsection" id="ch4b">
+        <summary><h3><span class="letter">B</span>Experimental Settings</h3></summary>
+        <p>Describe the conditions under which the tests and evaluations will be carried out, where applicable. This may include:</p>
+        <ul>
+          <li>the test environment, such as hardware, devices, and network or load conditions</li>
+          <li>how baselines or comparison solutions will be configured when run</li>
+          <li>participants and sample size for user studies</li>
+          <li>the test protocol, such as number of runs, repetitions, or random seeds</li>
+        </ul>
+        <p>Data preparation and implementation parameters belong in Chapter 3. Describe here only the conditions the tests run under.</p>
+        <div class="guiding-q">Under what conditions will the tests and evaluations be carried out?</div>
+      </details>
+
+      <details class="subsection" id="ch4c">
+        <summary><h3><span class="letter">C</span>Evaluation of Objectives</h3></summary>
+        <p>Show how you will demonstrate that each specific objective in Chapter 1-C has been achieved. For each objective, state the expected outcome and the test or evaluation that will provide the evidence, including the criterion for success.</p>
+        <p>Use Table 4.1 as your template, with one row for each specific objective. The first row gives the guiding question for each column. The next two rows show one objective from a hypothetical library system, first written generically and then made specific.</p>
+
+        <p class="table-caption"><strong>Table 4.1</strong><br><em>Template for the Evaluation of Objectives, with an Example</em></p>
+        <div class="table-wrap">
+          <table class="stage-table eval-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Specific Objective</th>
+                <th>Expected Outcome</th>
+                <th>Test or Evaluation (Evidence)</th>
+                <th>Criterion for Success</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row-guide">
+                <td class="row-label mono">Guiding question</td>
+                <td>Copy each specific objective exactly as written in Chapter 1-C.</td>
+                <td>What will exist, or what will change, if this objective is met?</td>
+                <td>Which test or evaluation described in Section 4-A will produce the evidence? With whom, and how many?</td>
+                <td>What measurable result counts as success, and why is that threshold appropriate for your study?</td>
+              </tr>
+              <tr>
+                <td class="row-label mono">Too generic</td>
+                <td>Evaluate the system's usability</td>
+                <td>A usable system</td>
+                <td>SUS with target users</td>
+                <td>Mean SUS score ≥ 68</td>
+              </tr>
+              <tr>
+                <td class="row-label mono">Specific</td>
+                <td>Evaluate the usability of the library system's catalog search and book borrowing features</td>
+                <td>Library patrons can find and borrow a book on their own, without assistance</td>
+                <td>SUS questionnaire and a task-completion test, administered to 30 student patrons of the library</td>
+                <td>Mean SUS score ≥ 68, the commonly cited average, and at least 90% of borrowing tasks completed unassisted</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="guiding-q">How will each specific objective be shown to have been achieved?</div>
+      </details>
+    </article>
+
+    <!-- Chapter 5 -->
+    <article class="chapter" id="ch5">
+      <div class="chapter-head">
+        <span class="chapter-num mono">05</span>
+        <h2>Results and Discussion</h2>
+        <span class="idea-tag mono">CMSC 198.2</span>
+      </div>
+      <p class="chapter-desc">Present, analyze, and interpret the findings of the SP based on the objectives and methods established in the preceding chapters. Provide evidence of how the solution performed during testing and evaluation, and explain what the findings reveal about its effectiveness, strengths, and limitations.</p>
+      <div class="writing-guidance"><strong>Writing guidance:</strong> Present results systematically with appropriate tables, graphs, and figures, organized by objective or major evaluation component. Focus on evidence showing the extent to which the objectives were achieved. Avoid user manuals, implementation walkthroughs, and results without analysis.</div>
+      <div class="guiding-q">What results were obtained, how did the proposed solution perform, and what do the findings mean in relation to the study's objectives and existing literature?</div>
+
+      <details class="subsection" id="ch5a">
+        <summary><h3><span class="letter">A</span>Results</h3></summary>
+        <p>Present the findings obtained from the implementation, testing, and evaluation of the proposed solution. Depending on the nature of the SP, this may include:</p>
+        <ul>
+          <li>technical performance metrics, such as accuracy, F1-score, RMSE, or latency</li>
+          <li>functional, reliability, and performance (stress or load) test results</li>
+          <li>usability and user evaluation results, such as SUS scores or task success rates</li>
+          <li>comparisons with baseline methods or existing solutions</li>
+          <li>statistical analyses or qualitative findings, where applicable</li>
+        </ul>
+        <p>Present results using appropriate tables, graphs, figures, or other visualizations. Explain important patterns, differences, and observations without merely repeating numerical values.</p>
+        <p>The reported results should directly correspond to the testing and evaluation procedures described in Chapter 4 and provide sufficient evidence for assessing the achievement of the study's objectives.</p>
+        <div class="guiding-q">What results were obtained, and what evidence demonstrates the performance, effectiveness, or other relevant qualities of the proposed solution?</div>
+      </details>
+
+      <details class="subsection" id="ch5b">
+        <summary><h3><span class="letter">B</span>Discussion</h3></summary>
+        <p>Interpret and synthesize the findings in relation to the study's objectives, problem statements, and relevant literature. This section should:</p>
+        <ul>
+          <li>explain what the findings mean and whether the objectives were achieved</li>
+          <li>relate the findings to the problems in Chapter 1 and the studies in Chapter 2</li>
+          <li>explain significant patterns, unexpected results, or trade-offs</li>
+          <li>identify the solution's strengths, weaknesses, and limitations affecting interpretation</li>
+          <li>highlight the technical, practical, or scholarly implications</li>
+        </ul>
+        <p>Avoid simply restating the results presented in the preceding section. The discussion should move beyond describing what was observed to explaining why the findings matter and how they contribute to addressing the original problem.</p>
+        <div class="guiding-q">What do the findings reveal about the proposed solution, how do they relate to existing work, and what do they imply about the study's objectives?</div>
+      </details>
+    </article>
+
+    <!-- Chapter 6 -->
+    <article class="chapter" id="ch6">
+      <div class="chapter-head">
+        <span class="chapter-num mono">06</span>
+        <h2>Conclusion and Recommendations</h2>
+        <span class="idea-tag mono">CMSC 198.2</span>
+      </div>
+      <p class="chapter-desc">Synthesize the major findings of the SP, present conclusions grounded in the results, and provide recommendations for future improvements, applications, or research.</p>
+      <div class="writing-guidance"><strong>Writing guidance:</strong> Conclusions and recommendations must be directly supported by the findings presented in Chapter 5. Avoid introducing new results, repeating detailed analyses, or making claims that extend beyond the scope and evidence of the study.</div>
+      <div class="guiding-q">What can ultimately be concluded from the study, and what improvements or future directions are warranted by its findings?</div>
+
+      <details class="subsection" id="ch6a">
+        <summary><h3><span class="letter">A</span>Conclusion</h3></summary>
+        <p>Present the major conclusions drawn from the study in relation to its objectives and problem statements. This section should:</p>
+        <ul>
+          <li>summarize the principal findings without repeating the entire Results and Discussion chapter</li>
+          <li>explain whether and to what extent the general and specific objectives were achieved</li>
+          <li>state what the findings demonstrate about the proposed solution's performance, effectiveness, usability, or other relevant qualities</li>
+          <li>explain how the study addressed the original problem</li>
+          <li>identify the principal technical, practical, or scholarly contributions of the study</li>
+          <li>acknowledge important limitations or qualifications that affect the conclusions</li>
+        </ul>
+        <p>Conclusions should be specific, evidence-based, and proportionate to the scope of the study. Avoid broad claims of effectiveness, superiority, or generalizability that are not sufficiently supported by the results.</p>
+        <div class="guiding-q">What has the study established, and to what extent has it achieved its intended objectives?</div>
+      </details>
+
+      <details class="subsection" id="ch6b">
+        <summary><h3><span class="letter">B</span>Recommendations</h3></summary>
+        <p>Provide practical and research-oriented recommendations based on the findings, limitations, and opportunities identified during the study. Depending on the nature of the SP, this may include:</p>
+        <ul>
+          <li>improvements to the developed solution, such as new features or better performance, usability, scalability, or security</li>
+          <li>alternative algorithms, models, or approaches worth investigating</li>
+          <li>further testing under different conditions, datasets, or user populations</li>
+          <li>potential applications, deployment, or integration opportunities</li>
+          <li>directions for future studies that build on this work</li>
+        </ul>
+        <p>Recommendations should be specific, feasible, and clearly connected to the study's findings or limitations. Distinguish between improvements to the existing solution and opportunities for future research, where appropriate.</p>
+        <p>Avoid generic recommendations, such as simply suggesting that future researchers improve the solution or use a larger dataset, without explaining why such improvements are necessary.</p>
+        <div class="guiding-q">What improvements, extensions, or future investigations are justified by the study's findings and limitations?</div>
+      </details>
+    </article>
+
+    <!-- Back matter -->
+    <article class="backmatter" id="bm1">
+      <div class="chapter-head">
+        <span class="chapter-num mono">B1</span>
+        <h2>Required Back Matter 1: References</h2>
+      </div>
+      <p>List all sources cited in the manuscript.</p>
+      <ul>
+        <li>Use APA format consistently.</li>
+        <li>Ensure in-text citations and reference entries match, and verify their accuracy and completeness.</li>
+        <li>Include only sources actually cited in the manuscript.</li>
+      </ul>
+    </article>
+
+    <article class="backmatter" id="bm2">
+      <div class="chapter-head">
+        <span class="chapter-num mono">B2</span>
+        <h2>Required Back Matter 2: Declaration of AI Use</h2>
+      </div>
+      <p>Provide a transparent account of how generative AI or other AI tools were used in preparing the proposal. This section should briefly identify:</p>
+      <ul>
+        <li>the AI tools used, if any, and the purposes for which they were used</li>
+        <li>the parts or stages of the work where AI assistance was involved</li>
+        <li>how AI-generated outputs were reviewed, verified, or modified by the student</li>
+      </ul>
+      <p>Students remain responsible for the accuracy, originality, integrity, and quality of the submitted work, regardless of AI use.</p>
+      <div class="callout">The use of AI tools is not, by itself, a basis for penalty. What matters is transparent and responsible use, with students remaining accountable for the work they submit. If no AI tools were used, this should also be explicitly stated.</div>
+    </article>
+
+    <footer>
+      <strong>CMSC 198 · Special Problem · AY 2026–2027</strong><br>
+      BS Computer Science · Department of Computer Science · College of Science<br>
+      University of the Philippines Cebu
+    </footer>
+
+  </main>
+</div>
+
+<button class="to-top" id="toTop" type="button" aria-label="Back to top" title="Back to top">↑</button>
+
+<script>
+  // Collapsible sections: expand/collapse all, auto-open on navigation, open for print
+  const allDetails = () => document.querySelectorAll('details.subsection');
+  document.getElementById('expandAll').addEventListener('click', () => {
+    allDetails().forEach(d => { d.open = true; });
+  });
+  document.getElementById('collapseAll').addEventListener('click', () => {
+    allDetails().forEach(d => { d.open = false; });
+  });
+
+  function openDetailsFor(id){
+    if (!id) return;
+    const el = document.getElementById(id);
+    const d = el && el.closest('details');
+    if (d) d.open = true;
+  }
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', () => openDetailsFor(a.getAttribute('href').slice(1)));
+  });
+  window.addEventListener('hashchange', () => openDetailsFor(location.hash.slice(1)));
+  openDetailsFor(location.hash.slice(1));
+
+  function openAllForPrint(){
+    allDetails().forEach(d => { d.dataset.wasOpen = d.open ? '1' : '0'; d.open = true; });
+  }
+  function restoreAfterPrint(){
+    allDetails().forEach(d => {
+      if (d.dataset.wasOpen !== undefined){ d.open = d.dataset.wasOpen === '1'; delete d.dataset.wasOpen; }
+    });
+  }
+  window.addEventListener('beforeprint', openAllForPrint);
+  window.addEventListener('afterprint', restoreAfterPrint);
+  if (window.matchMedia){
+    const mq = window.matchMedia('print');
+    const onChange = e => { e.matches ? openAllForPrint() : restoreAfterPrint(); };
+    if (mq.addEventListener) mq.addEventListener('change', onChange);
+    else if (mq.addListener) mq.addListener(onChange);
+  }
+
+  // Back-to-top button
+  const toTop = document.getElementById('toTop');
+  window.addEventListener('scroll', () => {
+    toTop.classList.toggle('show', window.scrollY > 600);
+  }, { passive: true });
+  toTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Placeholder buttons (href="#") should not jump to the top of the page
+  document.querySelectorAll('a.btn[href="#"]').forEach(a => {
+    a.addEventListener('click', e => e.preventDefault());
+  });
+
+  // Mobile nav toggle
+  const navToggle = document.getElementById('navToggle');
+  const sidebar = document.getElementById('sidebar');
+  navToggle.addEventListener('click', () => {
+    const isOpen = sidebar.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  sidebar.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      if (window.innerWidth <= 900){
+        sidebar.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+
+  // Active link highlighting + spine progress
+  const targets = Array.from(document.querySelectorAll('[data-target]'));
+  const sectionsById = {};
+  targets.forEach(a => {
+    const id = a.getAttribute('data-target');
+    const el = document.getElementById(id);
+    if (el) sectionsById[id] = { link: a, el: el };
+  });
+
+  const allTrackedEls = Object.values(sectionsById).map(s => s.el);
+
+  function updateActive(){
+    let currentId = null;
+    const scrollPos = window.scrollY + 140;
+    for (const [id, s] of Object.entries(sectionsById)){
+      if (s.el.offsetTop <= scrollPos){
+        currentId = id;
+      }
+    }
+    Object.values(sectionsById).forEach(s => s.link.classList.remove('active'));
+    if (currentId && sectionsById[currentId]){
+      sectionsById[currentId].link.classList.add('active');
+    }
+
+    // spine progress based on overall scroll
+    const doc = document.documentElement;
+    const scrollable = doc.scrollHeight - window.innerHeight;
+    const pct = scrollable > 0 ? Math.min(100, (window.scrollY / scrollable) * 100) : 0;
+    document.getElementById('spineProgress').style.height = pct + '%';
+  }
+
+  window.addEventListener('scroll', updateActive, { passive: true });
+  window.addEventListener('resize', updateActive);
+  updateActive();
+</script>
+
+</body>
+</html>
