@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MMS 200 Manuscript for a Research Project</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ---- Design tokens ------------------------------------------------------- */
+:root{
+    --bg:#EEF2F8;
+    --paper:#FFFFFF;
+    --ink:#1B2333;
+    --ink-soft:#4A5568;
+    --sidebar:#16243E;
+    --sidebar-hover:#22385F;
+    --sidebar-text:#C6D2E8;
+    --sidebar-text-dim:#7E93B8;
+    --accent:#2F5D9C;
+    --accent-deep:#1E3F6E;
+    --gold:#A9822F;
+    --border:#DAE1EC;
+    --correct:#1E7B57;
+    --correct-bg:#E5F4EC;
+    --incorrect:#B03B33;
+    --incorrect-bg:#FBEAE8;
+    --neutral:#8A6D1E;
+    --neutral-bg:#FBF3E1;
+  }
+  /* ---- Base & typography ---------------------------------------------- */
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:"IBM Plex Sans", -apple-system, Segoe UI, Roboto, sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.6;
+  }
+  h1,h2,h3,h4{
+    font-family:"Source Serif 4", Georgia, "Times New Roman", serif;
+    color:var(--ink);
+    line-height:1.25;
+    font-weight:600;
+  }
+  a{color:var(--accent-deep);}
+  a:hover{color:var(--accent);}
+
+  /* ---- Page layout: sidebar + main ------------------------------------ */
+  .layout{ min-height:100vh; width:100%; }
+  nav.sidebar{
+    width:280px;
+    flex-shrink:0;
+    background:var(--sidebar);
+    color:var(--sidebar-text);
+    padding:28px 22px 40px;
+    position:fixed;
+    top:0;
+    left:0;
+    height:100vh;
+    overflow-y:auto;
+    z-index:10;
+  }
+  nav.sidebar::-webkit-scrollbar{width:8px;}
+  nav.sidebar::-webkit-scrollbar-thumb{background:var(--sidebar-hover); border-radius:4px;}
+
+  .sidebar .kicker{
+    text-transform:uppercase; font-size:11px; letter-spacing:0.14em;
+    color:var(--sidebar-text-dim); margin-bottom:6px;
+  }
+  .sidebar .course-title{
+    font-family:"Source Serif 4", Georgia, serif;
+    font-size:21px; color:#fff; margin:0 0 4px;
+  }
+  .sidebar .course-topic{
+    font-size:13.5px; color:var(--sidebar-text);
+    padding-bottom:18px; border-bottom:1px solid rgba(255,255,255,0.12);
+    margin:0 0 18px;
+  }
+  .sidebar .nav-heading{
+    font-size:11px; text-transform:uppercase; letter-spacing:0.1em;
+    color:var(--sidebar-text-dim); margin:18px 0 6px;
+  }
+  .sidebar .nav-heading:first-of-type{ margin-top:0; }
+  .sidebar ol{ list-style:none; margin:0; padding:0; counter-reset:section; }
+  .sidebar > ol > li{ counter-increment:section; margin-bottom:2px; }
+  .sidebar a.toc-link{
+    display:flex; gap:10px; align-items:flex-start;
+    text-decoration:none; color:var(--sidebar-text);
+    padding:8px 10px; border-radius:6px; font-size:14px;
+    transition:background 0.15s ease, color 0.15s ease;
+  }
+  .sidebar a.toc-link::before{
+    content:counter(section, decimal-leading-zero);
+    font-family:"IBM Plex Sans", sans-serif;
+    font-size:11px; color:var(--sidebar-text-dim); padding-top:2px;
+  }
+  .sidebar a.toc-link:hover, .sidebar a.toc-link.active{
+    background:var(--sidebar-hover); color:#fff;
+  }
+  .sidebar ul.sub{
+    list-style:none; margin:2px 0 8px 26px; padding:0;
+    border-left:1px solid rgba(255,255,255,0.12);
+  }
+  .sidebar ul.sub li a{
+    display:block; text-decoration:none; color:var(--sidebar-text-dim);
+    font-size:12.5px; padding:5px 0 5px 14px; transition:color 0.15s ease;
+  }
+  .sidebar ul.sub li a:hover{color:#fff;}
+
+  main{ display:block; margin-left:280px; padding:0 0 100px; }
+
+  /* ---- Hero banner ---------------------------------------------------- */
+  .hero{
+    background:linear-gradient(155deg, var(--accent-deep) 0%, var(--sidebar) 65%);
+    color:#fff; padding:64px 56px 46px;
+  }
+  .hero .kicker{
+    text-transform:uppercase; letter-spacing:0.16em; font-size:12px;
+    color:#AFC3E4; margin-bottom:14px;
+  }
+  .hero h1{ color:#fff; font-size:38px; margin:0 0 10px; max-width:900px; }
+  .hero p.dek{ max-width:820px; color:#D6E0F1; font-size:16px; margin:0 0 22px; }
+  .hero .byline{
+    font-size:14px; color:#AFC3E4;
+    border-top:1px solid rgba(255,255,255,0.18);
+    padding-top:14px; display:inline-block;
+  }
+  .hero .byline strong{color:#fff; font-weight:600;}
+
+  /* ---- Content column -------------------------------------------------- */
+  .content-inner{ padding:0 56px; max-width:960px; }
+
+  section.chapter{ padding-top:52px; scroll-margin-top:24px; }
+  section.chapter:first-of-type{padding-top:40px;}
+
+  .chapter .eyebrow{ font-size:13px; color:var(--accent); font-weight:600; margin-bottom:6px; }
+  .chapter h2{
+    font-size:27px; margin:0 0 16px; padding-bottom:14px;
+    border-bottom:2px solid var(--border);
+  }
+  .chapter h3{ font-size:19px; margin:30px 0 10px; color:var(--accent-deep); }
+  .chapter h4{ font-size:15.5px; margin:20px 0 8px; color:var(--accent-deep); }
+  .chapter p{ font-size:15.5px; color:var(--ink); margin:0 0 14px; }
+  .chapter ul, .chapter ol.plain{ padding-left:22px; margin:0 0 16px; }
+  .chapter li{ font-size:15.5px; margin-bottom:6px; }
+  .lede{
+    font-size:17px; color:var(--ink-soft);
+    border-left:3px solid var(--gold); padding-left:16px; margin:0 0 22px;
+  }
+
+  /* ---- Definition / emphasis callout ------------------------------------ */
+  blockquote.def{
+    background:var(--paper); border:1px solid var(--border);
+    border-left:4px solid var(--accent); border-radius:6px;
+    padding:16px 20px; margin:0 0 20px; font-size:15px; color:var(--ink-soft);
+  }
+  blockquote.def strong{color:var(--ink); font-family:"Source Serif 4", serif;}
+
+  /* ---- Data table -------------------------------------------------------- */
+  table.compare{
+    width:100%; border-collapse:collapse; margin:8px 0 20px; font-size:14.5px;
+    background:var(--paper); border:1px solid var(--border);
+    border-radius:8px; overflow:hidden;
+  }
+  table.compare th{
+    background:var(--sidebar); color:#fff; text-align:left;
+    padding:10px 14px; font-weight:600; font-size:13px;
+  }
+  table.compare td{ padding:10px 14px; border-top:1px solid var(--border); vertical-align:top; }
+  table.compare tr:nth-child(even) td{background:#F6F8FC;}
+  table.compare td.num{ font-weight:600; color:var(--accent-deep); white-space:nowrap; }
+  table.compare td.center, table.compare th.center{ text-align:center; }
+  table.compare tr.highlight td{ background:var(--correct-bg); font-weight:600; color:var(--correct); }
+
+  /* ---- Numbered list ---------------------------------------------------- */
+  .commandments{
+    counter-reset:cmd; padding:0; list-style:none; margin:0 0 20px;
+    display:grid; gap:8px;
+  }
+  .commandments li{
+    counter-increment:cmd; background:var(--paper);
+    border:1px solid var(--border); border-radius:8px;
+    padding:12px 14px 12px 44px; position:relative; font-size:14.5px;
+  }
+  .commandments li::before{
+    content:counter(cmd); position:absolute; left:12px; top:10px;
+    font-family:"Source Serif 4", serif; font-weight:700; font-size:16px; color:var(--gold);
+  }
+
+  /* ---- Process/flow chips ----------------------------------------------- */
+  .flow{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:6px 0 22px; }
+  .flow .step{
+    background:var(--accent-deep); color:#fff; padding:8px 13px;
+    border-radius:20px; font-size:13.5px; white-space:nowrap;
+  }
+  .flow .arrow{color:var(--ink-soft); font-size:15px;}
+
+  /* ---- Reference / notes box --------------------------------------------- */
+  .refbox{
+    background:#F4F7FC; border:1px solid var(--border); border-radius:8px;
+    padding:16px 18px; margin:0 0 22px;
+  }
+  .refbox .refbox-label{
+    font-size:11.5px; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--accent-deep); font-weight:600; margin-bottom:8px;
+  }
+  .refbox ul{ margin:0; padding-left:18px; }
+  .refbox li{ font-size:14px; margin-bottom:4px; }
+
+  /* ---- Highlighted key-idea panel ---------------------------------------- */
+  .keyidea{
+    background:linear-gradient(155deg, var(--accent-deep), var(--sidebar));
+    color:#fff; border-radius:12px; padding:28px 30px; margin:8px 0 10px;
+  }
+  .keyidea h3{color:#fff; margin-top:0;}
+  .keyidea p{ color:#E3EAF6; }
+  .keyidea .qgrid{ display:flex; flex-wrap:wrap; gap:6px 24px; margin-top:14px; }
+  .keyidea .qgrid .col{ flex:1 1 220px; }
+  .keyidea .qgrid .col-label{
+    font-size:11px; text-transform:uppercase; letter-spacing:0.1em;
+    color:#AFC3E4; margin-bottom:6px;
+  }
+  .keyidea .qgrid ul{margin:0; padding-left:18px;}
+  .keyidea .qgrid li{font-size:14px; margin-bottom:5px; color:#E3EAF6;}
+
+  /* ---- Warning / important-notice callout (red) ----------------------- */
+  .callout{
+    background:var(--incorrect-bg); border:1px solid #F0C6C1; border-radius:8px;
+    padding:16px 18px; margin:0 0 20px; font-size:14.5px; color:var(--incorrect);
+  }
+  .callout strong{ color:var(--incorrect); }
+
+  /* ---- Good vs. weak example boxes -------------------------------------- */
+  .examples{ display:grid; gap:12px; margin:8px 0 20px; }
+  .ex{
+    border-radius:8px; padding:16px 18px; font-size:14.5px;
+    border:1px solid var(--border); background:var(--paper);
+  }
+  .ex .ex-label{
+    font-size:11.5px; text-transform:uppercase; letter-spacing:0.08em;
+    font-weight:600; margin-bottom:8px;
+  }
+  .ex p{ font-size:14.5px; margin:0 0 8px; }
+  .ex ul, .ex ol{ margin:0 0 6px; padding-left:20px; }
+  .ex li{ font-size:14.5px; margin-bottom:5px; }
+  .ex .why{ font-size:13.5px; color:var(--ink-soft); margin:8px 0 0; }
+  .ex.weak{ border-left:4px solid var(--incorrect); }
+  .ex.weak .ex-label{ color:var(--incorrect); }
+  .ex.weak .quote{ background:var(--incorrect-bg); }
+  .ex.good{ border-left:4px solid var(--correct); }
+  .ex.good .ex-label{ color:var(--correct); }
+  .ex.good .quote{ background:var(--correct-bg); }
+  .ex .quote{ padding:8px 12px; border-radius:6px; font-style:italic; margin:0 0 8px; }
+
+  /* ---- Page-level footer -------------------------------------------------- */
+  footer{
+    text-align:center; padding:30px 20px 10px; font-size:12.5px;
+    color:var(--ink-soft); margin-left:280px;
+  }
+
+  @media (max-width: 880px){
+    nav.sidebar{ position:relative; width:100%; height:auto; max-height:none; }
+    main{ margin-left:0; }
+    footer{ margin-left:0; }
+    .hero{padding:40px 24px 32px;}
+    .content-inner{padding:0 22px;}
+    .table-scroll{ overflow-x:auto; }
+  }
+
+  /* ---- Page-specific additions ---- */
+  .hero-inner{ max-width:904px; }
+  .chapter h3[id]{ scroll-margin-top:24px; }
+  .sidebar a.home-link{
+    display:block; text-decoration:none;
+    background:var(--sidebar-hover); color:#fff;
+    border:1px solid rgba(255,255,255,0.18); border-radius:6px;
+    padding:9px 12px; font-size:13.5px; font-weight:500;
+    margin:0 0 20px;
+    transition:background 0.15s ease, border-color 0.15s ease;
+  }
+  .sidebar a.home-link:hover{ background:var(--accent); border-color:var(--accent); color:#fff; }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <nav class="sidebar" aria-label="Table of contents">
+    <a class="home-link" href="https://reinald-dp.github.io/mms200/">&larr; Back to MMS 200 Home</a>
+    <div class="course-title">MMS 200 Manuscript</div>
+    <p class="course-topic">for a Research Project</p>
+
+    <div class="nav-heading">Overview</div>
+    <ol>
+      <li><a class="toc-link" href="#overview" data-target="overview">Purpose of the Manuscript</a></li>
+      <li><a class="toc-link" href="#stages" data-target="stages">MMS 200a and MMS 200b</a></li>
+    </ol>
+
+    <div class="nav-heading">The Six Chapters</div>
+    <ol style="counter-reset:section 2">
+      <li><a class="toc-link" href="#ch1" data-target="ch1">Chapter I · Introduction</a>
+        <ul class="sub">
+          <li><a href="#ch1-a">A. Background of the Study</a></li>
+          <li><a href="#ch1-b">B. Problem &amp; Research Questions</a></li>
+          <li><a href="#ch1-c">C. Objectives of the Study</a></li>
+          <li><a href="#ch1-d">D. Significance of the Study</a></li>
+          <li><a href="#ch1-e">E. Scope and Limitations</a></li>
+        </ul>
+      </li>
+      <li><a class="toc-link" href="#ch2" data-target="ch2">Chapter II · Review of Related Literature</a>
+        <ul class="sub">
+          <li><a href="#ch2-a">A. Related Literature</a></li>
+          <li><a href="#ch2-b">B. Thematic or Comparative Analysis</a></li>
+          <li><a href="#ch2-c">C. Synthesis of the Literature</a></li>
+          <li><a href="#ch2-d">D. Identified Research Gaps</a></li>
+        </ul>
+      </li>
+      <li><a class="toc-link" href="#ch3" data-target="ch3">Chapter III · Theoretical and Conceptual Framework</a>
+        <ul class="sub">
+          <li><a href="#ch3-a">A. Theoretical Framework</a></li>
+          <li><a href="#ch3-b">B. Conceptual Framework</a></li>
+        </ul>
+      </li>
+      <li><a class="toc-link" href="#ch4" data-target="ch4">Chapter IV · Research Methodology</a>
+        <ul class="sub">
+          <li><a href="#ch4-a">A. Research Design</a></li>
+          <li><a href="#ch4-b">B. Setting, Participants, Data Sources</a></li>
+          <li><a href="#ch4-c">C. Sampling or Data Selection</a></li>
+          <li><a href="#ch4-d">D. Instruments and Measures</a></li>
+          <li><a href="#ch4-e">E. Data Collection Procedures</a></li>
+          <li><a href="#ch4-f">F. Data Analysis Procedures</a></li>
+        </ul>
+      </li>
+      <li><a class="toc-link" href="#ch5" data-target="ch5">Chapter V · Results and Discussion</a>
+        <ul class="sub">
+          <li><a href="#ch5-a">A. Overview of the Data</a></li>
+          <li><a href="#ch5-b">B. Results by Research Question</a></li>
+          <li><a href="#ch5-c">C. Interpretation &amp; Discussion</a></li>
+          <li><a href="#ch5-d">D. Relationship to Literature</a></li>
+          <li><a href="#ch5-e">E. Theoretical &amp; Practical Implications</a></li>
+          <li><a href="#ch5-f">F. Limitations of the Study</a></li>
+        </ul>
+      </li>
+      <li><a class="toc-link" href="#ch6" data-target="ch6">Chapter VI · Conclusion and Recommendations</a>
+        <ul class="sub">
+          <li><a href="#ch6-a">A. Conclusion</a></li>
+          <li><a href="#ch6-b">B. Recommendations for Practice</a></li>
+          <li><a href="#ch6-c">C. Recommendations for Future Research</a></li>
+        </ul>
+      </li>
+    </ol>
+
+    <div class="nav-heading">Back Matter</div>
+    <ol style="counter-reset:section 8">
+      <li><a class="toc-link" href="#references" data-target="references">References</a></li>
+      <li><a class="toc-link" href="#ai-declaration" data-target="ai-declaration">Declaration of AI Use</a></li>
+      <li><a class="toc-link" href="#appendices" data-target="appendices">Appendices</a></li>
+    </ol>
+
+    <div class="nav-heading">Putting It Together</div>
+    <ol style="counter-reset:section 11">
+      <li><a class="toc-link" href="#coherence" data-target="coherence">Manuscript Coherence</a></li>
+    </ol>
+
+    <div class="nav-heading">Wrap-up</div>
+    <ol style="counter-reset:section 12">
+      <li><a class="toc-link" href="#takeaways" data-target="takeaways">Key Takeaways</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <div class="hero">
+      <div class="hero-inner">
+        <div class="kicker">From Proposal to Completed Study</div>
+        <h1>MMS 200 Manuscript for a Research Project</h1>
+        <p class="dek">A chapter-by-chapter guide to documenting an empirical study in multimedia, media, and communication — from the problem and research questions, through the literature, framework, and methodology, to results, discussion, conclusion, and recommendations.</p>
+        <span class="byline">Prepared by: <strong>Dr. Reinald Adrian Pugoy</strong> — First Semester, AY 2026–2027</span>
+      </div>
+    </div>
+
+    <div class="content-inner">
+
+      <!-- 1. Purpose -->
+      <section class="chapter" id="overview">
+        <div class="eyebrow">01 · Overview</div>
+        <h2>Purpose of the Manuscript</h2>
+        <p class="lede">The MMS 200 research manuscript documents a systematic investigation of a clearly defined question about media, multimedia, audiences, or communication.</p>
+        <p>This guide is for MMS 200 projects that are primarily <strong>research studies</strong>. Examples include survey studies of media use, interview studies of creators or audiences, content or visual analyses of media texts, user experience research on existing platforms, and experiments comparing how different media designs affect learning, attention, or perception.</p>
+        <p>The manuscript should demonstrate the student's ability to:</p>
+        <ol class="commandments">
+          <li>Identify a significant problem and frame it as focused, answerable research questions.</li>
+          <li>Critically review and synthesize relevant literature to establish what is known and what remains unanswered.</li>
+          <li>Ground the study in an appropriate theoretical and conceptual framework.</li>
+          <li>Design and carry out a sound, ethical methodology for collecting and analyzing data.</li>
+          <li>Interpret the findings, relate them to existing literature and theory, and draw a conclusion supported by the evidence.</li>
+        </ol>
+        <blockquote class="def"><strong>Research or software development?</strong> — If the main output of your project is an application, game, or digital product that you build and evaluate, use the <em>Manuscript for a Software Development Project</em> guide instead. If the main output is new knowledge answering a research question, use this guide.</blockquote>
+      </section>
+
+      <!-- 2. Stages -->
+      <section class="chapter" id="stages">
+        <div class="eyebrow">02 · Overview</div>
+        <h2>Manuscript Coverage for MMS 200a and MMS 200b</h2>
+        <p class="lede">MMS 200a is the proposal stage. MMS 200b is the completed study.</p>
+
+        <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>Chapter</th><th>Title</th><th>MMS 200a</th><th>MMS 200b</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="num">Chapter I</td><td>Introduction</td><td>✓ Proposal</td><td>✓ Updated tense, same plan</td></tr>
+            <tr><td class="num">Chapter II</td><td>Review of Related Literature</td><td>✓ Proposal</td><td>✓ Updated tense, same plan</td></tr>
+            <tr><td class="num">Chapter III</td><td>Theoretical and Conceptual Framework</td><td>✓ Proposal</td><td>✓ Same framework</td></tr>
+            <tr><td class="num">Chapter IV</td><td>Research Methodology</td><td>✓ Planned</td><td>✓ Approved plan, carried out</td></tr>
+            <tr><td class="num">Chapter V</td><td>Results and Discussion</td><td>—</td><td>✓</td></tr>
+            <tr><td class="num">Chapter VI</td><td>Conclusion and Recommendations</td><td>—</td><td>✓</td></tr>
+            <tr><td class="num">Back matter</td><td>References</td><td>✓ Required</td><td>✓ Required</td></tr>
+            <tr><td class="num">Back matter</td><td>Declaration of AI Use</td><td>✓ Required</td><td>✓ Required</td></tr>
+            <tr><td class="num">Back matter</td><td>Appendices</td><td>As needed</td><td>As needed</td></tr>
+          </tbody>
+        </table>
+        </div>
+
+        <h3>MMS 200a: Proposal Stage</h3>
+        <p>MMS 200a covers <strong>Chapters I to IV</strong>. At this stage, the manuscript presents the problem and research questions, reviews the literature, establishes the framework of the study, and specifies how data will be collected and analyzed.</p>
+        <p>Because MMS 200a is the proposal stage, future-oriented language may be used for activities not yet completed. However, the proposal should already present a <strong>sufficiently developed and feasible research plan</strong> rather than a preliminary topic. The student should be able to show that:</p>
+        <ul>
+          <li>the problem is significant and the research questions are focused and answerable;</li>
+          <li>the literature has been reviewed critically and a real gap has been identified;</li>
+          <li>the framework, design, instruments, and analysis are appropriate to the research questions; and</li>
+          <li>the data can realistically be collected and analyzed ethically within the available time.</li>
+        </ul>
+
+        <h3>MMS 200b: Completed Study</h3>
+        <p>MMS 200b covers the <strong>complete manuscript, Chapters I to VI</strong>, including the results, their discussion, the conclusion, and recommendations.</p>
+        <p>The MMS 200b manuscript should read as a <strong>completed study rather than a proposal</strong>. Chapters I to IV should therefore be updated to reflect what was done according to the approved MMS 200a plan. Future-oriented statements should be replaced with descriptions of the actual participants, data sources, instruments, procedures, and analyses.</p>
+
+        <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>MMS 200a (Proposal)</th><th>MMS 200b (Completed Study)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>"This study will examine..."</td><td>"This study examined..."</td></tr>
+            <tr><td>"The researcher will survey 120 students..."</td><td>"A total of 112 students were surveyed..."</td></tr>
+            <tr><td>"Interviews will be analyzed using thematic analysis..."</td><td>"Interviews were analyzed using thematic analysis..."</td></tr>
+            <tr><td>"The study is expected to show..."</td><td>"The findings show..." or "The study found..."</td></tr>
+          </tbody>
+        </table>
+        </div>
+
+        <div class="keyidea">
+          <h3>The approved MMS 200a proposal is your blueprint.</h3>
+          <p>MMS 200b should carry out the research questions, framework, and methodology approved in MMS 200a as closely as possible. Revising Chapters I–IV mainly means updating them from future to past tense and reporting what actually happened — the actual number of participants, the actual dates, the actual instruments used. It does not mean rewriting the research questions to fit whatever the data happened to show.</p>
+          <p style="margin-bottom:0;"><strong>Any substantive change should be justified and approved by your adviser.</strong></p>
+        </div>
+      </section>
+
+      <!-- 3. Chapter I -->
+      <section class="chapter" id="ch1">
+        <div class="eyebrow">03 · The Six Chapters</div>
+        <h2>Chapter I. Introduction</h2>
+        <p class="lede">This chapter establishes the foundation of the study by presenting the problem context, the research questions, the objectives, the significance, and the boundaries of the work.</p>
+
+        <h3 id="ch1-a">A. Background of the Study</h3>
+        <p>Provides the context and justification for the study. This section should explain:</p>
+        <ul>
+          <li>the phenomenon under study;</li>
+          <li>the population, setting, or media in focus;</li>
+          <li>what is already known, with citations;</li>
+          <li>what remains unclear or contested;</li>
+          <li>why it matters; and</li>
+          <li>why a study is needed.</li>
+        </ul>
+        <p>The discussion should progressively move from the broader context toward the specific problem the study investigates.</p>
+        <div class="flow">
+          <span class="step">Broader phenomenon</span><span class="arrow">→</span>
+          <span class="step">Specific setting</span><span class="arrow">→</span>
+          <span class="step">What is known</span><span class="arrow">→</span>
+          <span class="step">What is not known</span><span class="arrow">→</span>
+          <span class="step">This study</span>
+        </div>
+        <blockquote class="def"><strong>Evidence, not assumptions</strong> — Claims about the problem should be supported by literature, statistics, reports, or preliminary observations. "Many students struggle with..." needs a source.</blockquote>
+        <blockquote class="def"><strong>Guiding question</strong> — What context gave rise to this study, and why does it matter?</blockquote>
+
+        <h3 id="ch1-b">B. Statement of the Problem / Research Questions</h3>
+        <p>Clearly defines what the study seeks to find out. This section should:</p>
+        <ul>
+          <li>state the research problem, translating the background into a focused concern;</li>
+          <li>present the problem as <strong>three to five research questions</strong>; and</li>
+          <li>ensure each question can be answered by the data the study will collect.</li>
+        </ul>
+        <blockquote class="def"><strong>Not a research question</strong> — Describing the participants' profile (e.g., "What is the demographic profile of the respondents?") is not a research question. The profile is reported in Chapter V-A.</blockquote>
+        <p>Research questions are the backbone of the manuscript. They determine the methodology, organize the results, and are answered in the conclusion.</p>
+
+        <h4>A good research question is focused and answerable</h4>
+        <p>A good research question names <strong>what</strong> is being investigated, <strong>among whom or in what</strong>, and implies <strong>what kind of data</strong> will answer it. Avoid yes/no questions, questions answerable by a quick search, and questions too broad to answer in one study.</p>
+
+        <div class="examples">
+          <div class="ex weak">
+            <div class="ex-label">✗ Weak research questions</div>
+            <ul>
+              <li>Is social media good or bad for students?</li>
+              <li>What is TikTok?</li>
+              <li>How can educational videos be improved?</li>
+            </ul>
+            <p class="why">Why these fall short: the first is a yes/no value judgment with no defined population or measure; the second can be answered without research; the third is too broad and does not specify whose perspective, which videos, or what "improved" means.</p>
+          </div>
+          <div class="ex good">
+            <div class="ex-label">✓ Focused research questions</div>
+            <div class="quote">Problem: Little is known about how open distance learning students use short-form video platforms for informal learning in their degree programs.</div>
+            <ol>
+              <li>RQ1. How frequently, and for what learning purposes, do undergraduate multimedia students in an open distance learning program use short-form video platforms?</li>
+              <li>RQ2. What gratifications do these students report from using short-form video for learning?</li>
+              <li>RQ3. Is there a relationship between the reported learning gratifications and students' perceived academic self-efficacy?</li>
+            </ol>
+            <p class="why">Why these work: each names a population and a specific aspect of the phenomenon, and each points to its data — survey frequencies for RQ1, a gratifications scale and open-ended responses for RQ2, and a correlation for RQ3.</p>
+          </div>
+        </div>
+
+        <blockquote class="def"><strong>Guiding question</strong> — What exactly does this study want to find out?</blockquote>
+
+        <h3 id="ch1-c">C. Objectives of the Study</h3>
+        <p>States what the study aims to accomplish.</p>
+        <div class="keyidea">
+          <h3>One general objective, specific objectives that mirror the research questions</h3>
+          <div class="qgrid">
+            <div class="col">
+              <div class="col-label">General Objective (one)</div>
+              <ul><li>States the overall purpose of the study in one sentence: what will be investigated, among whom, and why.</li></ul>
+            </div>
+            <div class="col">
+              <div class="col-label">Specific Objectives (3–5, one per RQ)</div>
+              <ul><li>Restate each research question as an action: to determine, to describe, to examine, to compare, to explore.</li></ul>
+            </div>
+          </div>
+        </div>
+        <p style="margin-top:18px;">For example, the research questions above become:</p>
+        <ol class="commandments">
+          <li>To determine the frequency and learning purposes of short-form video use among undergraduate multimedia students in an open distance learning program.</li>
+          <li>To identify the gratifications students report from using short-form video for learning.</li>
+          <li>To examine the relationship between reported learning gratifications and perceived academic self-efficacy.</li>
+        </ol>
+        <div class="callout"><strong>Objectives are not tasks.</strong> "To distribute a survey" or "To review literature" are steps in the methodology, not objectives of the study. Each specific objective should correspond to a research question and be met by a finding in Chapter V.</div>
+        <blockquote class="def"><strong>Guiding question</strong> — What does the study aim to achieve, and how will we know it did?</blockquote>
+
+        <h3 id="ch1-d">D. Significance of the Study</h3>
+        <p>Explains who may benefit from the findings and how. Potential beneficiaries may include:</p>
+        <ul>
+          <li>the population studied;</li>
+          <li>educators, media practitioners, content creators, or designers;</li>
+          <li>institutions, organizations, or policymakers;</li>
+          <li>platform developers; and</li>
+          <li>future researchers in the field.</li>
+        </ul>
+        <blockquote class="def"><strong>Remember</strong> — Explain what each stakeholder can <em>do</em> with the findings rather than merely listing potential beneficiaries.</blockquote>
+        <blockquote class="def"><strong>Guiding question</strong> — Who benefits from the findings, and in what ways?</blockquote>
+
+        <h3 id="ch1-e">E. Scope and Limitations</h3>
+        <p>Defines the boundaries of the study.</p>
+        <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>Scope clarifies, where applicable…</th><th>Limitations identify constraints such as…</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Population, participants, or media texts studied</td><td>Groups, platforms, or media not covered</td></tr>
+            <tr><td>Setting and location</td><td>Limited generalizability beyond the setting</td></tr>
+            <tr><td>Variables, concepts, or aspects examined</td><td>Variables or aspects deliberately excluded</td></tr>
+            <tr><td>Time period of data collection or of the media analyzed</td><td>Self-reported data, where applicable</td></tr>
+            <tr><td>Research design and methods</td><td>Sample size or sampling constraints</td></tr>
+            <tr><td></td><td>Time, access, or resource constraints</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="callout"><strong>Limitations are not excuses.</strong> They should describe genuine boundaries of the design, not justify avoidable weaknesses. Limitations that actually emerged during the study are discussed in Chapter V-F.</div>
+        <blockquote class="def"><strong>Guiding question</strong> — What does this study cover, and what falls outside its boundaries?</blockquote>
+      </section>
+
+      <!-- 4. Chapter II -->
+      <section class="chapter" id="ch2">
+        <div class="eyebrow">04 · The Six Chapters</div>
+        <h2>Chapter II. Review of Related Literature</h2>
+        <p class="lede">This chapter situates the study within existing scholarship. It establishes what is already known, how researchers have studied it, and what remains unanswered.</p>
+        <div class="callout"><strong>Analyze and synthesize — don't just summarize.</strong> A review that describes one study per paragraph is an annotated bibliography, not a literature review. Organize the chapter around ideas, and explain how studies agree, disagree, and leave questions open.</div>
+
+        <h3 id="ch2-a">A. Related Literature</h3>
+        <p>Presents the studies, theories, and scholarly works relevant to the research questions. Depending on the study, this may include:</p>
+        <ul>
+          <li>empirical studies on the same phenomenon, population, or media;</li>
+          <li>studies of similar phenomena in other settings or populations;</li>
+          <li>key concepts and how they have been defined and measured; and</li>
+          <li>methodological approaches used in comparable studies.</li>
+        </ul>
+        <p>Organize this section <strong>by topic or theme</strong>, ideally following the key concepts in your research questions, rather than by author or year.</p>
+        <blockquote class="def"><strong>Expected depth</strong> — An MMS 200 research manuscript should use a <strong>minimum of 20 sources</strong>. Prioritize peer-reviewed journal articles and conference papers, preferably from the last ten years, alongside seminal works. Use credible sources: avoid blogs, content farms, and uncited web pages.</blockquote>
+
+        <h3 id="ch2-b">B. Thematic or Comparative Analysis of Existing Literature</h3>
+        <p>This is where you <strong>compare the studies systematically</strong>. A useful tool is a <strong>literature matrix</strong> that lays out the key studies side by side, for example:</p>
+        <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>Study</th><th>Context &amp; Participants</th><th>Method</th><th>Key Findings</th><th>Relevance / Limitation</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="num">Author A (2022)</td><td>Senior high school students, Philippines</td><td>Survey, n = 300</td><td>Frequent short-form video use for exam review</td><td>Face-to-face learners only</td></tr>
+            <tr><td class="num">Author B (2023)</td><td>University students, Malaysia</td><td>Interviews, n = 18</td><td>Entertainment and learning gratifications overlap</td><td>Did not examine learning outcomes</td></tr>
+            <tr><td class="num">Author C (2024)</td><td>Online learners, Global</td><td>Experiment</td><td>Short videos improved recall, not transfer</td><td>Lab setting, not informal learning</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p>Use the matrix to identify <strong>themes or patterns</strong> across the literature, such as:</p>
+        <div class="flow">
+          <span class="step">Consistent findings</span><span class="arrow">·</span>
+          <span class="step">Conflicting findings</span><span class="arrow">·</span>
+          <span class="step">Dominant methods</span><span class="arrow">·</span>
+          <span class="step">Populations studied</span><span class="arrow">·</span>
+          <span class="step">Under-studied areas</span>
+        </div>
+        <blockquote class="def"><strong>A matrix is not enough</strong> — Every matrix must be followed by a discussion of what it shows. The full matrix may be placed in the Appendices; the main text should discuss its key patterns.</blockquote>
+
+        <h3 id="ch2-c">C. Synthesis of the Literature</h3>
+        <p>Brings the review together into a coherent picture of the current state of knowledge. This section should state, in your own words:</p>
+        <ol class="commandments">
+          <li>What the literature collectively establishes about the phenomenon.</li>
+          <li>Where the evidence is strong, weak, or inconsistent.</li>
+          <li>How the key concepts in your study have been defined and measured.</li>
+          <li>Which theories or approaches have been most useful in explaining the phenomenon.</li>
+        </ol>
+        <div class="examples">
+          <div class="ex weak">
+            <div class="ex-label">✗ Summary</div>
+            <div class="quote">Author A (2022) found that students use short videos for review. Author B (2023) found that students use them for entertainment. Author C (2024) found that short videos help recall.</div>
+          </div>
+          <div class="ex good">
+            <div class="ex-label">✓ Synthesis</div>
+            <div class="quote">Studies consistently report that students use short-form video for learning (Author A, 2022; Author B, 2023), but this use is often intertwined with entertainment, making learning gratifications difficult to isolate. Evidence on learning benefits comes mainly from controlled experiments (Author C, 2024), leaving informal, self-directed use largely unexamined.</div>
+            <p class="why">Why this works: it groups sources by idea, states what they share and where they differ, and points toward what remains unknown.</p>
+          </div>
+        </div>
+
+        <h3 id="ch2-d">D. Identified Research Gaps</h3>
+        <p>States precisely what the existing literature has not adequately addressed, and how this study responds. Gaps commonly take one or more of these forms:</p>
+        <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>Type of gap</th><th>Example</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Population or context</strong></td><td>The phenomenon has been studied among face-to-face learners but not among open distance learners.</td></tr>
+            <tr><td><strong>Empirical</strong></td><td>Few studies have examined a specific relationship or outcome.</td></tr>
+            <tr><td><strong>Conflicting evidence</strong></td><td>Studies disagree, and the reasons are unclear.</td></tr>
+            <tr><td><strong>Methodological</strong></td><td>Existing studies rely on one method, such as surveys only, missing what interviews or content analysis could reveal.</td></tr>
+            <tr><td><strong>Theoretical</strong></td><td>A theory has not been applied or tested in this context.</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="callout"><strong>"No studies have been done on this" is rarely true.</strong> The gap should logically emerge from the review and synthesis. If you claim no prior research exists, you probably have not searched widely enough — search for studies of related phenomena, populations, and settings.</div>
+        <blockquote class="def"><strong>Close the loop</strong> — End the chapter by stating explicitly how your research questions address the identified gaps.</blockquote>
+      </section>
+
+      <!-- 5. Chapter III -->
+      <section class="chapter" id="ch3">
+        <div class="eyebrow">05 · The Six Chapters</div>
+        <h2>Chapter III. Theoretical and Conceptual Framework</h2>
+        <p class="lede">This chapter presents the lens through which the study views the problem and the map of the concepts it investigates.</p>
+        <div class="keyidea">
+          <h3>Theoretical vs. conceptual framework</h3>
+          <div class="qgrid">
+            <div class="col">
+              <div class="col-label">Theoretical framework</div>
+              <ul><li>An <strong>existing, established theory</strong> that explains the phenomenon. It answers: <em>why</em> should we expect what we expect?</li></ul>
+            </div>
+            <div class="col">
+              <div class="col-label">Conceptual framework</div>
+              <ul><li>The <strong>researcher's own model</strong> of the specific concepts or variables in this study and how they relate. It answers: <em>what</em> exactly will be studied?</li></ul>
+            </div>
+          </div>
+        </div>
+
+        <h3 id="ch3-a">A. Theoretical Framework</h3>
+        <p>Presents one or two theories that underpin the study. Explain the theory's main propositions, cite its original and key sources, and show why it fits your research questions. Examples relevant to multimedia and communication research include:</p>
+        <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>Theory</th><th>Suited to studies of</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Uses and Gratifications Theory</strong></td><td>Why audiences choose and use particular media, and what needs they satisfy</td></tr>
+            <tr><td><strong>Cognitive Theory of Multimedia Learning</strong></td><td>How combinations of text, images, audio, and video affect learning</td></tr>
+            <tr><td><strong>Cognitive Load Theory</strong></td><td>How media design affects mental effort and comprehension</td></tr>
+            <tr><td><strong>Technology Acceptance Model (TAM) / UTAUT</strong></td><td>Factors that shape whether people adopt and use a technology</td></tr>
+            <tr><td><strong>Diffusion of Innovations</strong></td><td>How new media or technologies spread through a community</td></tr>
+            <tr><td><strong>Self-Determination Theory</strong></td><td>Motivation and engagement in games, learning media, and platforms</td></tr>
+            <tr><td><strong>Framing Theory</strong></td><td>How media present issues and how this shapes interpretation</td></tr>
+            <tr><td><strong>Social Semiotics / Visual Grammar</strong></td><td>How meaning is constructed in images, layouts, and multimodal texts</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <blockquote class="def"><strong>Integrate, don't decorate</strong> — A theory described in Chapter III and never mentioned again is decoration. It should shape your variables or themes, inform your instruments in Chapter IV, and help you interpret your findings in Chapter V.</blockquote>
+
+        <h3 id="ch3-b">B. Conceptual Framework</h3>
+        <p>Translates the theory and literature into the specific concepts examined in this study and shows how they relate. It is usually presented as a <strong>diagram followed by a narrative explanation</strong>.</p>
+        <p>The diagram should make clear:</p>
+        <ul>
+          <li>the key concepts or variables drawn from your research questions;</li>
+          <li>how these are expected to relate, based on the theory and literature; and</li>
+          <li>which research question addresses each concept or relationship.</li>
+        </ul>
+        <blockquote class="def"><strong>Example</strong> — For the short-form video study, the diagram would show students' <em>patterns of short-form video use</em> (RQ1) and the <em>learning gratifications</em> they report (RQ2), and a link between those gratifications and <em>perceived academic self-efficacy</em> (RQ3). The narrative then explains each concept, why the link is expected based on Uses and Gratifications Theory and the literature, and which research question addresses it.</blockquote>        <blockquote class="def"><strong>Traceability</strong> — Every concept in the framework should appear in a research question, be measured or explored in Chapter IV, and be reported in Chapter V. A concept that appears only in the diagram is a concept to question.</blockquote>
+      </section>
+
+      <!-- 6. Chapter IV -->
+      <section class="chapter" id="ch4">
+        <div class="eyebrow">06 · The Six Chapters</div>
+        <h2>Chapter IV. Research Methodology</h2>
+        <p class="lede">This chapter explains how the study was or will be carried out, in enough detail that another researcher could understand, evaluate, and repeat it.</p>
+        <p>For MMS 200a, the chapter describes the <strong>planned</strong> methodology. For MMS 200b, it documents how this approved plan was carried out. Any substantive deviation should be justified and <strong>approved by your adviser</strong>.</p>
+        <div class="callout"><strong>Writing guidance.</strong> Justify every methodological choice in relation to your research questions. Avoid textbook definitions of methods; explain how you apply them. Full instruments, consent forms, and protocols belong in the Appendices.</div>
+
+        <h3 id="ch4-a">A. Research Design</h3>
+        <p>States the overall design and explains why it suits the research questions. Common designs for MMS 200 studies include:</p>
+        <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>Approach</th><th>Design</th><th>Suited to questions about</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Quantitative</strong></td><td>Descriptive survey</td><td>How often, how much, what proportion</td></tr>
+            <tr><td><strong>Quantitative</strong></td><td>Correlational</td><td>Whether variables are related</td></tr>
+            <tr><td><strong>Quantitative</strong></td><td>Experimental or quasi-experimental</td><td>Whether one design or condition produces different outcomes from another</td></tr>
+            <tr><td><strong>Qualitative</strong></td><td>Descriptive qualitative or case study</td><td>How and why, in depth, within a bounded setting</td></tr>
+            <tr><td><strong>Qualitative</strong></td><td>Phenomenological</td><td>The lived experience of a phenomenon</td></tr>
+            <tr><td><strong>Qualitative or quantitative</strong></td><td>Content or visual analysis</td><td>Patterns, representations, or messages in media texts</td></tr>
+            <tr><td><strong>Mixed methods</strong></td><td>Explanatory or convergent</td><td>Questions that need both measurement and explanation</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <blockquote class="def"><strong>Let the questions choose the design</strong> — "How many" questions need quantitative data; "how" and "why" questions usually need qualitative data. If your research questions ask both, a mixed-methods design may be appropriate — but explain how the two strands connect.</blockquote>
+        <blockquote class="def"><strong>Example</strong> — The short-form video study uses a convergent mixed-methods design: a single survey collects scale data, analyzed quantitatively for RQ1 and RQ3, and open-ended responses, analyzed thematically alongside the scale results for RQ2.</blockquote>
+
+        <h3 id="ch4-b">B. Research Setting, Participants, or Data Sources</h3>
+        <p>Describes where the study takes place and who or what provides the data.</p>
+        <ul>
+          <li><strong>Setting:</strong> the institution, community, platform, or online environment, and why it is appropriate.</li>
+          <li><strong>Participants:</strong> who they are, the target population they represent, and the inclusion and exclusion criteria.</li>
+          <li><strong>Data sources:</strong> for content analysis or document-based studies, the media texts, posts, videos, or documents analyzed, and their source and time period.</li>
+        </ul>
+
+        <h3 id="ch4-c">C. Sampling or Data Selection Procedures</h3>
+        <p>Explains how participants or data were selected and how many.</p>
+        <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>Approach</th><th>Common techniques</th><th>Justifying the size</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Quantitative</strong></td><td>Simple random, stratified, cluster, or convenience sampling</td><td>Based on the analysis planned, e.g., an a priori power analysis (G*Power) or a recognized sample size guideline</td></tr>
+            <tr><td><strong>Qualitative</strong></td><td>Purposive, criterion, snowball, or maximum variation sampling</td><td>Based on depth and data saturation, with a stated target range (e.g., 10–15 interviews)</td></tr>
+            <tr><td><strong>Content analysis</strong></td><td>Census, random, systematic, or purposive selection of texts</td><td>Based on the period, platform, and the unit of analysis</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="callout"><strong>Be honest about the sample.</strong> Convenience sampling is acceptable for an MMS 200 study if acknowledged, but the conclusion must not then claim to represent the whole population.</div>
+
+        <h3 id="ch4-d">D. Research Instruments and Measures</h3>
+        <p>Describes the tools used to collect data and shows that they can produce data that are <strong>appropriate, accurate, and consistent</strong> enough to answer the research questions. A reader should be able to tell, from this section alone, what each instrument contains, where it came from, how responses are scored or coded, and why it can be trusted.</p>
+
+        <h4>1. Choosing the instruments</h4>
+        <p>Select instruments according to the research questions and design in Chapter IV-A. Common instruments for MMS 200 studies include:</p>
+        <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>Instrument</th><th>Suited to</th><th>Typical form</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Questionnaire</strong></td><td>Measuring frequencies, attitudes, perceptions, or behaviors across many participants</td><td>Closed items, rating scales (e.g., Likert), and a few open-ended items</td></tr>
+            <tr><td><strong>Interview guide</strong></td><td>Exploring experiences, reasons, and meanings in depth</td><td>Main questions with follow-up probes</td></tr>
+            <tr><td><strong>Focus group guide</strong></td><td>Exploring shared views and how participants respond to each other</td><td>A small set of discussion prompts and activities</td></tr>
+            <tr><td><strong>Coding scheme or codebook</strong></td><td>Content or visual analysis of media texts</td><td>Categories, definitions, decision rules, and examples</td></tr>
+            <tr><td><strong>Observation protocol or task sheet</strong></td><td>Recording what people do while using media or completing tasks</td><td>A checklist or form for recording behaviors, times, or errors</td></tr>
+            <tr><td><strong>Test</strong></td><td>Measuring learning, recall, or comprehension, often in experiments</td><td>Pre-test and post-test items with an answer key</td></tr>
+          </tbody>
+        </table>
+        </div>
+
+        <h4>2. Adopted, adapted, or researcher-made</h4>
+        <p>State the origin of every instrument, because this determines what you must report to show it is sound:</p>
+        <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>Origin</th><th>What it means</th><th>What to report</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Adopted</strong></td><td>An existing validated instrument used as published</td><td>The source, what it measures, its reported reliability, and permission where the authors require it</td></tr>
+            <tr><td><strong>Adapted</strong></td><td>An existing instrument modified for this study, such as reworded items, removed items, or a translation</td><td>The source, each change made and why, and how the modified version was checked through expert review and pilot testing</td></tr>
+            <tr><td><strong>Researcher-made</strong></td><td>An instrument written specifically for this study</td><td>How the items were derived from the framework and literature, and how they were validated and pilot tested</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="callout"><strong>Don't reinvent established scales.</strong> If a validated scale already measures your concept, adopt or adapt it rather than writing your own. Researcher-made items are best kept for aspects specific to your setting, such as the platforms or learning activities your participants use.</div>
+        <blockquote class="def"><strong>Translations</strong> — If an instrument is translated, for example into Filipino, describe how the translation was checked, such as review by a bilingual expert or back-translation into the original language.</blockquote>
+
+        <h4>3. Describing each instrument</h4>
+        <p>For every instrument, describe:</p>
+        <ul>
+          <li><strong>Purpose:</strong> which research questions and concepts it addresses;</li>
+          <li><strong>Origin:</strong> adopted, adapted, or researcher-made, with citations;</li>
+          <li><strong>Structure:</strong> its parts or sections and the number of items or questions in each;</li>
+          <li><strong>Response format:</strong> for example, a 5-point scale from 1 (Strongly Disagree) to 5 (Strongly Agree), multiple choice, or open-ended;</li>
+          <li><strong>Scoring or coding:</strong> how responses become usable data, such as averaging items into a scale score, handling reverse-worded items, or assigning codes; and</li>
+          <li><strong>Administration:</strong> the format (e.g., online form, video call) and approximate time needed to complete it.</li>
+        </ul>
+
+        <div class="examples">
+          <div class="ex weak">
+            <div class="ex-label">✗ Too little detail</div>
+            <div class="quote">The researcher used a survey questionnaire to gather data from the respondents. The questionnaire was validated by experts.</div>
+            <p class="why">Why this falls short: it does not say what the questionnaire contains, where its items came from, how responses are scored, which research questions it answers, or how the validation was done.</p>
+          </div>
+          <div class="ex good">
+            <div class="ex-label">✓ Sufficient detail</div>
+            <p>The online questionnaire has four parts and takes about 15 minutes to complete:</p>
+            <ol>
+              <li><strong>Part A — Use patterns (RQ1):</strong> 8 researcher-made items on frequency, platforms, and learning purposes of short-form video use.</li>
+              <li><strong>Part B — Learning gratifications (RQ2, RQ3):</strong> 16 items adapted from an established uses-and-gratifications scale (Author, Year), reworded to refer to learning, rated on a 5-point agreement scale and averaged into four subscale scores.</li>
+              <li><strong>Part C — Academic self-efficacy (RQ3):</strong> 8 items adopted from a published academic self-efficacy scale (Author, Year), rated on the same 5-point scale and averaged into one score.</li>
+              <li><strong>Part D — Open-ended items (RQ2):</strong> 3 questions asking students to describe how short-form video helps or hinders their learning.</li>
+            </ol>
+            <p class="why">Why this works: each part names its items, origin, response format, scoring, and the research question it serves.</p>
+          </div>
+        </div>
+
+        <p>For qualitative instruments, describe the equivalent details:</p>
+        <ul>
+          <li><strong>Interview or focus group guides:</strong> the main questions and probes, how they map to the research questions and framework concepts, and the expected duration of a session.</li>
+          <li><strong>Codebooks:</strong> the unit of analysis (e.g., a video, a post, a frame), the categories and their definitions, decision rules for unclear cases, and an example for each category.</li>
+        </ul>
+
+        <h4>4. Ensuring the quality of the instruments</h4>
+        <p>Show that your instruments can be trusted. Address whichever of the following apply to your study:</p>
+        <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>Concern</th><th>Question it answers</th><th>How it may be addressed</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Validity</strong></td><td>Does the instrument measure what it is meant to measure?</td><td>Adopting or adapting established scales; review by your adviser and other experts</td></tr>
+            <tr><td><strong>Reliability</strong></td><td>Does it produce consistent results?</td><td>Pilot testing; Cronbach's alpha of .70 or higher for each multi-item scale; a second coder for content analysis</td></tr>
+            <tr><td><strong>Trustworthiness</strong> (qualitative)</td><td>Do the findings faithfully reflect the data?</td><td>Member checking, a record of coding decisions, and discussing emerging themes with your adviser</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p>Briefly report what was actually done: who reviewed the instruments, how the pilot test went, and what was revised as a result.</p>
+
+        <h4>5. Aligning instruments with the research questions</h4>
+        <p>Include an <strong>alignment table</strong> linking each research question to its data and analysis:</p>
+        <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>Research Question</th><th>Data Source</th><th>Instrument</th><th>Analysis</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="num">RQ1</td><td>Students</td><td>Questionnaire, Part A</td><td>Frequencies, percentages</td></tr>
+            <tr><td class="num">RQ2</td><td>Students</td><td>Questionnaire, Parts B and D</td><td>Means; thematic analysis</td></tr>
+            <tr><td class="num">RQ3</td><td>Students</td><td>Questionnaire, Parts B and C</td><td>Pearson or Spearman correlation</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <blockquote class="def"><strong>Every item earns its place</strong> — Each item should serve a research question or describe the participants. Items that serve neither lengthen the instrument, tire participants, and produce data you will not use.</blockquote>
+
+        <div class="keyidea">
+          <h3>Draft instruments in MMS 200a, validated instruments in MMS 200b</h3>
+          <div class="qgrid">
+            <div class="col">
+              <div class="col-label">MMS 200a</div>
+              <ul><li>Present the draft instruments and the planned expert review and pilot test. Place the full drafts in the Appendices.</li></ul>
+            </div>
+            <div class="col">
+              <div class="col-label">MMS 200b</div>
+              <ul><li>Describe the validation actually done and the revisions made. Report reliability results from the final data in Chapter V-A.</li></ul>
+            </div>
+          </div>
+        </div>
+
+        <h3 id="ch4-e">E. Data Collection Procedures</h3>
+        <p>Describes how the data were or will be gathered: permissions obtained, how participants were recruited, how instruments were administered, the timeline, and how data were stored and secured.</p>
+        <p>For studies involving people, also describe how <strong>informed consent</strong> was obtained, how participation was kept <strong>voluntary</strong>, how <strong>privacy</strong> was protected under the Data Privacy Act of 2012, and any <strong>ethics review</strong> required by the university.</p>
+        <div class="callout"><strong>No data collection before approval.</strong> Do not begin collecting data until the proposal, instruments, and consent materials have been approved by your adviser.</div>
+
+        <h3 id="ch4-f">F. Data Analysis Procedures</h3>
+        <p>Explains how the data were or will be analyzed to answer each research question. Name the specific techniques and tools, for example:</p>
+        <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>Data type</th><th>Common techniques</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Quantitative — descriptive</strong></td><td>Frequencies, percentages, means, standard deviations</td></tr>
+            <tr><td><strong>Quantitative — inferential</strong></td><td>t-test, ANOVA, chi-square, correlation, regression, or their non-parametric equivalents, chosen according to the data</td></tr>
+            <tr><td><strong>Qualitative</strong></td><td>Thematic analysis (e.g., Braun and Clarke's six phases), coding, and theme development</td></tr>
+            <tr><td><strong>Content or visual analysis</strong></td><td>Coding by category, frequency counts, intercoder reliability (e.g., Cohen's kappa), and interpretive analysis</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p>Name the software used, if any (e.g., JASP, jamovi, SPSS, R, Excel, NVivo, Taguette), and explain how Likert-scale scores will be interpreted, for example with a verbal interpretation table.</p>
+        <blockquote class="def"><strong>Match the analysis to the question</strong> — A relationship question needs a correlation, not just two means. A "how" question needs qualitative analysis, not just a frequency table. Check your alignment table.</blockquote>
+      </section>
+
+      <!-- 7. Chapter V -->
+      <section class="chapter" id="ch5">
+        <div class="eyebrow">07 · The Six Chapters</div>
+        <h2>Chapter V. Results and Discussion</h2>
+        <p class="lede">This chapter presents what the study found, interprets what the findings mean, and situates them in relation to the literature and theory.</p>
+        <p>Chapter V forms part of <strong>MMS 200b</strong> and is not required during the MMS 200a proposal stage.</p>
+        <div class="callout"><strong>Writing guidance.</strong> Present summarized, organized findings rather than raw data. Every table and figure should be numbered, captioned, and discussed in the text. Raw responses, full statistical output, and transcripts belong in the Appendices.</div>
+        <blockquote class="def"><strong>Two acceptable structures</strong> — You may follow sections A to F as listed, or, to avoid writing each research question twice, present each research question in turn with its results, interpretation, and link to the literature together (combining B, C, and D), followed by the implications (E) and limitations (F). Agree on the structure with your adviser.</blockquote>
+
+        <h3 id="ch5-a">A. Overview of the Data</h3>
+        <p>Briefly describes the data that were actually obtained: the final number of participants or texts, a short profile of participants or the corpus, and the reliability of the instruments where applicable. Keep this short; it sets up the results that follow.</p>
+
+        <h3 id="ch5-b">B. Presentation and Analysis of Results by Research Question</h3>
+        <p>Presents the findings <strong>organized by research question</strong>, in the same order as Chapter I. For each research question:</p>
+        <ol class="commandments">
+          <li>Restate the research question as a heading.</li>
+          <li>Present the results in tables, figures, or themes.</li>
+          <li>Describe what the results show, with the relevant statistics or illustrative quotations.</li>
+          <li>State the direct answer to the research question.</li>
+        </ol>
+        <blockquote class="def"><strong>Table 5.1. Frequency of Short-Form Video Use for Learning (n = 112)</strong> — The accompanying text should highlight the main pattern, such as the most and least common responses, rather than repeat every number in the table.</blockquote>
+        <blockquote class="def"><strong>For qualitative results</strong> — Present each theme with a clear name, a short description, and one or two representative participant quotations, identified by codes (e.g., P04) rather than names.</blockquote>
+
+        <h3 id="ch5-c">C. Interpretation and Discussion of Findings</h3>
+        <p>Explains what the findings mean. The discussion should address questions such as:</p>
+        <ul>
+          <li>What do the results reveal about the phenomenon?</li>
+          <li>Why might these results have occurred?</li>
+          <li>Were any results unexpected, and what might explain them?</li>
+          <li>How do the findings across the research questions fit together?</li>
+        </ul>
+        <div class="keyidea">
+          <h3>Interpret, don't repeat</h3>
+          <p>Do not merely restate the numbers from Chapter V-B. Explain what they mean and why they matter. A finding such as "the mean was 3.82" is a result; "students value short-form video mainly for quick review rather than for learning new concepts" is an interpretation.</p>
+        </div>
+
+        <h3 id="ch5-d">D. Relationship to Existing Literature</h3>
+        <p>Compares your findings with the studies reviewed in Chapter II:</p>
+        <ul>
+          <li>Which findings <strong>confirm</strong> previous studies?</li>
+          <li>Which findings <strong>contradict</strong> them, and what might explain the difference (population, setting, method)?</li>
+          <li>Which findings are <strong>new</strong>, extending what was previously known?</li>
+          <li>To what extent does the study address the gaps identified in Chapter II-D?</li>
+        </ul>
+        <blockquote class="def"><strong>Return to your sources</strong> — The discussion should cite the same key studies from Chapter II. Introducing many new sources here may signal that Chapter II was incomplete.</blockquote>
+
+        <h3 id="ch5-e">E. Theoretical and Practical Implications</h3>
+        <div class="keyidea">
+          <h3>Two kinds of implications</h3>
+          <div class="qgrid">
+            <div class="col">
+              <div class="col-label">Theoretical implications</div>
+              <ul><li>What the findings mean for the theory in Chapter III: do they support it, extend it to a new context, or suggest a modification?</li></ul>
+            </div>
+            <div class="col">
+              <div class="col-label">Practical implications</div>
+              <ul><li>What educators, media practitioners, designers, institutions, or platforms can do differently in light of the findings.</li></ul>
+            </div>
+          </div>
+        </div>
+
+        <h3 id="ch5-f">F. Limitations of the Study</h3>
+        <p>Reports issues that <strong>arose during the study</strong>, such as a lower-than-planned response rate, an unbalanced sample, or problems with an instrument or procedure, and explains how each affects the interpretation of the findings. Do not repeat the planned limitations from Chapter I-E.</p>
+      </section>
+
+      <!-- 8. Chapter VI -->
+      <section class="chapter" id="ch6">
+        <div class="eyebrow">08 · The Six Chapters</div>
+        <h2>Chapter VI. Conclusion and Recommendations</h2>
+        <p class="lede">This chapter states what the study ultimately established and identifies directions arising from its findings.</p>
+
+        <h3 id="ch6-a">A. Conclusion</h3>
+        <p>Presents the conclusion that can reasonably be drawn from the study. The conclusion should:</p>
+        <ul>
+          <li>answer each research question directly and concisely;</li>
+          <li>state whether the objectives of the study were met;</li>
+          <li>summarize the overall contribution of the study to understanding the problem; and</li>
+          <li>acknowledge the boundaries within which the conclusion holds.</li>
+        </ul>
+        <div class="callout"><strong>Stay within the evidence.</strong> The conclusion should be based on the findings in Chapter V. Do not introduce new findings, and do not generalize beyond what your sample and design support.</div>
+
+        <h3 id="ch6-b">B. Recommendations for Practice</h3>
+        <p>Presents practical, actionable recommendations for stakeholders, drawn from the findings. These may be directed to:</p>
+        <ul>
+          <li>educators and instructional designers;</li>
+          <li>media practitioners, content creators, or designers;</li>
+          <li>institutions, organizations, or policymakers; and</li>
+          <li>the participants or communities studied.</li>
+        </ul>
+        <blockquote class="def"><strong>Trace each recommendation</strong> — Each recommendation should be traceable to a specific finding. A recommendation that does not follow from the results is an opinion.</blockquote>
+
+        <h3 id="ch6-c">C. Recommendations for Future Research</h3>
+        <p>Identifies directions for future studies, arising from the findings and limitations. These may include:</p>
+        <ul>
+          <li>studying other populations, settings, or platforms;</li>
+          <li>using larger or more representative samples;</li>
+          <li>applying different or complementary methods;</li>
+          <li>examining variables or questions that emerged from the findings; and</li>
+          <li>testing the theory further in related contexts.</li>
+        </ul>
+      </section>
+
+      <!-- 9. References -->
+      <section class="chapter" id="references">
+        <div class="eyebrow">09 · Back Matter</div>
+        <h2>References</h2>
+        <p class="lede">The References section is a required part of the manuscript. It is placed after the last chapter: Chapter IV for MMS 200a, or Chapter VI for MMS 200b.</p>
+        <p>It lists all sources cited in the manuscript, including journal articles, books, reports, theories, instruments and scales, and other works that informed the study. The References should list a <strong>minimum of 20 sources</strong>.</p>
+        <blockquote class="def"><strong>Use APA format</strong> — Both the reference list and the in-text citations should follow APA style (7th edition).</blockquote>
+        <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>Element</th><th>APA requirement</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>In-text citations</strong></td><td>Cite sources in the body using the author–date format, e.g., (Santos, 2024) or Santos (2024). Include page numbers for direct quotations, e.g., (Santos, 2024, p. 15).</td></tr>
+            <tr><td><strong>Reference list</strong></td><td>List entries alphabetically by the first author's surname, with a hanging indent, following APA formatting for each source type. Include DOIs where available.</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <ul>
+          <li>Every source cited in the text should appear in the References, and every entry in the References should be cited in the text.</li>
+          <li>Each source should be verified to exist and to support the claim for which it is cited.</li>
+          <li>Scales and instruments adapted for the study should be cited to their original authors.</li>
+        </ul>
+        <blockquote class="def"><strong>Remember</strong> — Sources suggested or generated by AI tools must be checked against the actual publication before they are cited.</blockquote>
+      </section>
+
+      <!-- 10. Declaration of AI Use -->
+      <section class="chapter" id="ai-declaration">
+        <div class="eyebrow">10 · Back Matter</div>
+        <h2>Declaration of AI Use</h2>
+        <p class="lede">The Declaration of AI Use is a required part of the manuscript and is placed after the References and before the Appendices.</p>
+        <p>It discloses whether and how AI tools were used in carrying out the study and preparing the manuscript. Where applicable, the declaration should state:</p>
+        <ul>
+          <li>the AI tools used;</li>
+          <li>the purposes for which they were used, such as ideation, literature search, drafting instruments, data analysis, transcription, translation, writing, or editing;</li>
+          <li>the parts of the study or manuscript in which they were used; and</li>
+          <li>how AI-generated outputs were reviewed, verified, and revised.</li>
+        </ul>
+        <p>If no AI tools were used, the declaration should state so.</p>
+        <div class="callout"><strong>Protect participant data.</strong> Do not upload identifiable participant data, such as interview recordings, transcripts, or survey responses with names, to AI tools unless this was disclosed to participants and approved by your adviser.</div>
+        <div class="keyidea">
+          <h3>AI assists. Authors remain accountable.</h3>
+          <p>The use of AI tools does not transfer responsibility for the accuracy, originality, and integrity of the study. Students remain accountable for all content they submit, including any analysis or interpretation assisted by AI.</p>
+        </div>
+      </section>
+
+      <!-- 11. Appendices -->
+      <section class="chapter" id="appendices">
+        <div class="eyebrow">11 · Back Matter</div>
+        <h2>Appendices</h2>
+        <p class="lede">The Appendices contain supporting materials that are important for documentation and verification but would interrupt the flow of the main manuscript if presented in full.</p>
+        <p>Depending on the study, these may include:</p>
+        <div class="refbox">
+          <div class="refbox-label">Possible Appendix Materials</div>
+          <ul>
+            <li>Full literature matrix</li>
+            <li>Questionnaires and scales, with sources and permissions where required</li>
+            <li>Interview or focus group guides</li>
+            <li>Codebooks and coding sheets for content or visual analysis</li>
+            <li>Informed consent forms and participant information sheets</li>
+            <li>Letters of request or permission from institutions</li>
+            <li>Ethics review or clearance documents, where applicable</li>
+            <li>Pilot test results and reliability analyses</li>
+            <li>Statistical output tables</li>
+            <li>Sample transcripts or coded excerpts (de-identified)</li>
+            <li>List of media texts analyzed</li>
+            <li>Other supporting materials</li>
+          </ul>
+        </div>
+        <div class="keyidea">
+          <h3>Main manuscript vs. Appendices</h3>
+          <div class="qgrid">
+            <div class="col">
+              <div class="col-label">Main manuscript</div>
+              <ul><li>Only those materials necessary to explain and support the study</li></ul>
+            </div>
+            <div class="col">
+              <div class="col-label">Appendices</div>
+              <ul><li>The more comprehensive methodological and documentary record</li></ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 12. Coherence -->
+      <section class="chapter" id="coherence">
+        <div class="eyebrow">12 · Putting It Together</div>
+        <h2>General Guidance on Manuscript Coherence</h2>
+        <p class="lede">The six chapters should not be treated as independent requirements. They should form a coherent progression organized around the research questions.</p>
+        <div class="flow">
+          <span class="step">Problem &amp; Research Questions</span><span class="arrow">→</span>
+          <span class="step">Literature &amp; Gap</span><span class="arrow">→</span>
+          <span class="step">Framework</span><span class="arrow">→</span>
+          <span class="step">Methodology</span><span class="arrow">→</span>
+          <span class="step">Results &amp; Discussion</span><span class="arrow">→</span>
+          <span class="step">Conclusion &amp; Recommendations</span>
+        </div>
+        <p>Maintain clear alignment throughout the manuscript:</p>
+        <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>Element</th><th>Should…</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="num">Problem</td><td>Justify the research questions</td></tr>
+            <tr><td class="num">Research questions</td><td>Determine the objectives, design, data, and analysis</td></tr>
+            <tr><td class="num">Literature gap</td><td>Be addressed by the research questions</td></tr>
+            <tr><td class="num">Framework</td><td>Shape the variables, instruments, and interpretation</td></tr>
+            <tr><td class="num">Methodology</td><td>Produce data capable of answering each research question</td></tr>
+            <tr><td class="num">Results</td><td>Be organized by and answer each research question</td></tr>
+            <tr><td class="num">Discussion</td><td>Interpret results in relation to literature and theory</td></tr>
+            <tr><td class="num">Conclusion</td><td>Answer the research questions and be supported by the results</td></tr>
+            <tr><td class="num">Recommendations</td><td>Follow from the findings and limitations</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <blockquote class="def"><strong>The alignment test</strong> — Pick any research question and trace it through the manuscript. You should be able to point to its objective in Chapter I, its gap in Chapter II, its concepts in Chapter III, its instrument and analysis in Chapter IV, its findings in Chapter V, and its answer in Chapter VI.</blockquote>
+        <div class="keyidea">
+          <h3>What each stage establishes</h3>
+          <div class="qgrid">
+            <div class="col">
+              <div class="col-label">MMS 200a · Chapters I–IV</div>
+              <ul><li>A clear, feasible, and ethical plan for the study</li></ul>
+            </div>
+            <div class="col">
+              <div class="col-label">MMS 200b · Chapters I–VI</div>
+              <ul><li>The completed study, carrying out the approved MMS 200a plan, with Chapters I–IV updated in tense and any adviser-approved changes reflected</li></ul>
+            </div>
+          </div>
+        </div>
+        <blockquote class="def" style="margin-top:18px;"><strong>The final manuscript</strong> — should read as an academic account of a completed study, not as a proposal, a collection of survey tables, or an opinion essay.</blockquote>
+      </section>
+
+      <!-- 13. Key Takeaways -->
+      <section class="chapter" id="takeaways">
+        <div class="eyebrow">13 · Wrap-up</div>
+        <h2>Key Takeaways</h2>
+        <ol class="commandments">
+          <li><strong>MMS 200a is a feasible plan, not a topic.</strong> Chapters I–IV should show a significant problem, a real gap, a fitting framework, and a sound, ethical methodology.</li>
+          <li><strong>The approved MMS 200a proposal is your blueprint.</strong> MMS 200b carries out that plan; Chapters I–IV are updated to past tense. Any substantive change needs your adviser's approval.</li>
+          <li><strong>Research questions are the backbone.</strong> Three to five focused, answerable questions that organize the methodology, results, and conclusion.</li>
+          <li><strong>Objectives mirror the research questions.</strong> One general objective, and one specific objective per research question.</li>
+          <li><strong>Synthesize, don't summarize.</strong> Draw on a minimum of 20 sources, organize the literature by theme, compare studies in a matrix, and let the gap emerge from the review.</li>
+          <li><strong>Distinguish theory from concept map.</strong> The theoretical framework explains why; the conceptual framework shows what you study.</li>
+          <li><strong>Let the questions choose the methods.</strong> Use an alignment table linking each question to its data, instrument, and analysis.</li>
+          <li><strong>Use sound instruments.</strong> Adapt validated scales where possible, pilot test, and report reliability or trustworthiness.</li>
+          <li><strong>Protect your participants.</strong> Informed consent, privacy, voluntary participation, and no data collection before approval.</li>
+          <li><strong>Report by research question, then interpret.</strong> Results answer the questions; the discussion explains what the answers mean and how they relate to the literature and theory.</li>
+          <li><strong>Conclude within the evidence.</strong> Answer each question, and recommend only what the findings support.</li>
+          <li><strong>References and the Declaration of AI Use are required.</strong> Cite only verified sources and disclose how AI tools were used, without exposing participant data.</li>
+        </ol>
+      </section>
+    </div>
+  </main>
+</div>
+
+<footer>From Proposal to Completed Study · Dr. Reinald Adrian Pugoy</footer>
+
+<script>
+  // Sidebar active-link highlighting on scroll
+  const sections = document.querySelectorAll('section.chapter');
+  const tocLinks = document.querySelectorAll('.toc-link');
+
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const id = entry.target.getAttribute('id');
+        tocLinks.forEach(link=>{
+          link.classList.toggle('active', link.dataset.target === id);
+        });
+      }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px' });
+
+  sections.forEach(sec => observer.observe(sec));
+</script>
+
+</body>
+</html>
