@@ -804,11 +804,10 @@
     <div class="nav-heading">Introduction</div>
     <ol id="toc">
       <li><a class="toc-link" href="#intro" data-target="intro">An Ethical Practice</a></li>
-      <li><a class="toc-link" href="#why-is" data-target="why-is">Why This Matters to IS</a></li>
     </ol>
 
     <div class="nav-heading">Eight Dimensions of Responsible Development</div>
-    <ol style="counter-reset:section 2">
+    <ol style="counter-reset:section 1">
       <li><a class="toc-link" href="#quality" data-target="quality">Quality &amp; Reliability</a></li>
       <li><a class="toc-link" href="#secure" data-target="secure">Secure Development</a></li>
       <li><a class="toc-link" href="#privacy" data-target="privacy">Privacy by Design</a></li>
@@ -821,15 +820,14 @@
     </ol>
 
     <div class="nav-heading">Professional Standards and Judgment</div>
-    <ol style="counter-reset:section 11">
+    <ol style="counter-reset:section 10">
       <li><a class="toc-link" href="#codes" data-target="codes">Professional Codes of Ethics</a></li>
       <li><a class="toc-link" href="#frameworks" data-target="frameworks">Applying the Four Frameworks</a></li>
       <li><a class="toc-link" href="#conflicts" data-target="conflicts">When Responsibilities Conflict</a></li>
     </ol>
 
     <div class="nav-heading">Wrap-up</div>
-    <ol style="counter-reset:section 14">
-      <li><a class="toc-link" href="#takeaways" data-target="takeaways">Key Takeaways</a></li>
+    <ol style="counter-reset:section 13">
       <li><a class="toc-link" href="#references" data-target="references">References</a></li>
     </ol>
   </nav>
@@ -839,7 +837,7 @@
       <div class="hero-inner">
         <div class="kicker">IS 201 · Chapter 2 — Ethical Issues in Computing</div>
         <h1>Topic 6 — Software Development Ethics</h1>
-        <p class="dek">A guided reading on the ethical responsibilities that run through the software lifecycle — quality, security, privacy, inclusive design and dark patterns, testing, maintenance, code reuse, documentation, professional codes, and how to reason through conflicting duties.</p>
+        <p class="dek">A guided reading on the ethical responsibilities that run through the software lifecycle — eight dimensions of responsible development, professional codes of ethics, the four ethical frameworks, and what to do when responsibilities conflict.</p>
         <span class="byline">Faculty-in-Charge: <strong>Dr. Reinald Adrian Pugoy</strong> — First Semester, AY 2026–2027</span>
       </div>
     </div>
@@ -850,11 +848,11 @@
       <section class="chapter" id="intro">
         <div class="eyebrow">01 · Introduction</div>
         <h2>Software Development as an Ethical Practice</h2>
-        <p class="lede">Software is not neutral. The decisions made during its design, development, testing, deployment, and maintenance can affect people's privacy, security, access to services, opportunities, and even safety.</p>
-        <p>For information systems students and professionals, ethical responsibility therefore extends beyond making software that simply "works."</p>
-        <p>Software development involves a continuous series of choices. Developers decide what a system should do, what data it should collect, which users and situations it should accommodate, what risks are acceptable, and when a system is ready for deployment. These may appear to be purely technical decisions, but many have <strong>ethical consequences</strong>.</p>
+        <p class="lede">Software development involves decisions that affect people's privacy, security, access to services, opportunities, and safety. Ethical responsibility therefore extends beyond creating software that simply works.</p>
+        <p>It requires considering how software is designed, developed, deployed, maintained, and used, including its consequences for <strong>individuals, organizations, and society</strong>.</p>
+        <p>Software development involves continuous choices about system requirements, data collection, user needs, acceptable risks, and deployment readiness. Although these decisions may appear technical, they often have <strong>ethical consequences</strong>.</p>
 
-        <blockquote class="def"><strong>Scenario</strong> — A developer discovers a serious security vulnerability shortly before a scheduled system launch. Fixing it would delay deployment. Ignoring it would allow the project to meet its deadline, but users could be exposed to harm.</blockquote>
+        <p>Consider a developer who discovers a serious security vulnerability shortly before a scheduled launch. Fixing it would delay deployment, while ignoring it would meet the deadline but potentially expose users to harm.</p>
 
         <div class="keyidea">
           <h3>Two different questions</h3>
@@ -870,600 +868,437 @@
           </div>
         </div>
 
-        <p style="margin-top:18px;">Professional responsibility requires developers to consider both. This is especially important because <strong>users often cannot independently evaluate the software they depend on</strong>. They trust developers, organizations, and technology professionals to exercise appropriate care on their behalf.</p>
+        <h3>Why This Matters to Information Systems Students and Professionals</h3>
+        <p>Information systems professionals may work as developers, analysts, project managers, system administrators, consultants, or technology leaders. Even those who do not write code directly make decisions that influence how information systems are <strong>designed, deployed, and maintained</strong>.</p>
+        <p>These decisions may involve:</p>
+        <ul>
+          <li>defining requirements;</li>
+          <li>evaluating risks;</li>
+          <li>protecting user information;</li>
+          <li>assessing software quality; or</li>
+          <li>approving system deployment.</li>
+        </ul>
+        <p>Each carries potential ethical consequences.</p>
+
+        <blockquote class="def"><strong>Not limited to programmers</strong> — Software development ethics concerns everyone who makes or influences decisions throughout the information system lifecycle.</blockquote>
 
         <div class="quiz" id="q1">
           <div class="quiz-label">Quick check</div>
-          <p class="q-prompt">1. Two days before launch, a developer finds a serious vulnerability. The system compiles, passes its functional tests, and runs smoothly. A teammate says: "It works, so it's ready." What is missing from this reasoning?</p>
-          <div class="options" data-correct="c">
-            <label class="opt"><input type="radio" name="q1" value="a"> Nothing — if the system runs correctly, it is ready to deploy</label>
-            <label class="opt"><input type="radio" name="q1" value="b"> The team should have used a different programming language</label>
-            <label class="opt"><input type="radio" name="q1" value="c"> <span>It only answers whether the system <em>can</em> be deployed, not whether it <em>should</em> be, given that users could be exposed to harm</span></label>
-            <label class="opt"><input type="radio" name="q1" value="d"> Users can evaluate the software's security themselves, so the developer need not worry</label>
+          <p class="q-prompt">1. Two days before launch, a developer finds a serious vulnerability. The system passes its functional tests and runs smoothly. A project manager says: "It works, and I don't write code anyway — so it's ready and the ethics isn't my concern." What does this section suggest?</p>
+          <div class="options" data-correct="b">
+            <label class="opt"><input type="radio" name="q1" value="a"> He is right — if the system runs correctly, it is ready to deploy</label>
+            <label class="opt"><input type="radio" name="q1" value="b"> <span>"It works" only answers whether the system <em>can</em> be deployed, not whether it <em>should</em> be — and project managers also make decisions that shape systems</span></label>
+            <label class="opt"><input type="radio" name="q1" value="c"> Only the developer who found the vulnerability bears any responsibility</label>
+            <label class="opt"><input type="radio" name="q1" value="d"> Ethical questions only arise after software has caused harm</label>
           </div>
           <button class="check-btn" onclick="checkQuiz('q1')">Check answer</button>
           <div class="feedback" id="q1-feedback"></div>
         </div>
       </section>
 
-      <!-- 2. Why This Matters -->
-      <section class="chapter" id="why-is">
-        <div class="eyebrow">02 · Introduction</div>
-        <h2>Why This Matters to Information Systems Students and Professionals</h2>
-        <p class="lede">Information systems professionals may work as developers, analysts, project managers, database administrators, system administrators, cybersecurity professionals, consultants, or technology leaders. Even those who do not write code directly make decisions that shape software systems.</p>
+      <!-- 2. Quality -->
+      <section class="chapter" id="quality">
+        <div class="eyebrow">02 · Eight Dimensions of Responsible Development</div>
+        <h2>Quality, Reliability, and Professional Responsibility</h2>
+        <p class="lede">Responsible software development encompasses eight interconnected dimensions, each addressing a particular aspect of professional responsibility throughout the software lifecycle.</p>
 
-        <p>You may someday decide:</p>
-        <ul>
-          <li>what requirements a system should have;</li>
-          <li>what information it should collect;</li>
-          <li>which risks are acceptable;</li>
-          <li>whether testing is sufficient;</li>
-          <li>whether a vulnerability must be fixed immediately; or</li>
-          <li>whether a system is ready for deployment.</li>
-        </ul>
-        <p>Software development ethics therefore concerns more than programming. It concerns <strong>professional judgment throughout the lifecycle of an information system</strong>.</p>
+        <p>Developers have an ethical responsibility to produce software with <strong>quality, reliability, and safety appropriate to its purpose</strong>.</p>
+        <p>Software need not be perfect, but it should meet reasonable professional standards considering its intended use and the consequences of failure.</p>
 
-        <div class="keyidea">
-          <h3>The central question</h3>
-          <div class="qgrid">
-            <div class="col">
-              <div class="col-label">Not simply</div>
-              <ul><li>Can we build it?</li></ul>
-            </div>
-            <div class="col">
-              <div class="col-label">But also</div>
-              <ul><li>Should we build it this way, and are we prepared to take responsibility for its consequences?</li></ul>
-            </div>
-          </div>
-        </div>
+        <table class="compare">
+          <thead>
+            <tr><th>A similar defect in…</th><th>May cause…</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>A recreational application</strong></td><td>Inconvenience</td></tr>
+            <tr><td><strong>A financial, medical, or government system</strong></td><td>Substantial harm</td></tr>
+          </tbody>
+        </table>
 
-        <div class="quiz" id="q2" style="margin-top:28px;">
+        <p>Professional responsibility also requires developers to <strong>work within their competence</strong>, follow appropriate development practices, and recognize significant technical limitations.</p>
+
+        <p>This dimension is about <strong>setting the right bar</strong>. How teams find out whether the software actually meets that bar is covered later under <a href="#testing">Testing, Quality Assurance, and Deployment</a>.</p>
+
+        <div class="quiz" id="q2">
           <div class="quiz-label">Quick check</div>
-          <p class="q-prompt">2. A project manager says: "I don't write a single line of code, so software development ethics doesn't really apply to me." Based on this section, what is the best response?</p>
-          <div class="options" data-correct="a">
-            <label class="opt"><input type="radio" name="q2" value="a"> Decisions about requirements, data collection, acceptable risk, and readiness for deployment shape the software, so they carry ethical responsibility too</label>
-            <label class="opt"><input type="radio" name="q2" value="b"> She is right — only programmers bear responsibility for how software behaves</label>
-            <label class="opt"><input type="radio" name="q2" value="c"> Ethics only applies once the software has been deployed</label>
-            <label class="opt"><input type="radio" name="q2" value="d"> Project managers are responsible only for budgets and schedules</label>
+          <p class="q-prompt">2. The same rounding bug appears in two systems: a mobile puzzle game's score counter and a hospital's medication-dosage calculator. Which statement best reflects this section?</p>
+          <div class="options" data-correct="d">
+            <label class="opt"><input type="radio" name="q2" value="a"> Both bugs are equally serious because a defect is a defect</label>
+            <label class="opt"><input type="radio" name="q2" value="b"> Neither is an ethical issue, since software never needs to be perfect</label>
+            <label class="opt"><input type="radio" name="q2" value="c"> Only the game developer is at fault, since games have more users</label>
+            <label class="opt"><input type="radio" name="q2" value="d"> Professional standards depend on intended use and consequences of failure — the dosage calculator demands a much higher standard</label>
           </div>
           <button class="check-btn" onclick="checkQuiz('q2')">Check answer</button>
           <div class="feedback" id="q2-feedback"></div>
         </div>
       </section>
 
-      <!-- 3. Quality -->
-      <section class="chapter" id="quality">
+      <!-- 3. Secure Development -->
+      <section class="chapter" id="secure">
         <div class="eyebrow">03 · Eight Dimensions of Responsible Development</div>
-        <h2>Quality, Reliability, and Professional Responsibility</h2>
-        <p class="lede">Responsible software development involves more than writing functional code. Ethical responsibility extends across the software lifecycle, from initial design decisions to deployment, maintenance, and eventual retirement. The next eight sections highlight areas where technical decisions can have important consequences for users, organizations, and society.</p>
+        <h2>Secure Software Development</h2>
+        <p>Security should be considered <strong>throughout the software development lifecycle</strong>, rather than added only after implementation.</p>
+        <p>Poor development practices can introduce vulnerabilities through insecure authentication, improper access controls, exposed credentials, outdated dependencies, or insecure configurations. These weaknesses may lead to <strong>data breaches, fraud, service disruption, or other harm</strong>.</p>
 
-        <p>Developers have an ethical responsibility to produce software with reasonable levels of <strong>quality, reliability, and safety appropriate to its purpose</strong>. Users depend on software to behave as expected, often without having the technical knowledge to evaluate its quality themselves.</p>
-        <p>Software does not need to be perfect. Virtually all sufficiently complex systems contain defects. The ethical issue is whether the software has been developed according to an <strong>appropriate professional standard</strong> given its purpose, users, and potential consequences of failure.</p>
+        <div class="refbox">
+          <div class="refbox-label">Developers should therefore</div>
+          <ul>
+            <li>Follow secure coding practices</li>
+            <li>Protect credentials and sensitive information</li>
+            <li>Implement appropriate authentication and access controls</li>
+            <li>Maintain and update dependencies</li>
+            <li>Conduct security testing</li>
+            <li>Address known vulnerabilities</li>
+          </ul>
+        </div>
 
-        <h3>Care Should Match the Potential Harm</h3>
-        <table class="compare">
-          <thead>
-            <tr><th>A similar failure in…</th><th>May result in…</th></tr>
-          </thead>
-          <tbody>
-            <tr><td><strong>A recreational application</strong></td><td>Inconvenience</td></tr>
-            <tr><td><strong>A financial, medical, transportation, or government information system</strong></td><td>Financial loss, incorrect decisions, disruption of essential services, or even physical harm</td></tr>
-          </tbody>
-        </table>
+        <blockquote class="def"><strong>Known risks matter</strong> — Not every vulnerability can be prevented. However, knowingly leaving significant security risks unresolved raises ethical concerns. This connects directly with the cybersecurity responsibilities discussed in Topic 4.</blockquote>
+      </section>
 
-        <p>Professional responsibility also requires developers to <strong>work within their competence</strong>, follow appropriate development practices, and communicate significant technical limitations. Deadlines, limited budgets, and organizational pressure are real constraints, but they do not eliminate the developer's responsibility toward the people who depend on the system.</p>
+      <!-- 4. Privacy by Design -->
+      <section class="chapter" id="privacy">
+        <div class="eyebrow">04 · Eight Dimensions of Responsible Development</div>
+        <h2>Privacy by Design</h2>
+        <p>Developers influence privacy through decisions about what information systems <strong>collect, store, process, share, and retain</strong>.</p>
 
-        <blockquote class="def"><strong>Key principle</strong> — Software quality is not only a technical objective. It is also an ethical responsibility toward the people who rely on the system.</blockquote>
+        <blockquote class="def"><strong>Consider</strong> — Should an application collect a user's location if its functionality does not require it?</blockquote>
+
+        <p>The ability to collect information does not automatically justify doing so. Unnecessary collection increases the potential for <strong>misuse, unauthorized access, or unintended secondary use</strong>.</p>
+        <p><strong>Privacy by design</strong> means incorporating privacy considerations from the beginning of development. This includes:</p>
+        <ul>
+          <li>collecting only necessary information;</li>
+          <li>clearly communicating data collection purposes;</li>
+          <li>limiting access to personal information;</li>
+          <li>establishing appropriate retention periods;</li>
+          <li>protecting sensitive data; and</li>
+          <li>providing meaningful user control.</li>
+        </ul>
+        <p>As discussed in <strong>Topic 3</strong>, principles such as consent, data minimization, purpose limitation, and data stewardship must be translated into technical and design decisions.</p>
 
         <div class="quiz" id="q3">
           <div class="quiz-label">Quick check</div>
-          <p class="q-prompt">3. The same rounding bug appears in two systems: a mobile puzzle game's score counter and a hospital's medication-dosage calculator. Which statement best reflects this section?</p>
-          <div class="options" data-correct="d">
-            <label class="opt"><input type="radio" name="q3" value="a"> Both bugs are equally serious because a defect is a defect</label>
-            <label class="opt"><input type="radio" name="q3" value="b"> Neither is an ethical issue since all complex software contains defects</label>
-            <label class="opt"><input type="radio" name="q3" value="c"> Only the game developer is at fault, since games are released more often</label>
-            <label class="opt"><input type="radio" name="q3" value="d"> The expected level of care should reflect the context and potential harm — the dosage calculator demands a much higher standard</label>
+          <p class="q-prompt">3. A simple flashlight app asks for access to the user's precise location and full contact list "in case we need it for future features." Which principle from this section is most directly at stake?</p>
+          <div class="options" data-correct="a">
+            <label class="opt"><input type="radio" name="q3" value="a"> Privacy by design — collect only necessary information, since unnecessary collection increases the potential for misuse</label>
+            <label class="opt"><input type="radio" name="q3" value="b"> None — if the app is able to collect the data, collecting it is justified</label>
+            <label class="opt"><input type="radio" name="q3" value="c"> Software sustainability — the app must be maintained over time</label>
+            <label class="opt"><input type="radio" name="q3" value="d"> Code reuse — the app may be using a third-party library</label>
           </div>
           <button class="check-btn" onclick="checkQuiz('q3')">Check answer</button>
           <div class="feedback" id="q3-feedback"></div>
         </div>
       </section>
 
-      <!-- 4. Secure Development -->
-      <section class="chapter" id="secure">
-        <div class="eyebrow">04 · Eight Dimensions of Responsible Development</div>
-        <h2>Secure Software Development</h2>
-        <p>Security is not merely something added after a system has been completed. Developers should consider security <strong>throughout the software development lifecycle</strong>.</p>
-
+      <!-- 5. Inclusive and Ethical Design -->
+      <section class="chapter" id="inclusive">
+        <div class="eyebrow">05 · Eight Dimensions of Responsible Development</div>
+        <h2>User-Centered, Inclusive, and Ethical Design</h2>
+        <p>Software should be designed with consideration for the people who will use it, including their <strong>abilities, circumstances, and limitations</strong>.</p>
+        <p>A system may function correctly but remain difficult to use for people with disabilities, limited connectivity, older devices, or lower levels of digital literacy.</p>
+        <p>Ethical design therefore considers:</p>
         <div class="flow">
-          <span class="step">Requirements</span><span class="arrow">→</span>
-          <span class="step">Design</span><span class="arrow">→</span>
-          <span class="step">Implementation</span><span class="arrow">→</span>
-          <span class="step">Testing</span><span class="arrow">→</span>
-          <span class="step">Deployment</span><span class="arrow">→</span>
-          <span class="step">Maintenance</span>
+          <span class="step">Accessibility</span>
+          <span class="step">Usability</span>
+          <span class="step">Device &amp; bandwidth limits</span>
+          <span class="step">Language</span>
+          <span class="step">Cultural context</span>
+          <span class="step">User autonomy</span>
+        </div>
+        <p>Inclusive design does not require accommodating every possible user. It requires <strong>identifying relevant users and avoiding unnecessary barriers</strong>.</p>
+
+        <h3>Dark Patterns and Manipulative Design</h3>
+        <p>Ethical interface design also requires respecting users' ability to make informed choices.</p>
+        <blockquote class="def"><strong>Dark patterns</strong> (also called deceptive design patterns) — interface practices that manipulate, mislead, or obstruct users.</blockquote>
+
+        <table class="compare">
+          <thead>
+            <tr><th>Pattern</th><th>Example</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Obstruction</strong></td><td>Making cancellation unnecessarily difficult</td></tr>
+            <tr><td><strong>Sneaking</strong></td><td>Concealing charges or important information</td></tr>
+            <tr><td><strong>Interface interference</strong></td><td>Making one choice prominent while obscuring alternatives</td></tr>
+            <tr><td><strong>Forced action</strong></td><td>Requiring unnecessary information or actions to access a service</td></tr>
+            <tr><td><strong>False urgency</strong></td><td>Using misleading countdowns or availability claims</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout"><strong>Working as intended.</strong> Dark patterns illustrate that software can function exactly as intended while still being ethically problematic.</div>
+
+        <div class="keyidea">
+          <h3>The central question</h3>
+          <p>Does the design support informed user choices, or manipulate users toward particular decisions?</p>
         </div>
 
-        <p>Poor development practices can introduce vulnerabilities through insecure authentication, improper access controls, inadequate input validation, exposed credentials, outdated dependencies, insecure configuration, or other weaknesses. Once deployed, these vulnerabilities can expose users and organizations to <strong>data breaches, fraud, service disruption, and other forms of harm</strong>.</p>
-
-        <div class="refbox">
-          <div class="refbox-label">Developer responsibilities</div>
-          <ul>
-            <li>Following secure coding practices</li>
-            <li>Protecting credentials and sensitive information</li>
-            <li>Applying appropriate authentication and access controls</li>
-            <li>Keeping libraries and dependencies updated</li>
-            <li>Conducting security testing</li>
-            <li>Addressing known vulnerabilities</li>
-            <li>Designing systems with potential misuse and attacks in mind</li>
-          </ul>
-        </div>
-
-        <p>Not every vulnerability can be anticipated or prevented. The ethical issue becomes particularly important when developers or organizations <strong>know about significant security risks but fail to respond appropriately</strong>.</p>
-        <p>This connects directly with cybersecurity ethics from <strong>Topic 4</strong>. A vulnerability may originate from a technical mistake, but knowingly leaving serious vulnerabilities unresolved can become an ethical issue because the consequences are often borne by users, customers, employees, or the public.</p>
-
-        <blockquote class="def"><strong>Key principle</strong> — Security is part of software quality and professional responsibility, not an optional feature added after development.</blockquote>
-
-        <div class="quiz" id="q4">
+        <div class="quiz" id="q4" style="margin-top:28px;">
           <div class="quiz-label">Quick check</div>
-          <p class="q-prompt">4. A team's security scan flags a library with a known, serious vulnerability. The lead says: "We haven't been breached yet, so let's leave it for now." Why is this ethically significant?</p>
-          <div class="options" data-correct="b">
-            <label class="opt"><input type="radio" name="q4" value="a"> It isn't — vulnerabilities only matter after they are exploited</label>
-            <label class="opt"><input type="radio" name="q4" value="b"> The team knows about a significant risk and is failing to respond appropriately, while users bear the potential consequences</label>
-            <label class="opt"><input type="radio" name="q4" value="c"> Every vulnerability in every system must be prevented before any code is written</label>
-            <label class="opt"><input type="radio" name="q4" value="d"> Security is the job of the cybersecurity team, not the developers</label>
+          <p class="q-prompt">4. A streaming service lets users subscribe with one click, but cancelling requires calling a hotline that is only open on weekday mornings. Which dark pattern is this?</p>
+          <div class="options" data-correct="c">
+            <label class="opt"><input type="radio" name="q4" value="a"> False urgency — pressuring users with misleading countdowns or availability claims</label>
+            <label class="opt"><input type="radio" name="q4" value="b"> Sneaking — concealing charges or important information</label>
+            <label class="opt"><input type="radio" name="q4" value="c"> Obstruction — making cancellation unnecessarily difficult</label>
+            <label class="opt"><input type="radio" name="q4" value="d"> Not a dark pattern — the cancellation process technically works</label>
           </div>
           <button class="check-btn" onclick="checkQuiz('q4')">Check answer</button>
           <div class="feedback" id="q4-feedback"></div>
         </div>
       </section>
 
-      <!-- 5. Privacy by Design -->
-      <section class="chapter" id="privacy">
-        <div class="eyebrow">05 · Eight Dimensions of Responsible Development</div>
-        <h2>Privacy by Design</h2>
-        <p class="lede">Software systems increasingly collect and process personal information. Developers therefore influence privacy through seemingly ordinary design decisions — what data is collected, how it is stored, who can access it, how long it is retained, and what happens to it afterward.</p>
+      <!-- 6. Testing and Deployment -->
+      <section class="chapter" id="testing">
+        <div class="eyebrow">06 · Eight Dimensions of Responsible Development</div>
+        <h2>Testing, Quality Assurance, and Deployment</h2>
+        <p>Section 02 set the standard software should meet. This dimension asks the next question: <strong>has that standard actually been met, and is the system ready to go live?</strong></p>
 
-        <blockquote class="def"><strong>Consider</strong> — Should an application collect a user's location if the feature does not actually require it?</blockquote>
-
-        <p>A system may technically be capable of collecting large amounts of information, but <strong>technical capability does not automatically justify collection</strong>. Collecting unnecessary data can create privacy risks even when there is no immediate misuse. Once information has been collected and stored, it can potentially be exposed, accessed improperly, or used for purposes users did not originally expect.</p>
-
-        <h3>Questions for Privacy-Conscious Development</h3>
-        <ul>
-          <li>What personal information is genuinely necessary for the system to function?</li>
-          <li>Are users adequately informed about what is being collected and why?</li>
-          <li>How long should the information be retained?</li>
-          <li>Who should have access to it?</li>
-          <li>Is sensitive information adequately protected?</li>
-          <li>Can users exercise meaningful control over their information?</li>
-          <li>Can the same purpose be achieved with less personal data?</li>
-        </ul>
-
-        <blockquote class="def"><strong>Privacy by design</strong> — considering privacy from the beginning of system development rather than addressing it only after the system has already been built. Privacy requirements can influence system architecture, database design, access controls, default settings, interfaces, and data-retention policies.</blockquote>
-
-        <p>Developers should therefore think of privacy not merely as a policy statement or consent form, but as something that must be <strong>implemented through technical and design decisions</strong>.</p>
-        <p>The connection to <strong>Topic 3</strong> is important: principles such as consent, data minimization, transparency, purpose limitation, and responsible data stewardship ultimately have to be translated into how actual information systems are designed and operated.</p>
-
-        <div class="keyidea">
-          <h3>Privacy is a design responsibility.</h3>
-          <p>Privacy protection is not only the responsibility of users or privacy officers. It is also a software design responsibility.</p>
+        <div class="keyidea" style="margin-bottom:24px;">
+          <h3>Quality vs. testing</h3>
+          <div class="qgrid">
+            <div class="col">
+              <div class="col-label">Software quality</div>
+              <ul><li>Establishes the expected standard</li></ul>
+            </div>
+            <div class="col">
+              <div class="col-label">Testing &amp; QA</div>
+              <ul><li>Provide evidence of whether that standard has been met</li></ul>
+            </div>
+          </div>
         </div>
+        <p>Testing and quality assurance help determine whether software meets its requirements and is ready for deployment. They are important forms of <strong>technical verification and risk management</strong>.</p>
+        <p>Ethical concerns arise when developers discover defects, conduct insufficient testing, or face pressure to release software despite unresolved risks.</p>
 
-        <div class="quiz" id="q5" style="margin-top:28px;">
+        <blockquote class="def"><strong>Scenario</strong> — A development team discovers that a system occasionally produces incorrect user records. Management insists on proceeding with deployment to meet the deadline.</blockquote>
+
+        <p>The ethical issue is not simply the existence of defects, but their:</p>
+        <ol class="commandments">
+          <li><strong>Severity</strong></li>
+          <li><strong>Likelihood</strong></li>
+          <li><strong>Consequences</strong></li>
+          <li><strong>Potential impact on users</strong></li>
+        </ol>
+
+        <p>Practices such as quality assurance, user acceptance testing, staged deployment, monitoring, and rollback procedures help organizations make <strong>informed deployment decisions</strong>.</p>
+
+
+        <div class="quiz" id="q5">
           <div class="quiz-label">Quick check</div>
-          <p class="q-prompt">5. A simple flashlight app asks for access to the user's precise location and full contact list "in case we need it for future features." Which principle from this section is most directly at stake?</p>
-          <div class="options" data-correct="c">
-            <label class="opt"><input type="radio" name="q5" value="a"> None — if users click "Allow," any collection is justified</label>
-            <label class="opt"><input type="radio" name="q5" value="b"> Availability — the app must work offline</label>
-            <label class="opt"><input type="radio" name="q5" value="c"> Privacy by design and data minimization — collect only what the system genuinely needs</label>
-            <label class="opt"><input type="radio" name="q5" value="d"> Code reuse — the app may be using a third-party library</label>
+          <p class="q-prompt">5. A team has built a payroll system. Everyone agrees it must meet a high standard, since errors affect employees' salaries. Management now asks: "How do we know it's ready to go live?" Which response best reflects this section?</p>
+          <div class="options" data-correct="b">
+            <label class="opt"><input type="radio" name="q5" value="a"> The developers are experienced, so the standard can be assumed to be met</label>
+            <label class="opt"><input type="radio" name="q5" value="b"> Gather evidence through testing and QA (such as user acceptance testing), then reduce deployment risk with staged rollout, monitoring, and a rollback plan</label>
+            <label class="opt"><input type="radio" name="q5" value="c"> Release it to all employees at once and fix whatever errors they report</label>
+            <label class="opt"><input type="radio" name="q5" value="d"> Setting a high standard is enough — verification is only needed for medical systems</label>
           </div>
           <button class="check-btn" onclick="checkQuiz('q5')">Check answer</button>
           <div class="feedback" id="q5-feedback"></div>
         </div>
       </section>
 
-      <!-- 6. Inclusive and Ethical Design -->
-      <section class="chapter" id="inclusive">
-        <div class="eyebrow">06 · Eight Dimensions of Responsible Development</div>
-        <h2>User-Centered, Inclusive, and Ethical Design</h2>
-        <p>Developers make assumptions about who their users are and how they will interact with a system. Those assumptions can unintentionally <strong>exclude users or influence their choices</strong>.</p>
-        <p>A system might work well for developers during testing but create difficulties for people with disabilities, older devices, slow internet connections, limited digital literacy, or different linguistic and cultural backgrounds.</p>
-
-        <div class="keyidea">
-          <h3>Does it work — and for whom?</h3>
-          <div class="qgrid">
-            <div class="col">
-              <div class="col-label">Not only</div>
-              <ul><li>Does the system work?</li></ul>
-            </div>
-            <div class="col">
-              <div class="col-label">But also</div>
-              <ul><li>For whom does it work, who might be excluded, and does the design respect users' choices?</li></ul>
-            </div>
-          </div>
-        </div>
-
-        <h3>Important Considerations</h3>
-        <ul>
-          <li>Accessibility and usability</li>
-          <li>Affordability and device requirements</li>
-          <li>Bandwidth limitations</li>
-          <li>Language and cultural context</li>
-          <li>Differing levels of digital literacy</li>
-          <li>Respect for user autonomy</li>
-        </ul>
-        <p>Inclusive design does not mean that every system must accommodate every possible user. It means that developers should <strong>identify relevant users, recognize foreseeable barriers, and avoid unnecessary exclusion</strong>.</p>
-        <p>Ethical design also requires attention to how interfaces influence user decisions. Good interface design should help users understand their options and make informed choices rather than deliberately steering them toward decisions that primarily benefit the organization.</p>
-
-        <div class="quiz" id="q6">
-          <div class="quiz-label">Quick check</div>
-          <p class="q-prompt">6. A university's new learning portal was tested only on the developers' high-end laptops over fast office internet. After launch, students using older phones and prepaid mobile data can barely load the pages. What does this section suggest went wrong?</p>
-          <div class="options" data-correct="a">
-            <label class="opt"><input type="radio" name="q6" value="a"> The team failed to identify its relevant users and recognize foreseeable barriers such as device and bandwidth limitations</label>
-            <label class="opt"><input type="radio" name="q6" value="b"> Nothing — the system works, so the developers met their responsibility</label>
-            <label class="opt"><input type="radio" name="q6" value="c"> Inclusive design requires accommodating every possible user, so the project should be abandoned</label>
-            <label class="opt"><input type="radio" name="q6" value="d"> The students are responsible for upgrading their devices</label>
-          </div>
-          <button class="check-btn" onclick="checkQuiz('q6')">Check answer</button>
-          <div class="feedback" id="q6-feedback"></div>
-        </div>
-
-        <h3>Dark Patterns and Manipulative Design</h3>
-        <p>Interfaces that deliberately manipulate or obstruct user choices are commonly called <strong>dark patterns</strong> or <strong>deceptive design patterns</strong>.</p>
-        <table class="compare">
-          <thead>
-            <tr><th>Pattern</th><th>What it looks like</th></tr>
-          </thead>
-          <tbody>
-            <tr><td><strong>Obstruction</strong></td><td>Making an action unnecessarily difficult, such as making cancellation much harder than subscription</td></tr>
-            <tr><td><strong>Sneaking</strong></td><td>Hiding or delaying important information, charges, or consequences</td></tr>
-            <tr><td><strong>Interface interference</strong></td><td>Visually emphasizing one choice while making alternatives difficult to find</td></tr>
-            <tr><td><strong>Forced action</strong></td><td>Requiring users to provide information or perform an unnecessary action to access a service</td></tr>
-            <tr><td><strong>Nagging</strong></td><td>Repeatedly asking users to enable, subscribe to, or accept something they have already declined</td></tr>
-            <tr><td><strong>False urgency or social proof</strong></td><td>Using misleading countdowns, availability claims, or claims about other users to pressure decisions</td></tr>
-            <tr><td><strong>Confirmshaming</strong></td><td>Using guilt-inducing language when users reject an option</td></tr>
-          </tbody>
-        </table>
-
-        <div class="callout"><strong>Working as designed.</strong> Dark patterns are ethically significant because the software may be functioning exactly as designed. The problem is the design itself.</div>
-
-        <p>Developers may not always decide which interface strategies an organization adopts, but they may be asked to implement them. Professional responsibility includes <strong>recognizing and raising concerns</strong> about designs that undermine user autonomy.</p>
-
-        <blockquote class="def"><strong>The ethical question</strong> — Was the software designed to help users make an informed choice, or to manipulate them toward a particular one?</blockquote>
-
-        <div class="quiz" id="q7">
-          <div class="quiz-label">Quick check</div>
-          <p class="q-prompt">7. A shopping app's discount pop-up offers two buttons: a large bright "Yes, give me 20% off!" and a small grey link reading "No thanks, I prefer paying full price." The wording of the second option is an example of which dark pattern?</p>
-          <div class="options" data-correct="d">
-            <label class="opt"><input type="radio" name="q7" value="a"> Sneaking</label>
-            <label class="opt"><input type="radio" name="q7" value="b"> Forced action</label>
-            <label class="opt"><input type="radio" name="q7" value="c"> Nagging</label>
-            <label class="opt"><input type="radio" name="q7" value="d"> Confirmshaming — using guilt-inducing language when users reject an option</label>
-          </div>
-          <button class="check-btn" onclick="checkQuiz('q7')">Check answer</button>
-          <div class="feedback" id="q7-feedback"></div>
-        </div>
-      </section>
-
-      <!-- 7. Testing and Deployment -->
-      <section class="chapter" id="testing">
-        <div class="eyebrow">07 · Eight Dimensions of Responsible Development</div>
-        <h2>Testing, Quality Assurance, and Deployment</h2>
-        <p>Testing and quality assurance help determine whether software actually meets its requirements and is ready for deployment. They are therefore not merely technical activities, but important forms of <strong>risk management</strong>.</p>
-        <p>Before deployment, developers should have reasonable confidence that the system performs as intended and that foreseeable failures have been considered. Ethical questions arise when teams discover defects, have incomplete testing, or face pressure to release software despite unresolved problems.</p>
-
-        <blockquote class="def"><strong>Scenario</strong> — A team discovers several defects before launch. None prevents the system from running, but one occasionally produces incorrect user records. Management insists that the launch date cannot be moved.</blockquote>
-
-        <p>The ethical issue is not simply whether defects exist. Developers must consider:</p>
-        <ol class="commandments">
-          <li><strong>Severity</strong> — How serious is the defect?</li>
-          <li><strong>Likelihood</strong> — How often is it likely to occur?</li>
-          <li><strong>Consequences</strong> — What happens when it does?</li>
-          <li><strong>Affected stakeholders</strong> — Who bears the impact?</li>
-        </ol>
-
-        <p>This is why practices such as quality assurance, user acceptance testing, staged deployment, monitoring, rollback procedures, and incident response matter <strong>ethically as well as technically</strong>.</p>
-
-        <div class="keyidea">
-          <h3>Quality vs. testing</h3>
-          <div class="qgrid">
-            <div class="col">
-              <div class="col-label">Quality</div>
-              <ul><li>Describes the standard the software should meet</li></ul>
-            </div>
-            <div class="col">
-              <div class="col-label">Testing &amp; QA</div>
-              <ul><li>Help determine whether that standard has actually been met before deployment</li></ul>
-            </div>
-          </div>
-        </div>
-
-        <div class="quiz" id="q8" style="margin-top:28px;">
-          <div class="quiz-label">Quick check</div>
-          <p class="q-prompt">8. In the scenario above, a developer argues: "The system runs, so the defects don't matter — let's launch." What should guide the team's decision instead?</p>
-          <div class="options" data-correct="b">
-            <label class="opt"><input type="radio" name="q8" value="a"> Only whether management has approved the launch date</label>
-            <label class="opt"><input type="radio" name="q8" value="b"> The severity, likelihood, and consequences of the defects — especially incorrect user records — and who would be affected</label>
-            <label class="opt"><input type="radio" name="q8" value="c"> The total number of defects, regardless of what they do</label>
-            <label class="opt"><input type="radio" name="q8" value="d"> Nothing — software with any defect can never be deployed</label>
-          </div>
-          <button class="check-btn" onclick="checkQuiz('q8')">Check answer</button>
-          <div class="feedback" id="q8-feedback"></div>
-        </div>
-      </section>
-
-      <!-- 8. Maintenance -->
+      <!-- 7. Maintenance -->
       <section class="chapter" id="maintenance">
-        <div class="eyebrow">08 · Eight Dimensions of Responsible Development</div>
+        <div class="eyebrow">07 · Eight Dimensions of Responsible Development</div>
         <h2>Maintenance and Software Sustainability</h2>
-        <p class="lede">Software development does not end when a system is launched. Systems require ongoing maintenance throughout their useful life.</p>
-        <p>This may include updates, security patches, monitoring, documentation, performance improvements, dependency upgrades, and eventually replacement or retirement.</p>
+        <p class="lede">Software development does not end at deployment. Systems require ongoing updates, security patches, monitoring, documentation, and eventual replacement or retirement.</p>
 
-        <blockquote class="def"><strong>Technical debt</strong> — the result of short-term solutions that make future maintenance more difficult or costly.</blockquote>
+        <blockquote class="def"><strong>Technical debt</strong> — the result of short-term solutions that increase future maintenance costs or complexity.</blockquote>
 
-        <p>Technical debt is not automatically unethical. Teams often make reasonable compromises because of limited time, resources, or changing requirements. It becomes ethically significant when organizations <strong>knowingly allow technical debt to create substantial risks</strong> while continuing to depend on the system.</p>
-        <p>Software sustainability therefore requires developers and organizations to consider not only whether a system works today, but whether it can be <strong>maintained safely and effectively over time</strong>.</p>
-        <p>Developers should communicate important technical limitations honestly. Hiding deteriorating systems, unsupported components, or serious maintenance problems prevents decision-makers from understanding the risks they are accepting.</p>
-
-        <h3>Planning for Retirement</h3>
-        <p>Eventually, systems may also need to be retired. Responsible maintenance therefore includes planning for:</p>
+        <p>Technical debt is not inherently unethical. It becomes ethically significant when unresolved issues create <strong>substantial risks that organizations knowingly ignore</strong>.</p>
+        <p>Software sustainability therefore involves:</p>
         <div class="flow">
-          <span class="step">Migration</span><span class="arrow">+</span>
-          <span class="step">Preservation or disposal of data</span><span class="arrow">+</span>
-          <span class="step">Continuity of essential services</span><span class="arrow">+</span>
-          <span class="step">Impact on remaining users</span>
-        </div>
-
-        <div class="quiz" id="q9">
-          <div class="quiz-label">Quick check</div>
-          <p class="q-prompt">9. A developer knows the payroll system runs on components that no longer receive security updates. To avoid a budget fight, he tells management "everything is running fine." What is the main ethical problem?</p>
-          <div class="options" data-correct="c">
-            <label class="opt"><input type="radio" name="q9" value="a"> There is none — the system is still running</label>
-            <label class="opt"><input type="radio" name="q9" value="b"> Any technical debt is automatically unethical</label>
-            <label class="opt"><input type="radio" name="q9" value="c"> Hiding unsupported components prevents decision-makers from understanding the risks they are accepting</label>
-            <label class="opt"><input type="radio" name="q9" value="d"> He should have retired the system on his own without telling anyone</label>
-          </div>
-          <button class="check-btn" onclick="checkQuiz('q9')">Check answer</button>
-          <div class="feedback" id="q9-feedback"></div>
+          <span class="step">Maintaining reliability</span><span class="arrow">+</span>
+          <span class="step">Managing technical debt</span><span class="arrow">+</span>
+          <span class="step">Updating unsupported components</span><span class="arrow">+</span>
+          <span class="step">Communicating maintenance risks</span><span class="arrow">+</span>
+          <span class="step">Planning replacement or retirement</span>
         </div>
       </section>
 
-      <!-- 9. Code Reuse -->
+      <!-- 8. Code Reuse -->
       <section class="chapter" id="reuse">
-        <div class="eyebrow">09 · Eight Dimensions of Responsible Development</div>
+        <div class="eyebrow">08 · Eight Dimensions of Responsible Development</div>
         <h2>Code Reuse and Intellectual Property</h2>
-        <p>Modern software development rarely begins entirely from scratch. Developers routinely build on <strong>open-source software, frameworks, libraries, APIs, code repositories, sample code, and increasingly AI-generated code</strong>. Reusing existing code can save time, reduce duplication, and allow developers to benefit from the work of broader software communities.</p>
-        <p>However, the ability to access or copy code does not automatically mean that it can be used without restriction. Software is subject to <strong>intellectual property rights and licensing conditions</strong>, and different licenses may impose different requirements regarding use, modification, distribution, attribution, or sharing of derivative work.</p>
+        <p>Modern software development relies heavily on <strong>open-source software, libraries, frameworks, APIs, code repositories, and AI-generated code</strong>. Reusing code improves efficiency but introduces legal, technical, and ethical responsibilities.</p>
+        <p>Publicly accessible code is not necessarily free from restrictions. Software licenses may impose conditions on modification, distribution, attribution, and reuse.</p>
 
         <div class="refbox">
           <div class="refbox-label">Developers should consider</div>
           <ul>
             <li>Software licenses and their conditions</li>
-            <li>Proper attribution where required</li>
-            <li>Compatibility between licenses</li>
-            <li>Ownership of proprietary source code</li>
+            <li>Proper attribution and license compatibility</li>
+            <li>Ownership of proprietary code</li>
             <li>Security and reliability of third-party dependencies</li>
-            <li>Whether copied code is appropriate for the intended context</li>
-            <li>Whether reused or generated code can legally and ethically be incorporated into a project</li>
+            <li>Whether reused or generated code is appropriate for the project</li>
           </ul>
         </div>
 
-        <p>For example, code posted publicly on a repository may still have licensing restrictions. Likewise, source code created for an employer or client should not simply be copied into another project without appropriate authorization.</p>
-
-        <h3>Technical Responsibility for Reused Code</h3>
-        <p>A third-party library may contain vulnerabilities, become unsupported, or behave differently from what developers expect. Developers should therefore understand important dependencies rather than treating external code as <strong>automatically trustworthy</strong>.</p>
-
-        <h3>AI Coding Tools</h3>
-        <p>AI-generated code may contain errors, vulnerabilities, or code resembling existing sources. Developers should not assume that generated code is automatically correct, secure, original, or appropriate for a particular project.</p>
+        <p>For example, code published in a public repository may still have licensing restrictions. Similarly, proprietary code developed for an employer or client should not be reused without appropriate authorization.</p>
+        <p>Code reuse also creates <strong>technical responsibilities</strong>. External libraries may contain vulnerabilities, become unsupported, or behave unexpectedly.</p>
+        <p>AI-generated code introduces additional concerns regarding <strong>correctness, security, originality, and potential intellectual property issues</strong>. Developers should review and understand generated code rather than assuming it is automatically suitable for use.</p>
 
         <div class="keyidea">
           <h3>The developer remains responsible.</h3>
-          <p>Regardless of whether code was written personally, copied from an external source, obtained from an open-source project, or generated with AI, the developer remains responsible for the code incorporated into the software.</p>
+          <p>Developers remain responsible for code incorporated into their systems, regardless of its source.</p>
         </div>
 
-        <div class="quiz" id="q10" style="margin-top:28px;">
+        <div class="quiz" id="q6" style="margin-top:28px;">
           <div class="quiz-label">Quick check</div>
-          <p class="q-prompt">10. A developer pastes an AI-generated login function into a production system without reviewing it. Weeks later, it turns out to contain a serious security flaw. Who is responsible for the code?</p>
-          <div class="options" data-correct="a">
-            <label class="opt"><input type="radio" name="q10" value="a"> The developer — code incorporated into the software remains the developer's responsibility, whatever its source</label>
-            <label class="opt"><input type="radio" name="q10" value="b"> Only the AI tool, since it wrote the code</label>
-            <label class="opt"><input type="radio" name="q10" value="c"> No one — generated code is automatically correct and secure</label>
-            <label class="opt"><input type="radio" name="q10" value="d"> The users, for trusting the system</label>
-          </div>
-          <button class="check-btn" onclick="checkQuiz('q10')">Check answer</button>
-          <div class="feedback" id="q10-feedback"></div>
-        </div>
-      </section>
-
-      <!-- 10. Transparency -->
-      <section class="chapter" id="transparency">
-        <div class="eyebrow">10 · Eight Dimensions of Responsible Development</div>
-        <h2>Transparency and Documentation</h2>
-        <p>Software development is collaborative. Other developers, administrators, managers, clients, and users may depend on information provided by the development team. Ethical professional practice therefore requires <strong>honest communication and appropriate documentation</strong> throughout the software lifecycle.</p>
-
-        <h3>Developers Should Not Knowingly Misrepresent</h3>
-        <table class="compare">
-          <thead>
-            <tr><th>Area</th><th>Examples of honest communication</th></tr>
-          </thead>
-          <tbody>
-            <tr><td><strong>System capabilities</strong></td><td>What the system can and cannot actually do</td></tr>
-            <tr><td><strong>Testing results</strong></td><td>What was tested, and what was not</td></tr>
-            <tr><td><strong>Security status</strong></td><td>Known vulnerabilities and their status</td></tr>
-            <tr><td><strong>Project progress</strong></td><td>Where the project really stands</td></tr>
-            <tr><td><strong>Known defects &amp; performance limitations</strong></td><td>Issues users or maintainers should be aware of</td></tr>
-            <tr><td><strong>Deployment risks</strong></td><td>Risks associated with going live</td></tr>
-          </tbody>
-        </table>
-
-        <p>Documentation should also record important requirements, design decisions, testing results, changes, known limitations, and significant risks. This helps other professionals understand how the system works, why particular decisions were made, and what issues may require attention.</p>
-        <p>Good documentation is especially important when systems are maintained by people who were not involved in their original development. It supports continuity, informed decision-making, troubleshooting, maintenance, and ultimately <strong>accountability</strong>.</p>
-
-        <blockquote class="def"><strong>When something goes wrong</strong>, appropriate documentation can help answer an important question: Who knew what, what decisions were made, and what actions were taken?</blockquote>
-
-        <div class="quiz" id="q11">
-          <div class="quiz-label">Quick check</div>
-          <p class="q-prompt">11. Only half of the planned test cases have been run, but a team lead marks the status report "Testing complete" so the project looks on schedule. Which responsibility does this most directly violate?</p>
+          <p class="q-prompt">6. A developer pastes an AI-generated login function into a production system without reviewing it. Weeks later, it turns out to contain a serious security flaw. Who is responsible for the code?</p>
           <div class="options" data-correct="d">
-            <label class="opt"><input type="radio" name="q11" value="a"> Code reuse and intellectual property</label>
-            <label class="opt"><input type="radio" name="q11" value="b"> Inclusive design</label>
-            <label class="opt"><input type="radio" name="q11" value="c"> None — status reports are internal and have no ethical weight</label>
-            <label class="opt"><input type="radio" name="q11" value="d"> Transparency — developers should not knowingly misrepresent testing results or project progress</label>
+            <label class="opt"><input type="radio" name="q6" value="a"> Only the AI tool, since it wrote the code</label>
+            <label class="opt"><input type="radio" name="q6" value="b"> No one — generated code is automatically suitable for use</label>
+            <label class="opt"><input type="radio" name="q6" value="c"> The users, for trusting the system</label>
+            <label class="opt"><input type="radio" name="q6" value="d"> The developer — code incorporated into a system remains the developer's responsibility, regardless of its source</label>
           </div>
-          <button class="check-btn" onclick="checkQuiz('q11')">Check answer</button>
-          <div class="feedback" id="q11-feedback"></div>
+          <button class="check-btn" onclick="checkQuiz('q6')">Check answer</button>
+          <div class="feedback" id="q6-feedback"></div>
         </div>
       </section>
 
-      <!-- 11. Summary of Eight Dimensions -->
+      <!-- 9. Transparency -->
+      <section class="chapter" id="transparency">
+        <div class="eyebrow">09 · Eight Dimensions of Responsible Development</div>
+        <h2>Transparency and Documentation</h2>
+        <p>Software development depends on accurate communication among developers, administrators, managers, clients, and users. Ethical professional practice requires <strong>honesty about system capabilities, limitations, progress, and risks</strong>.</p>
+
+        <p>Developers should not knowingly misrepresent:</p>
+        <ul>
+          <li>system capabilities;</li>
+          <li>testing results;</li>
+          <li>security status;</li>
+          <li>project progress;</li>
+          <li>known defects; or</li>
+          <li>deployment risks.</li>
+        </ul>
+
+        <p>Documentation should record important requirements, design decisions, testing results, changes, and known limitations.</p>
+
+        <blockquote class="def"><strong>Why documentation matters</strong> — Good documentation supports maintenance, continuity, informed decision-making, and accountability, particularly when systems are maintained by people who were not involved in their original development.</blockquote>
+      </section>
+
+      <!-- 10. Summary -->
       <section class="chapter" id="summary">
-        <div class="eyebrow">11 · Eight Dimensions of Responsible Development</div>
+        <div class="eyebrow">10 · Eight Dimensions of Responsible Development</div>
         <h2>The Eight Dimensions at a Glance</h2>
         <table class="compare">
           <thead>
             <tr><th>Dimension</th><th>What a Software Developer Should Do</th></tr>
           </thead>
           <tbody>
-            <tr><td><strong>Quality, Reliability, and Professional Responsibility</strong></td><td>Build software to an appropriate professional standard and communicate significant limitations.</td></tr>
-            <tr><td><strong>Secure Software Development</strong></td><td>Build security into the lifecycle and address known vulnerabilities.</td></tr>
-            <tr><td><strong>Privacy by Design</strong></td><td>Minimize data collection and build privacy protections into the system.</td></tr>
-            <tr><td><strong>User-Centered, Inclusive, and Ethical Design</strong></td><td>Design for relevant users, reduce barriers, and respect user autonomy.</td></tr>
-            <tr><td><strong>Testing, Quality Assurance, and Deployment</strong></td><td>Test adequately, assess defects, and deploy only when risks are acceptable.</td></tr>
-            <tr><td><strong>Maintenance and Software Sustainability</strong></td><td>Maintain systems, manage technical debt, and plan for long-term sustainability.</td></tr>
-            <tr><td><strong>Code Reuse and Intellectual Property</strong></td><td>Respect licenses and ownership, and carefully evaluate reused or generated code.</td></tr>
-            <tr><td><strong>Transparency and Documentation</strong></td><td>Communicate honestly and document important decisions, risks, limitations, and changes.</td></tr>
+            <tr><td><strong>Quality, Reliability, and Professional Responsibility</strong></td><td>Build software to appropriate professional standards.</td></tr>
+            <tr><td><strong>Secure Software Development</strong></td><td>Integrate security and address vulnerabilities.</td></tr>
+            <tr><td><strong>Privacy by Design</strong></td><td>Minimize data collection and incorporate privacy protections.</td></tr>
+            <tr><td><strong>User-Centered, Inclusive, and Ethical Design</strong></td><td>Reduce barriers and respect user autonomy.</td></tr>
+            <tr><td><strong>Testing, Quality Assurance, and Deployment</strong></td><td>Verify software quality and assess deployment risks.</td></tr>
+            <tr><td><strong>Maintenance and Software Sustainability</strong></td><td>Maintain systems and manage long-term risks.</td></tr>
+            <tr><td><strong>Code Reuse and Intellectual Property</strong></td><td>Respect licenses and evaluate reused or generated code.</td></tr>
+            <tr><td><strong>Transparency and Documentation</strong></td><td>Communicate honestly and document important decisions.</td></tr>
           </tbody>
         </table>
       </section>
 
-      <!-- 12. Professional Codes -->
+      <!-- 11. Professional Codes -->
       <section class="chapter" id="codes">
-        <div class="eyebrow">12 · Professional Standards and Judgment</div>
+        <div class="eyebrow">11 · Professional Standards and Judgment</div>
         <h2>Professional Codes of Ethics</h2>
-        <p class="lede">Ethical software development is not based only on personal judgment. Computing professionals also have professional standards that describe responsibilities toward users, employers, clients, colleagues, and society.</p>
-        <p>Two particularly relevant codes are the <strong>ACM Code of Ethics and Professional Conduct</strong> and the <strong>Software Engineering Code of Ethics and Professional Practice</strong> developed by the ACM and IEEE Computer Society.</p>
+        <p class="lede">Computing professionals are guided not only by personal judgment but also by professional codes of ethics that establish responsibilities toward users, employers, clients, colleagues, and society.</p>
+        <p>Two relevant codes are the <strong>ACM Code of Ethics and Professional Conduct</strong> and the <strong>ACM/IEEE-CS Software Engineering Code of Ethics and Professional Practice</strong>.</p>
 
         <h3>ACM Code of Ethics and Professional Conduct</h3>
-        <p>The <a href="https://www.acm.org/code-of-ethics" target="_blank" rel="noopener">ACM Code</a> identifies broad ethical principles for computing professionals. Among those especially relevant to software development are responsibilities to:</p>
-        <ul>
-          <li>contribute to society and human well-being;</li>
-          <li>avoid harm;</li>
-          <li>be honest and trustworthy;</li>
-          <li>respect privacy;</li>
-          <li>strive for high quality in professional work;</li>
-          <li>maintain professional competence;</li>
-          <li>evaluate systems and their risks thoroughly; and</li>
-          <li>design and implement systems that are robustly and usably secure.</li>
-        </ul>
-        <p>These principles show that a developer's responsibility does not end when code executes correctly. Developers should also consider whether the software is sufficiently <strong>reliable, secure, usable, and appropriate</strong> for the people affected by it.</p>
+        <p>The <a href="https://www.acm.org/code-of-ethics" target="_blank" rel="noopener">ACM Code</a> emphasizes responsibilities to contribute to human well-being, avoid harm, act honestly, respect privacy, maintain professional competence, produce high-quality work, evaluate risks, and develop secure systems.</p>
+        <p>These principles reinforce that professional responsibility extends <strong>beyond technical correctness</strong> to include the consequences of software for people and society.</p>
 
         <h3>Software Engineering Code of Ethics and Professional Practice</h3>
-        <p>The <a href="https://www.computer.org/education/code-of-ethics" target="_blank" rel="noopener">Software Engineering Code</a> organizes professional responsibilities around eight principles:</p>
+        <p>The <a href="https://www.computer.org/education/code-of-ethics" target="_blank" rel="noopener">ACM/IEEE-CS Software Engineering Code</a> identifies eight principles:</p>
         <ol class="commandments">
           <li><strong>Public</strong> — Act consistently with the public interest.</li>
-          <li><strong>Client and Employer</strong> — Serve the legitimate interests of clients and employers while remaining consistent with the public interest.</li>
-          <li><strong>Product</strong> — Ensure that software products and related modifications meet the highest professional standards possible.</li>
+          <li><strong>Client and Employer</strong> — Serve legitimate client and employer interests while respecting the public interest.</li>
+          <li><strong>Product</strong> — Ensure that software meets appropriate professional standards.</li>
           <li><strong>Judgment</strong> — Maintain integrity and independence in professional judgment.</li>
-          <li><strong>Management</strong> — Promote ethical approaches to software development and maintenance.</li>
-          <li><strong>Profession</strong> — Advance the integrity and reputation of the profession.</li>
-          <li><strong>Colleagues</strong> — Be fair to and supportive of colleagues.</li>
-          <li><strong>Self</strong> — Continue learning and promote ethical professional practice.</li>
+          <li><strong>Management</strong> — Promote ethical software development and maintenance.</li>
+          <li><strong>Profession</strong> — Uphold the integrity and reputation of the profession.</li>
+          <li><strong>Colleagues</strong> — Treat colleagues fairly and support their professional development.</li>
+          <li><strong>Self</strong> — Maintain competence and pursue ethical professional practice.</li>
         </ol>
-        <p>These principles are important because software development involves <strong>multiple responsibilities at the same time</strong>. A developer has responsibilities to an employer or client, but also to users and the public. Meeting a deadline or following a manager's instruction does not automatically remove professional responsibility for the consequences of the software.</p>
+        <p>These principles recognize that developers have responsibilities to <strong>multiple stakeholders</strong>. Meeting deadlines or following management instructions does not automatically justify decisions that expose users or the public to unreasonable risks.</p>
 
         <div class="keyidea">
           <h3>Beyond the person who pays</h3>
-          <p>A software professional's responsibility is not limited to satisfying the person who requested or paid for the system.</p>
+          <p>Professional responsibility extends beyond satisfying the person or organization that requested or paid for the software.</p>
         </div>
 
-        <p style="margin-top:18px;">When developers encounter unsafe systems, inadequate testing, security vulnerabilities, deceptive design, or other potentially harmful practices, professional ethics provides grounds for <strong>questioning, documenting, communicating, and addressing</strong> those concerns.</p>
-
-        <h3>Professional Codes and Ethical Frameworks</h3>
-        <p>Professional codes complement the four ethical frameworks discussed earlier in the course. Ethical frameworks provide different ways of <strong>reasoning about what should be done</strong>, while professional codes describe the <strong>standards and responsibilities expected within the computing profession</strong>. Together, they help software professionals move beyond personal opinion when confronting difficult development decisions.</p>
-
-        <div class="quiz" id="q12">
+        <div class="quiz" id="q7" style="margin-top:28px;">
           <div class="quiz-label">Quick check</div>
-          <p class="q-prompt">12. A client who is paying for an e-commerce app insists that the team hide the subscription-cancellation option deep in the settings menu. A developer says: "The client is paying, so whatever they want is fine." Which Software Engineering Code principle most directly challenges this view?</p>
-          <div class="options" data-correct="b">
-            <label class="opt"><input type="radio" name="q12" value="a"> Colleagues — be fair to and supportive of colleagues</label>
-            <label class="opt"><input type="radio" name="q12" value="b"> Public, together with Client and Employer — serve clients' legitimate interests while remaining consistent with the public interest</label>
-            <label class="opt"><input type="radio" name="q12" value="c"> Self — continue learning new programming languages</label>
-            <label class="opt"><input type="radio" name="q12" value="d"> None — the client's instructions settle the matter</label>
+          <p class="q-prompt">7. A paying client insists that the team hide the subscription-cancellation option deep in the settings menu. A developer says: "The client is paying, so whatever they want is fine." Which Software Engineering Code principles most directly challenge this view?</p>
+          <div class="options" data-correct="a">
+            <label class="opt"><input type="radio" name="q7" value="a"> Public, together with Client and Employer — serve legitimate client interests while respecting the public interest</label>
+            <label class="opt"><input type="radio" name="q7" value="b"> Colleagues — treat colleagues fairly</label>
+            <label class="opt"><input type="radio" name="q7" value="c"> Self — maintain competence by learning new tools</label>
+            <label class="opt"><input type="radio" name="q7" value="d"> None — the client's instructions settle the matter</label>
           </div>
-          <button class="check-btn" onclick="checkQuiz('q12')">Check answer</button>
-          <div class="feedback" id="q12-feedback"></div>
+          <button class="check-btn" onclick="checkQuiz('q7')">Check answer</button>
+          <div class="feedback" id="q7-feedback"></div>
         </div>
       </section>
 
-      <!-- 13. Four Frameworks -->
+      <!-- 12. Four Frameworks -->
       <section class="chapter" id="frameworks">
-        <div class="eyebrow">13 · Professional Standards and Judgment</div>
+        <div class="eyebrow">12 · Professional Standards and Judgment</div>
         <h2>Applying the Four Ethical Frameworks</h2>
-        <p>Ethical frameworks can help software professionals examine difficult development decisions systematically. Consider this situation:</p>
+        <p>Consider the following scenario:</p>
 
-        <blockquote class="def"><strong>Case: The banking app update</strong> — A development team is preparing to release an update to a mobile banking application. During final testing, they discover that under certain conditions, completed fund transfers are not immediately reflected in the user's transaction history. The money is transferred correctly, but the application may temporarily show outdated information. Management wants to release the update on schedule and fix the issue in a later patch.</blockquote>
+        <blockquote class="def"><strong>Case: The banking app update</strong> — A development team is preparing to release an update to a mobile banking application. During testing, they discover that completed fund transfers are sometimes not immediately reflected in transaction histories. The transfers are processed correctly, but users may temporarily see outdated information. Management wants to release the update on schedule and fix the issue later.</blockquote>
 
-        <h3>Consequentialism</h3>
-        <p>Consequentialism focuses on the <strong>likely outcomes</strong> of the decision. Releasing the update on time may benefit the company and allow users to access new features. However, inaccurate transaction information could cause confusion, duplicate transfers, financial mistakes, customer complaints, or loss of trust. The team should consider the likelihood and severity of the potential benefits and harms associated with releasing or delaying the software.</p>
+        <p>How might the four ethical frameworks help evaluate this decision?</p>
 
-        <h3>Deontology</h3>
-        <p>Deontology focuses on <strong>duties and obligations</strong>. Software developers have responsibilities to provide accurate information, communicate known limitations honestly, protect users, and avoid knowingly exposing them to preventable risks. The question is not only whether serious harm is likely; the team must also consider whether knowingly releasing software with the identified defect would violate its professional duties toward users.</p>
-
-        <h3>Virtue Ethics</h3>
-        <p>Virtue ethics asks <strong>what a good and responsible professional would do</strong>. Qualities such as honesty, competence, prudence, responsibility, and courage become important. Developers should disclose the problem rather than conceal or minimize it, and be willing to raise concerns when professional judgment conflicts with pressure to meet a deadline. The focus is on the kind of professional the developer chooses to be, not simply on compliance with instructions.</p>
-
-        <h3>Justice and Fairness</h3>
-        <p>Justice and fairness examine <strong>how the benefits, risks, and burdens</strong> of a decision are distributed. The company may benefit from releasing the update on schedule, while users bear most of the consequences if the software provides misleading transaction information. Some users may also be more vulnerable to financial disruption than others. The team should ask whether it is fair for users to bear risks created primarily by organizational pressure to meet a release schedule.</p>
-
-        <div class="quiz" id="q13">
-          <div class="quiz-label">Quick check</div>
-          <p class="q-prompt">13. A team member asks: "Is it right that the company gets the benefit of an on-time release while customers — some of whom live paycheck to paycheck — carry the risk of making duplicate transfers?" Which framework is she using?</p>
-          <div class="options" data-correct="c">
-            <label class="opt"><input type="radio" name="q13" value="a"> Virtue ethics</label>
-            <label class="opt"><input type="radio" name="q13" value="b"> Deontology</label>
-            <label class="opt"><input type="radio" name="q13" value="c"> Justice and fairness — she is examining how benefits and burdens are distributed, including to more vulnerable users</label>
-            <label class="opt"><input type="radio" name="q13" value="d"> None — this is a purely technical question</label>
-          </div>
-          <button class="check-btn" onclick="checkQuiz('q13')">Check answer</button>
-          <div class="feedback" id="q13-feedback"></div>
-        </div>
-
-        <h3>Ethical Frameworks as Lenses</h3>
         <table class="compare">
           <thead>
-            <tr><th>Framework</th><th>Question it directs attention to</th></tr>
+            <tr><th>Framework</th><th>Applied to the case</th><th>Key question</th></tr>
           </thead>
           <tbody>
-            <tr><td><strong>Consequentialism</strong></td><td>What benefits or harms could result from developing, deploying, or continuing to operate the software?</td></tr>
-            <tr><td><strong>Deontology</strong></td><td>What duties do developers have regarding software quality, security, privacy, transparency, and user protection?</td></tr>
-            <tr><td><strong>Virtue ethics</strong></td><td>What would a responsible, competent, honest, and conscientious software professional do?</td></tr>
-            <tr><td><strong>Justice and fairness</strong></td><td>Who benefits from the software, who bears the risks or costs when it fails, and are some users unfairly disadvantaged?</td></tr>
+            <tr>
+              <td><strong>Consequentialism</strong></td>
+              <td>Releasing may provide new features sooner, but inaccurate transaction histories could cause confusion, duplicate transfers, financial mistakes, or loss of trust.</td>
+              <td>What is the likelihood and severity of the potential benefits and harms?</td>
+            </tr>
+            <tr>
+              <td><strong>Deontology</strong></td>
+              <td>Developers have duties to provide accurate information, communicate known defects, and protect users from preventable risks.</td>
+              <td>Would releasing violate these duties, regardless of whether serious harm actually occurs?</td>
+            </tr>
+            <tr>
+              <td><strong>Virtue Ethics</strong></td>
+              <td>A responsible developer shows honesty, competence, prudence, and courage by disclosing the defect, evaluating its significance, and raising concerns despite deadline pressure.</td>
+              <td>What would a conscientious professional do?</td>
+            </tr>
+            <tr>
+              <td><strong>Justice and Fairness</strong></td>
+              <td>The company benefits from meeting its schedule, while users bear the consequences of misleading information — and some users are more vulnerable to financial disruption than others.</td>
+              <td>Is the distribution of benefits, risks, and burdens fair?</td>
+            </tr>
           </tbody>
         </table>
-        <p>The frameworks do not provide automatic answers. Rather, they help software professionals <strong>examine technical decisions from several ethical perspectives</strong>.</p>
 
-        <div class="quiz" id="q14">
+        <p>These frameworks do not automatically produce the same answer. Instead, they <strong>highlight different ethical considerations</strong> that should inform professional judgment.</p>
+
+        <div class="quiz" id="q8">
           <div class="quiz-label">Quick check</div>
-          <p class="q-prompt">14. A developer argues: "The money is transferred correctly, so the chance of serious harm is low — releasing is fine." A colleague replies: "Even if harm is unlikely, knowingly shipping software that shows users inaccurate information conflicts with our obligation to be honest with them." Which framework is the colleague drawing on?</p>
-          <div class="options" data-correct="a">
-            <label class="opt"><input type="radio" name="q14" value="a"> Deontology — focusing on duties such as providing accurate information, regardless of how likely harm is</label>
-            <label class="opt"><input type="radio" name="q14" value="b"> Consequentialism — focusing only on likely outcomes</label>
-            <label class="opt"><input type="radio" name="q14" value="c"> Justice and fairness — focusing on the distribution of benefits</label>
-            <label class="opt"><input type="radio" name="q14" value="d"> None — frameworks provide automatic answers, so no argument is needed</label>
+          <p class="q-prompt">8. A team member asks: "Is it right that the company gets the benefit of an on-time release while customers — some of whom live paycheck to paycheck — carry the risk of making duplicate transfers?" Which framework is she using?</p>
+          <div class="options" data-correct="c">
+            <label class="opt"><input type="radio" name="q8" value="a"> Virtue ethics — she is asking what a conscientious professional would do</label>
+            <label class="opt"><input type="radio" name="q8" value="b"> Deontology — she is asking whether releasing would violate the team's duties</label>
+            <label class="opt"><input type="radio" name="q8" value="c"> Justice and fairness — she is asking how benefits, risks, and burdens are distributed</label>
+            <label class="opt"><input type="radio" name="q8" value="d"> None — this is a purely technical question</label>
           </div>
-          <button class="check-btn" onclick="checkQuiz('q14')">Check answer</button>
-          <div class="feedback" id="q14-feedback"></div>
+          <button class="check-btn" onclick="checkQuiz('q8')">Check answer</button>
+          <div class="feedback" id="q8-feedback"></div>
         </div>
       </section>
 
-      <!-- 14. When Responsibilities Conflict -->
+      <!-- 13. When Responsibilities Conflict -->
       <section class="chapter" id="conflicts">
-        <div class="eyebrow">14 · Professional Standards and Judgment</div>
+        <div class="eyebrow">13 · Professional Standards and Judgment</div>
         <h2>When Responsibilities Conflict</h2>
-        <p class="lede">Software development ethics becomes most difficult when legitimate responsibilities conflict.</p>
+        <p class="lede">Software development often involves competing responsibilities. These tensions may not have solutions that satisfy every stakeholder.</p>
 
-        <h3>Common Tensions</h3>
         <table class="compare">
           <thead>
             <tr><th>On one side…</th><th>On the other…</th></tr>
@@ -1473,65 +1308,23 @@
             <tr><td>Satisfying clients</td><td>Protecting users</td></tr>
             <tr><td>Reducing costs</td><td>Improving accessibility</td></tr>
             <tr><td>Collecting useful data</td><td>Protecting privacy</td></tr>
-            <tr><td>Releasing features quickly</td><td>Addressing security risks</td></tr>
             <tr><td>Following management instructions</td><td>Exercising professional judgment</td></tr>
-            <tr><td>Meeting legal requirements</td><td>Considering broader ethical responsibilities</td></tr>
           </tbody>
         </table>
 
-        <p>There may be no solution that perfectly satisfies every stakeholder. Developers may have responsibilities to employers, clients, users, colleagues, the profession, and the broader public, and these responsibilities may sometimes point in different directions.</p>
+        <div class="callout"><strong>Legal is not the same as ethical.</strong> Legal compliance is important, but it does not resolve every ethical question. Software may comply with applicable laws while still collecting unnecessary information, manipulating users, excluding certain groups, or creating avoidable risks.</div>
 
-        <div class="callout"><strong>Legal is not the same as ethical.</strong> Legal compliance is important, but it does not settle every ethical question. A system may comply with applicable laws while still collecting unnecessary information, using manipulative interfaces, excluding some users, or exposing people to avoidable risks. Likewise, an instruction from a manager or client does not automatically make a development decision ethically responsible.</div>
-
-        <p>Ethical judgment therefore requires developers to:</p>
-        <div class="flow">
-          <span class="step">Identify competing responsibilities</span><span class="arrow">→</span>
-          <span class="step">Consider harms &amp; stakeholders</span><span class="arrow">→</span>
-          <span class="step">Consult professional standards</span><span class="arrow">→</span>
-          <span class="step">Communicate significant concerns</span>
-        </div>
-        <p>— rather than treating <strong>technical feasibility, organizational instructions, or legal compliance as the only considerations</strong>.</p>
-
-        <div class="quiz" id="q15">
-          <div class="quiz-label">Quick check</div>
-          <p class="q-prompt">15. A product owner says: "Our legal team confirmed the app complies with every applicable law, so there's nothing left to discuss ethically — including the countdown timers that claim 'Only 2 left!' when stock isn't actually limited." What is the best response?</p>
-          <div class="options" data-correct="d">
-            <label class="opt"><input type="radio" name="q15" value="a"> Agree — legal compliance settles every ethical question</label>
-            <label class="opt"><input type="radio" name="q15" value="b"> The countdown timers are fine as long as the software functions correctly</label>
-            <label class="opt"><input type="radio" name="q15" value="c"> Only the legal team is responsible for these decisions</label>
-            <label class="opt"><input type="radio" name="q15" value="d"> Legal compliance is important but doesn't settle every ethical question — a lawful app can still use manipulative design such as false urgency</label>
-          </div>
-          <button class="check-btn" onclick="checkQuiz('q15')">Check answer</button>
-          <div class="feedback" id="q15-feedback"></div>
-        </div>
+        <p>Ethical judgment therefore requires <strong>identifying affected stakeholders, evaluating consequences, considering professional duties, and communicating significant concerns</strong>.</p>
 
         <div class="keyidea">
-          <h3>Technical decisions have human consequences.</h3>
-          <p>The responsibility of an information systems professional is not simply to create systems that function, but to exercise sound professional judgment about how those systems are designed, developed, deployed, maintained, and eventually retired.</p>
+          <h3>More than systems that function.</h3>
+          <p>Ultimately, responsible software development requires more than creating systems that function. It requires sound professional judgment throughout the software lifecycle.</p>
         </div>
       </section>
 
-      <!-- 15. Key Takeaways -->
-      <section class="chapter" id="takeaways">
-        <div class="eyebrow">15 · Wrap-up</div>
-        <h2>Key Takeaways</h2>
-        <ol class="commandments">
-          <li><strong>Software is not neutral.</strong> Development decisions affect people's privacy, security, access to services, opportunities, and even safety.</li>
-          <li><strong>"Can we build it?" is not enough.</strong> Professionals must also ask whether to build it this way and whether they are prepared to take responsibility for its consequences.</li>
-          <li><strong>Care should match the stakes.</strong> Software need not be perfect, but it should meet a professional standard appropriate to its purpose and potential for harm.</li>
-          <li><strong>Security and privacy are built in, not bolted on.</strong> Both must be considered throughout the lifecycle and implemented through technical and design decisions.</li>
-          <li><strong>Design shapes choices.</strong> Inclusive design avoids unnecessary exclusion, and dark patterns are unethical even when the software works exactly as designed.</li>
-          <li><strong>Testing is risk management.</strong> Defects should be judged by severity, likelihood, consequences, and who is affected.</li>
-          <li><strong>Responsibility outlasts launch.</strong> Maintenance, technical debt, and eventual retirement all carry ethical obligations.</li>
-          <li><strong>You own the code you ship.</strong> Whether written, copied, open-source, or AI-generated, the developer remains responsible for it.</li>
-          <li><strong>Honesty enables accountability.</strong> Developers should not misrepresent capabilities, testing, security, or progress, and should document key decisions and risks.</li>
-          <li><strong>Codes, frameworks, and judgment work together.</strong> Professional codes and the four ethical frameworks help navigate conflicting responsibilities — and legal compliance alone does not settle every ethical question.</li>
-        </ol>
-      </section>
-
-      <!-- 16. References -->
+      <!-- 14. References -->
       <section class="chapter" id="references">
-        <div class="eyebrow">16 · Wrap-up</div>
+        <div class="eyebrow">14 · Wrap-up</div>
         <h2>References and Further Reading</h2>
 
         <div class="refbox">
@@ -1554,7 +1347,7 @@
   <div class="progress-dock-inner">
     <div class="progress-dock-label">Check-in progress</div>
     <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-    <div class="progress-count" id="progressCount">0 of 15 answered correctly</div>
+    <div class="progress-count" id="progressCount">0 of 8 answered correctly</div>
   </div>
 </div>
 
